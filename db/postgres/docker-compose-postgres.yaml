@@ -1,0 +1,12 @@
+services:
+  user_credential_pg:
+    image: postgres
+    container_name: user_credential_pg
+    environment:
+      POSTGRES_DB: user_credential_db
+      POSTGRES_USER: user_credential_db_user
+      POSTGRES_PASSWORD: master
+    volumes:
+      - ./entrypoint:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
