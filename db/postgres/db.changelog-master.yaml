@@ -1,4 +1,4 @@
 databaseChangeLog:
   - include:
-      file: v-0.0.1/db.changelog-0.0.1.yaml
+      file: v-0.0.1/db.changelog-0.0.1.sql
       relativeToChangelogFile: true
