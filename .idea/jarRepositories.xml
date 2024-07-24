@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="nexus-afl" />
+      <option name="name" value="nexus-afl" />
+      <option name="url" value="https://nexus-ci.corp.dev.vtb/repository/afl-maven/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nexus-prp" />
+      <option name="name" value="nexus-prp" />
+      <option name="url" value="https://inst0.nexus-ci.corp.dev.vtb/repository/prp-maven/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="pfomb-maven-proxy-group" />
+      <option name="name" value="pfomb-maven-proxy-group" />
+      <option name="url" value="https://inst0.nexus-ci.corp.dev.vtb/repository/pfomb-maven-proxy-group/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="afl-maven" />
+      <option name="name" value="afl-maven" />
+      <option name="url" value="https://inst0.nexus-ci.corp.dev.vtb/repository/afl-maven/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="vacs-maven-lib" />
+      <option name="name" value="vacs-maven-lib" />
+      <option name="url" value="https://nexus-ci.corp.dev.vtb/repository/vacs-maven-lib/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="pfomb-maven" />
+      <option name="name" value="pfomb-maven" />
+      <option name="url" value="https://inst0.nexus-ci.corp.dev.vtb/repository/pfomb-maven/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="afl-maven-snapshot" />
+      <option name="name" value="afl-maven-snapshot" />
+      <option name="url" value="https://inst0.nexus-ci.corp.dev.vtb/repository/afl-maven-snapshot/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nexus-lib" />
+      <option name="name" value="nexus-lib" />
+      <option name="url" value="https://nexus-ci.corp.dev.vtb/repository/tbcor-maven-lib/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="afl-docker-lib" />
+      <option name="name" value="afl-docker-lib" />
+      <option name="url" value="https://nexus-ci.corp.dev.vtb/repository/afl-docker-lib/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="vacs-maven-snapshot" />
+      <option name="name" value="vacs-maven-snapshot" />
+      <option name="url" value="https://nexus-ci.corp.dev.vtb/repository/vacs-maven-snapshot/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nexus-pfom" />
+      <option name="name" value="nexus-pfom" />
+      <option name="url" value="https://nexus-ci.corp.dev.vtb/repository/pfom-maven-lib/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nexus-old" />
+      <option name="name" value="nexus-old" />
+      <option name="url" value="https://inst0.nexus-ci.corp.dev.vtb/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="tbcc-maven-lib" />
+      <option name="name" value="tbcc-maven-lib" />
+      <option name="url" value="https://inst0.nexus-ci.corp.dev.vtb/repository/tbcc-maven-lib/" />
+    </remote-repository>
+  </component>
+</project>
