@@ -1,9 +1,9 @@
 package ru.romanov.stankin.authorization_service.service
 
 import io.jsonwebtoken.Claims
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.dto.JwtDTO
-import ru.romanov.stankin.authorization_service.dto.UsernamePasswordAuthentication
 
 @Service
 class JwtService {
@@ -17,7 +17,7 @@ class JwtService {
         TODO("Not yet implemented")
     }
 
-    fun generatedHwt(authentication: UsernamePasswordAuthentication): Any {
+    fun generatedHwt(authentication: Authentication): Any {
         TODO("Not yet implemented")
     }
 

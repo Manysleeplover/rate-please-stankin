@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse
 import org.hibernate.ObjectNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import ru.romanov.stankin.authorization_service.const.AUTHORIZATION
@@ -35,7 +36,7 @@ class InitialAuthenticationFilter(
                 val username = userDto.username
                 val password = userDto.password
                 try {
-                    var authentication = UsernamePasswordAuthentication(username, password)
+                    var authentication: Authentication = UsernamePasswordAuthentication(username, password)
                     authentication = usernamePasswordAuthenticationProvider.authenticate(authentication)
                     val jwt = jwtService.generatedHwt(authentication)
                     response.setHeader(AUTHORIZATION, BEARER + jwt)
