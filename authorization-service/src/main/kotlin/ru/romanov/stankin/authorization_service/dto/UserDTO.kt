@@ -1,6 +1,7 @@
 package ru.romanov.stankin.authorization_service.dto
 
-class UserDto (
+
+class UserDTO(
     val username: String,
     val password: String
 )

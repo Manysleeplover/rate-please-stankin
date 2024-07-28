@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import ru.romanov.stankin.authorization_service.const.AUTHORIZATION
 import ru.romanov.stankin.authorization_service.const.BEARER
-import ru.romanov.stankin.authorization_service.dto.UserDto
+import ru.romanov.stankin.authorization_service.dto.UserDTO
 import ru.romanov.stankin.authorization_service.dto.UsernamePasswordAuthentication
 import ru.romanov.stankin.authorization_service.service.JwtService
 
@@ -32,7 +32,7 @@ class InitialAuthenticationFilter(
             val bodyJson = request.reader.readLine()
             if (bodyJson != null) {
                 val mapper = ObjectMapper()
-                val userDto = mapper.readValue(bodyJson, UserDto::class.java)
+                val userDto = mapper.readValue(bodyJson, UserDTO::class.java)
                 val username = userDto.username
                 val password = userDto.password
                 try {
@@ -52,6 +52,10 @@ class InitialAuthenticationFilter(
                 }
             }
         }
+    }
+
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        return !request.servletPath.equals("/login", ignoreCase = true)
     }
 
     companion object {
