@@ -5,20 +5,10 @@ import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.dto.JwtDTO
 
-@Service
-class JwtService {
+interface JwtService {
 
-
-    fun isValidJwt(jwtDTO: JwtDTO): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    fun getClaims(authorizationKey: String): Claims {
-        TODO("Not yet implemented")
-    }
-
-    fun generatedHwt(authentication: Authentication): Any {
-        TODO("Not yet implemented")
-    }
+    fun isValidJwt(jwtDTO: JwtDTO): Boolean
+    fun getClaims(authorizationKey: String): Claims
+    fun generatedHwt(authentication: Authentication): String
 
 }

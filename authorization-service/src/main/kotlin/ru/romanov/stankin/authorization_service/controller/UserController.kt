@@ -17,7 +17,7 @@ class UserController(
     @GetMapping("/get/myname")
     fun getName(): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(SecurityContextHolder.getContext().authentication.principal.toString())
+            .body(SecurityContextHolder.getContext().authentication.name)
     }
 
 }

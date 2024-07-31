@@ -38,7 +38,7 @@ class InitialAuthenticationFilter(
                 try {
                     var authentication: Authentication = UsernamePasswordAuthentication(username, password)
                     authentication = usernamePasswordAuthenticationProvider.authenticate(authentication)
-                    val jwt = jwtService.generatedHwt(authentication)
+                    val jwt: String = jwtService.generatedHwt(authentication)
                     response.setHeader(AUTHORIZATION, BEARER + jwt)
                 } catch (e: Exception) {
                     when (e) {

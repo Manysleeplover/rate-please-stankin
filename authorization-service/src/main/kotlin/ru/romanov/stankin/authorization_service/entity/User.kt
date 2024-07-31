@@ -4,6 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "users")
+
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +17,8 @@ class User(
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "role_id")])
     val roles: List<Role>
-){}
+){
+    override fun toString(): String {
+        return "User(id=$id, status='$status', username='$username', password='$password', roles=$roles)"
+    }
+}
