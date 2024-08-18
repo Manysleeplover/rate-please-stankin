@@ -10,5 +10,7 @@ create table users
     role varchar(16)
 );
 
+create sequence user_id_seq start 1 increment 1;
+
 INSERT INTO users (id, email, password, username, role) VALUES (1, 'ilya@java.com', '$2a$12$BXeONFjoaZQfI7WH/1L0JOmrJ5oV2Q2zcVIBrLh1K3ABZG73Z9nZ6', 'admin', 'ROLE_ADMIN');
 INSERT INTO users (id, email, password, username, role) VALUES (2, 'antonio@java.com', '$2a$12$BXeONFjoaZQfI7WH/1L0JOmrJ5oV2Q2zcVIBrLh1K3ABZG73Z9nZ6', 'user', 'ROLE_USER');

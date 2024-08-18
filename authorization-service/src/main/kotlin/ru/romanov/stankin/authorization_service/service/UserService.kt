@@ -15,17 +15,14 @@ class UserService(
 ) {
     /**
      * Сохранение пользователя
-     *
      * @return сохраненный пользователь
      */
     fun save(user: UserEntity): UserEntity {
         return userRepository.save(user)
     }
 
-
     /**
      * Создание пользователя
-     *
      * @return созданный пользователь
      */
     fun create(user: UserEntity): UserEntity {
@@ -43,7 +40,6 @@ class UserService(
 
     /**
      * Получение пользователя по имени пользователя
-     *
      * @return пользователь
      */
     fun getByUsername(username: String?): UserEntity {
@@ -52,10 +48,7 @@ class UserService(
 
     /**
      * Получение пользователя по имени пользователя
-     *
-     *
      * Нужен для Spring Security
-     *
      * @return пользователь
      */
     fun userDetailsService(): UserDetailsService {
@@ -64,7 +57,6 @@ class UserService(
 
     /**
      * Получение текущего пользователя
-     *
      * @return текущий пользователь
      */
     fun getCurrentUser(): UserEntity {
@@ -73,11 +65,8 @@ class UserService(
         return getByUsername(username)
     }
 
-
     /**
      * Выдача прав администратора текущему пользователю
-     *
-     *
      * Нужен для демонстрации
      */
     @Deprecated("")
@@ -86,6 +75,4 @@ class UserService(
         user.setRole(Role.ROLE_ADMIN)
         save(user)
     }
-
-
 }

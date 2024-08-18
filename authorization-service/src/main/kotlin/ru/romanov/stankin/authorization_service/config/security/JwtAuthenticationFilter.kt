@@ -23,22 +23,18 @@ class JwtAuthenticationFilter(
     private val BEARER_PREFIX = "Bearer"
     private val HEADER_NAME = "Authorization"
 
-
     override fun doFilterInternal(
         @NonNull request: HttpServletRequest,
         @NonNull response: HttpServletResponse,
         @NonNull filterChain: FilterChain
     ) {
-
         // Получаем токен из заголовка
         val authHeader: String = request.getHeader(HEADER_NAME)
-
 
         if (authHeader.isEmpty() || authHeader.startsWith(BEARER_PREFIX)) {
             filterChain.doFilter(request, response)
             return
         }
-
 
         // Обрезаем префикс и получаем имя пользователя из токена
         val jwt: String = authHeader.substring(BEARER_PREFIX.length)
