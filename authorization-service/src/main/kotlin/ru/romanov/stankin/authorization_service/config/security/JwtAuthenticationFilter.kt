@@ -3,6 +3,7 @@ package ru.romanov.stankin.authorization_service.config.security
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.lang.NonNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -20,7 +21,7 @@ class JwtAuthenticationFilter(
     val userService: UserService,
 ) : OncePerRequestFilter() {
 
-    private val BEARER_PREFIX = "Bearer"
+    private val BEARER_PREFIX = "Bearer "
     private val HEADER_NAME = "Authorization"
 
     override fun doFilterInternal(
@@ -29,15 +30,15 @@ class JwtAuthenticationFilter(
         @NonNull filterChain: FilterChain
     ) {
         // Получаем токен из заголовка
-        val authHeader: String = request.getHeader(HEADER_NAME)
+        val authHeader: String? = request.getHeader(HEADER_NAME)
 
-        if (authHeader.isEmpty() || authHeader.startsWith(BEARER_PREFIX)) {
+        if (authHeader?.isEmpty() == true || !StringUtils.startsWith(authHeader, BEARER_PREFIX)) {
             filterChain.doFilter(request, response)
             return
         }
 
         // Обрезаем префикс и получаем имя пользователя из токена
-        val jwt: String = authHeader.substring(BEARER_PREFIX.length)
+        val jwt: String = authHeader?.substring(BEARER_PREFIX.length).toString()
         val username = jwtService.extractUserName(jwt)
 
         if (username.isNotEmpty() && SecurityContextHolder.getContext().authentication == null) {
