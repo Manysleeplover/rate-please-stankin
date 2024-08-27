@@ -17,19 +17,19 @@ import ru.romanov.stankin.authorization_service.service.AuthenticationService
 @RequestMapping("/auth")
 @Tag(name = "Аутентификация")
 class AuthController (
-    private val authenticationService: AuthenticationService,
+    private val authenticationService: AuthenticationService?,
 ){
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
     fun signUp(@RequestBody request: @Valid SignUpRequestDTO): JwtAuthenticationResponse {
-        return authenticationService.signUp(request)
+        return authenticationService!!.signUp(request)
     }
 
     @Operation(summary = "Авторизация пользователя")
     @PostMapping("/sign-in")
     fun signIn(@RequestBody request: @Valid SignInRequestDTO): JwtAuthenticationResponse {
-        return authenticationService.signIn(request)
+        return authenticationService!!.signIn(request)
     }
 
 }

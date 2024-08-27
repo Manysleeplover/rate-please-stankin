@@ -1,6 +1,7 @@
 package ru.romanov.stankin.authorization_service.service
 
 import org.slf4j.LoggerFactory.getLogger
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -13,6 +14,7 @@ import ru.romanov.stankin.authorization_service.domain.entity.UserEntity
 
 
 @Service
+@ConditionalOnProperty(value = ["auth.inMemory.enabled"], havingValue = "false")
 class AuthenticationService(
     val userService: UserService,
     val jwtService: JwtService,

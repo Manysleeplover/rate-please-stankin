@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory.getLogger
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.lang.NonNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -16,6 +17,7 @@ import ru.romanov.stankin.authorization_service.service.UserService
 
 
 @Component
+@ConditionalOnProperty(value = ["auth.inMemory.enabled"], havingValue = "false")
 class JwtAuthenticationFilter(
     val jwtService: JwtService,
     val userService: UserService,
