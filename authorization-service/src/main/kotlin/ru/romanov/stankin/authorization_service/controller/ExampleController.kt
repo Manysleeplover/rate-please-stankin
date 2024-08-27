@@ -32,6 +32,12 @@ class ExampleController(
     @GetMapping("/get-admin")
     @Operation(summary = "Получить роль ADMIN (для демонстрации)")
     fun getAdmin() {
-        userService.getAdmin()
+        userService.setRoleAdminToCurrentUser()
+    }
+
+    @GetMapping("/get-usern")
+    @Operation(summary = "Получить роль ADMIN (для демонстрации)")
+    fun getUser() {
+        userService.setRoleUserToCurrentUser()
     }
 }

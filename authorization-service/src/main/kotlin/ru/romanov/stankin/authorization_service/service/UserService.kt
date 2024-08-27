@@ -70,9 +70,20 @@ class UserService(
      * Нужен для демонстрации
      */
     @Deprecated("")
-    fun getAdmin() {
+    fun setRoleAdminToCurrentUser() {
         val user: UserEntity = getCurrentUser()
         user.setRole(Role.ROLE_ADMIN)
+        save(user)
+    }
+
+    /**
+     * Выдача прав администратора текущему пользователю
+     * Нужен для демонстрации
+     */
+    @Deprecated("")
+    fun setRoleUserToCurrentUser() {
+        val user: UserEntity = getCurrentUser()
+        user.setRole(Role.ROLE_USER)
         save(user)
     }
 }

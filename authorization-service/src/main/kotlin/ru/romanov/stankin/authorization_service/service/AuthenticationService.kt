@@ -1,5 +1,6 @@
 package ru.romanov.stankin.authorization_service.service
 
+import org.slf4j.LoggerFactory.getLogger
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -26,6 +27,8 @@ class AuthenticationService(
      * @return токен
      */
     fun signUp(request: SignUpRequestDTO): JwtAuthenticationResponse {
+        log.info("Пришёл запрос на регистрацию от ${request.username}")
+
         val user  = UserEntity(
             id = null,
             username = request.username,
@@ -37,6 +40,8 @@ class AuthenticationService(
         userService.create(user)
 
         val jwt = jwtService.generateToken(user)
+
+        log.info("Регистрация пользователя ${request.username} прошла успешна")
         return JwtAuthenticationResponse(jwt)
     }
 
@@ -47,6 +52,8 @@ class AuthenticationService(
      * @return токен
      */
     fun signIn(request: SignInRequestDTO): JwtAuthenticationResponse {
+        log.info("Пришёл запрос на аутентификацию от ${request.username}")
+
         authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 request.username,
@@ -59,7 +66,13 @@ class AuthenticationService(
             .loadUserByUsername(request.username)
 
         val jwt = jwtService.generateToken(user)
+
+        log.info("Аутентификация пользователя ${request.username} прошла успешна")
         return JwtAuthenticationResponse(jwt)
+    }
+
+    companion object {
+        private val log = getLogger(AuthenticationService::class.java)
     }
 
 }
