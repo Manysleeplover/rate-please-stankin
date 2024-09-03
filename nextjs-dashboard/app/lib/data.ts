@@ -9,6 +9,9 @@ import {
 } from './definitions';
 import { formatCurrency } from './utils';
 
+const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
+const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
+
 export async function fetchRevenue() {
   try {
     // Artificially delay a response for demo purposes.
