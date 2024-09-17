@@ -62,6 +62,16 @@
       <option name="url" value="https://nexus-ci.corp.dev.vtb/repository/vacs-maven-snapshot/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="parb_cfrm-docker" />
+      <option name="name" value="afl-docker-lib" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/parb_cfrm-docker/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="parb_cfrm-maven" />
+      <option name="name" value="parb_cfrm-maven" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/parb_cfrm-maven/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="nexus-pfom" />
       <option name="name" value="nexus-pfom" />
       <option name="url" value="https://nexus-ci.corp.dev.vtb/repository/pfom-maven-lib/" />
@@ -80,6 +90,11 @@
       <option name="id" value="tbcc-maven-lib" />
       <option name="name" value="tbcc-maven-lib" />
       <option name="url" value="https://inst0.nexus-ci.corp.dev.vtb/repository/tbcc-maven-lib/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="tsau-maven-pub" />
+      <option name="name" value="tsau-maven-pub" />
+      <option name="url" value="https://maven.repo-ci.sfera.inno.local/repository/tsau-maven-pub/" />
     </remote-repository>
   </component>
 </project>
