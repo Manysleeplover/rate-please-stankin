@@ -1,6 +1,7 @@
 import {Button} from "@/app/ui/common/button";
 import {authenticate} from '@/app/lib/actions';
 import {useActionState} from 'react';
+import {AtSymbolIcon, KeyIcon} from "@heroicons/react/16/solid";
 
 // /* Form Log In */
 //
@@ -48,6 +49,9 @@ export default function LoginForm() {
                             placeholder="Введите email"
                             required
                         />
+                        <AtSymbolIcon
+                            className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
+
                     </div>
                 </div>
                 <div className="mt-4">
@@ -67,6 +71,9 @@ export default function LoginForm() {
                             required
                             minLength={6}
                         />
+                        <KeyIcon
+                            className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
+
                     </div>
                 </div>
             </div>
