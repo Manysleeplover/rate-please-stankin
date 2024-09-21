@@ -7,7 +7,7 @@ export default function LoginPage() {
     return (
         <main className="flex   justify-center md:h-screen">
             <div>
-                <StankinLogo />
+                <StankinLogo width={300} height={300} />
                 <div>
                     <LoginForm/>
                 </div>
