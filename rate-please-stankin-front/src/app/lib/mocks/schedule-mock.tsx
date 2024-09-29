@@ -10,7 +10,7 @@ const scheduleMock =
             "type": "Лекция",
             "subgroup": "",
             "location": "0410",
-            "dateTime": new Date("2024-09-03T18:00:00.000Z"),
+            "dateTime": new Date("2024-09-03T18:00:00.000"),
             "url": "https://edu.stankin.ru/course/view.php?id=13600",
         },
         {
@@ -22,7 +22,7 @@ const scheduleMock =
             "type": "Лабораторная работа",
             "subgroup": "А",
             "location": "0410",
-            "dateTime": new Date("2024-09-03T16:00:00.000Z"),
+            "dateTime": new Date("2024-09-03T16:00:00.000"),
             "url": "https://edu.stankin.ru/course/view.php?id=13600",
         }
     ];

@@ -1,12 +1,15 @@
+const LessionCommonStyle = "rounded-xl border-1 pl-2 pr-2"
+
+
 const enum LesionStyle {
-    Lecture = "bg-blue-400 rounded-xl border-1 pl-1 pr-1",
-    Seminar = "bg-yellow-400 rounded-xl border-1 pl-1 pr-1",
-    Laboratory_Work = "bg-green-400 rounded-xl border-1 pl-1 pr-1"
+    Lecture = `bg-blue-400 ${LessionCommonStyle}`,
+    Seminar = `bg-yellow-400 ${LessionCommonStyle}`,
+    Laboratory_Work = `bg-green-400 ${LessionCommonStyle}`
 }
 
 const enum SubGroupStyle {
-    А = "bg-orange-300 rounded-xl border-1 pl-1 pr-1",
-    Б = "bg-indigo-300 rounded-xl border-1 pl-1 pr-1"
+    A = `bg-orange-300 ${LessionCommonStyle}`,
+    B = `bg-indigo-300 ${LessionCommonStyle}`
 }
 
 export function getLesionStyle(lessionType: string){
@@ -19,12 +22,12 @@ export function getLesionStyle(lessionType: string){
 
 export function getSubGroupStyle(subGroup: string){
     switch(subGroup){
-        case "А": return SubGroupStyle.А
-        case "Б": return SubGroupStyle.А
+        case "А": return SubGroupStyle.A
+        case "Б": return SubGroupStyle.B
     }
 }
 
 export function getFormattedDate(dateTime: Date){
-    return dateTime.toLocaleTimeString().replace(/(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])/, "$1")
+    return dateTime.toLocaleTimeString().replace(/(0[0-9]|2[0-9]|2[0-3]):([0-5][0-9])/, "$2")
 }
 
