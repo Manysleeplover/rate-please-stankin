@@ -1,8 +1,8 @@
 import axios from "axios";
-import {SignInDTO} from "@/app/lib/api/ui-interfaces";
+import {SignInDTO, SignUpDTO} from "@/app/lib/api/ui-interfaces";
 
-export const singInAPIRequest = (loginDTO: SignInDTO) => {
-    axios.post('http://localhost:8081/auth/sign-in', loginDTO)
+export const singInAPIRequest = (signInDTO: SignInDTO) => {
+    axios.post('http://localhost:8081/auth/sign-in', signInDTO)
         .then((response) => {
             console.log(response.data)
             console.log(response.status)
@@ -12,8 +12,9 @@ export const singInAPIRequest = (loginDTO: SignInDTO) => {
         })
 }
 
-export const singUpAPIRequest = (loginDTO: SignInDTO) => {
-    axios.post('http://localhost:8081/auth/sign-in', loginDTO)
+
+export const singUpAPIRequest = (signUpDTO: SignUpDTO) => {
+    axios.post('http://localhost:8081/auth/sign-up', signUpDTO)
         .then((response) => {
             console.log(response.data)
             console.log(response.status)

@@ -2,33 +2,11 @@
 
 import {Button} from "@/app/ui/common/button";
 import {useState} from 'react';
-import {AtSymbolIcon, KeyIcon} from "@heroicons/react/16/solid";
+import {KeyIcon, UserIcon} from "@heroicons/react/16/solid";
 import {singInAPIRequest} from "@/app/lib/api/login-form-api";
+import Link from "next/link";
 
-// /* Form Log In */
-//
-// box-sizing: border-box;
-//
-// /* Auto layout */
-// display: flex;
-// flex-direction: column;
-// align-items: flex-start;
-// padding: 24px;
-// gap: 24px;
-//
-// position: absolute;
-// width: 320px;
-// min-width: 320px;
-// height: 316px;
-// left: 560px;
-// top: 351px;
-//
-// background: rgba(255, 255, 255, 0.33);
-// border: 1px solid #D9D9D9;
-// border-radius: 8px;
-
-
-export default function LoginForm() {
+export default function SignInForm() {
     const[username, setUsername] = useState<string>("")
     const[password, setPassword] = useState<string>("")
 
@@ -55,19 +33,18 @@ export default function LoginForm() {
                         className="mb-3 mt-5 block text-xs font-medium text-gray-900"
                         htmlFor="email"
                     >
-                        Email
+                        Имя пользователя
                     </label>
                     <div className="relative">
                         <input
                             className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                            id="email"
-                            placeholder="Введите email"
+                            id="username"
+                            placeholder="Введите имя пользователя"
                             required
                             onChange={handleEmailInputChange}
                         />
-                        <AtSymbolIcon
+                        <UserIcon
                             className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
-
                     </div>
                 </div>
                 <div className="mt-4">
@@ -101,12 +78,12 @@ export default function LoginForm() {
                 Войти
             </Button>
             <div className="pt-3 pb-1">
-                <a
-                    href={`ur`}
+                <Link
+                    href="/sign-up"
                     className="underline text-stankin_blue"
                 >
                     Зарегистрироваться
-                </a>
+                </Link>
             </div>
         </div>
     </form>
