@@ -1,7 +1,9 @@
+'use client'
+
 import {Button} from "@/app/ui/common/button";
-import {authenticate} from '@/app/lib/actions';
-import {useActionState} from 'react';
+import {useState} from 'react';
 import {AtSymbolIcon, KeyIcon} from "@heroicons/react/16/solid";
+import {singInAPIRequest} from "@/app/lib/api/login-form-api";
 
 // /* Form Log In */
 //
@@ -27,6 +29,21 @@ import {AtSymbolIcon, KeyIcon} from "@heroicons/react/16/solid";
 
 
 export default function LoginForm() {
+    const[username, setUsername] = useState<string>("")
+    const[password, setPassword] = useState<string>("")
+
+    const handleEmailInputChange = (event) => {
+        setUsername(event.target.value);
+    };
+
+    const handlePasswordInputChange = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const handleEnterButtonAction = (event) => {
+        singInAPIRequest({username, password})
+    }
+
     return <form className="space-y-3 ">
         <div className="flex-1 border-2 rounded-lg bg-white px-6 pb-4 pt-4">
             <h1 className={` mb-3 text-xl`}>
@@ -44,10 +61,9 @@ export default function LoginForm() {
                         <input
                             className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
                             id="email"
-                            type="email"
-                            name="email"
                             placeholder="Введите email"
                             required
+                            onChange={handleEmailInputChange}
                         />
                         <AtSymbolIcon
                             className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
@@ -70,6 +86,7 @@ export default function LoginForm() {
                             placeholder="Введите пароль"
                             required
                             minLength={6}
+                            onChange={handlePasswordInputChange}
                         />
                         <KeyIcon
                             className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"/>
@@ -77,7 +94,10 @@ export default function LoginForm() {
                     </div>
                 </div>
             </div>
-            <Button className=" items-center justify-center mt-4 w-full">
+            <Button
+                className=" items-center justify-center mt-4 w-full"
+                onClick={handleEnterButtonAction}
+            >
                 Войти
             </Button>
             <div className="pt-3 pb-1">

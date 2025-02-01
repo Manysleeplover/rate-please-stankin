@@ -11,12 +11,18 @@ export interface TimetableSubject {
     type: string;
     subgroup: string;
     location: string;
-    dateTime: Date;
+    dateTime: Date
     url: string;
 }
 
-export enum LesionType {
-    "Лекция" = "",
-    "Семинар" = "1",
-    "Лабораторная работа" = "2"
+
+export type SignInDTO = {
+    username: string
+    password: string
+}
+
+export type SignUpDTO = {
+    username: string
+    email: string
+    password: string
 }
