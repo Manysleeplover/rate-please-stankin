@@ -1,10 +1,9 @@
-import SignInForm from "@/app/ui/login/sign-in-form";
 import LoginBackgroundImage from "@/app/ui/login/login-background-image";
 import StankinLogo from "@/app/ui/common/stankin-logo";
 import SignUpForm from "@/app/ui/login/sign-up-form";
 
 
-export default function SignInPage() {
+export default function SignUpPage() {
     return (
         <main className="flex   justify-center md:h-screen">
             <div>

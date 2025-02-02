@@ -12,15 +12,15 @@ export default function SignUpForm() {
     const[password, setPassword] = useState<string>("")
 
     const handleUsernameInputChange = (event) => {
-        setUsername(event.target.value);
+        setUsername(event.target.value)
     };
 
     const handleEmailInputChange = (event) => {
-        setEmail(event.target.value);
+        setEmail(event.target.value)
     };
 
     const handlePasswordInputChange = (event) => {
-        setPassword(event.target.value);
+        setPassword(event.target.value)
     };
 
     const handleEnterButtonAction = (event) => {
