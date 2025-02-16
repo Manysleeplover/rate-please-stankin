@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.domain.dto
+package ru.romanov.stankin.authorization_service.domain.authorization.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 

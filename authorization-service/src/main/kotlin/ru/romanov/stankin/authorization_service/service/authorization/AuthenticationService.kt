@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.service
+package ru.romanov.stankin.authorization_service.service.authorization
 
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -6,11 +6,11 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.dto.JwtAuthenticationResponse
-import ru.romanov.stankin.authorization_service.domain.dto.SignInRequestDTO
-import ru.romanov.stankin.authorization_service.domain.dto.SignUpRequestDTO
-import ru.romanov.stankin.authorization_service.domain.entity.Role
-import ru.romanov.stankin.authorization_service.domain.entity.UserEntity
+import ru.romanov.stankin.authorization_service.domain.authorization.dto.JwtAuthenticationResponse
+import ru.romanov.stankin.authorization_service.domain.authorization.dto.SignInRequestDTO
+import ru.romanov.stankin.authorization_service.domain.authorization.dto.SignUpRequestDTO
+import ru.romanov.stankin.authorization_service.domain.authorization.entity.Role
+import ru.romanov.stankin.authorization_service.domain.authorization.entity.UserEntity
 
 
 @Service

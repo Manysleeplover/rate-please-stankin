@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.controller
+package ru.romanov.stankin.authorization_service.controller.authorization
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import ru.romanov.stankin.authorization_service.domain.dto.JwtAuthenticationResponse
-import ru.romanov.stankin.authorization_service.domain.dto.SignInRequestDTO
-import ru.romanov.stankin.authorization_service.domain.dto.SignUpRequestDTO
-import ru.romanov.stankin.authorization_service.service.AuthenticationService
+import ru.romanov.stankin.authorization_service.domain.authorization.dto.JwtAuthenticationResponse
+import ru.romanov.stankin.authorization_service.domain.authorization.dto.SignInRequestDTO
+import ru.romanov.stankin.authorization_service.domain.authorization.dto.SignUpRequestDTO
+import ru.romanov.stankin.authorization_service.service.authorization.AuthenticationService
 
 
 @RestController

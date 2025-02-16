@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.service
+package ru.romanov.stankin.authorization_service.service.authorization
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -7,8 +7,8 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.entity.UserEntity
-import ru.romanov.stankin.authorization_service.repository.UserRepository
+import ru.romanov.stankin.authorization_service.domain.authorization.entity.UserEntity
+import ru.romanov.stankin.authorization_service.repository.authorization.UserRepository
 import java.security.Key
 import java.util.*
 

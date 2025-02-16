@@ -1,24 +1,24 @@
 'use client'
 
 import {Button} from "@/app/ui/common/button";
-import {useState} from 'react';
+import {SetStateAction, useState} from 'react';
 import {KeyIcon, UserIcon} from "@heroicons/react/16/solid";
 import {singInAPIRequest} from "@/app/lib/api/login-form-api";
 import Link from "next/link";
 
 export default function SignInForm() {
-    const[username, setUsername] = useState<string>("")
-    const[password, setPassword] = useState<string>("")
+    const [username, setUsername] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
 
-    const handleEmailInputChange = (event) => {
+    const handleEmailInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setUsername(event.target.value);
     };
 
-    const handlePasswordInputChange = (event) => {
+    const handlePasswordInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setPassword(event.target.value);
     };
 
-    const handleEnterButtonAction = (event) => {
+    const handleEnterButtonAction = () => {
         singInAPIRequest({username, password})
     }
 

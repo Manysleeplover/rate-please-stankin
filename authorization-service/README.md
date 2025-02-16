@@ -3,5 +3,5 @@
 
 <h1> Трекер задача</h1>
 В процессс разработки так же был интегрирован трекер задач
-https://tracker.yandex.ru/createTicket?queue=RATEPLS&_form=false
+https://tracker.yandex.ru/agile/board/1
 

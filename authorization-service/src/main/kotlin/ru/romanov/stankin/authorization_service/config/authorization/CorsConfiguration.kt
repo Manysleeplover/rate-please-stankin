@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.config.security
+package ru.romanov.stankin.authorization_service.config.authorization
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

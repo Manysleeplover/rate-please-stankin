@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.config.security
+package ru.romanov.stankin.authorization_service.config.authorization
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -12,8 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import ru.romanov.stankin.authorization_service.service.JwtService
-import ru.romanov.stankin.authorization_service.service.UserService
+import ru.romanov.stankin.authorization_service.service.authorization.JwtService
+import ru.romanov.stankin.authorization_service.service.authorization.UserService
 
 
 @Component

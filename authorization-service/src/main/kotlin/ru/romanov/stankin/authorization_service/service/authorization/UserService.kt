@@ -1,12 +1,12 @@
-package ru.romanov.stankin.authorization_service.service
+package ru.romanov.stankin.authorization_service.service.authorization
 
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.entity.Role
-import ru.romanov.stankin.authorization_service.domain.entity.UserEntity
-import ru.romanov.stankin.authorization_service.repository.UserRepository
+import ru.romanov.stankin.authorization_service.domain.authorization.entity.Role
+import ru.romanov.stankin.authorization_service.domain.authorization.entity.UserEntity
+import ru.romanov.stankin.authorization_service.repository.authorization.UserRepository
 
 
 @Service

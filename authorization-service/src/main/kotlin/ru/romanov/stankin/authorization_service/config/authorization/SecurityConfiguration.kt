@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.config.security
+package ru.romanov.stankin.authorization_service.config.authorization
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
@@ -21,7 +21,7 @@ import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
-import ru.romanov.stankin.authorization_service.service.UserService
+import ru.romanov.stankin.authorization_service.service.authorization.UserService
 
 
 @Configuration
