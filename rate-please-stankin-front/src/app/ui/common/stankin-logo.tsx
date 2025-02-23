@@ -1,4 +1,4 @@
-import Image, {ImageProps} from "next/image";
+import Image from "next/image";
 import {ImageSize} from "@/app/lib/api/ui-interfaces";
 
 export default function StankinLogo(props: ImageSize) {

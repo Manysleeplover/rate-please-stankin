@@ -21,6 +21,11 @@ const links = [
         href: '/dashboard/schedule',
         icon: CalendarIcon,
     },
+    {
+        name: 'Загрузка расписания',
+        href: '/dashboard/upload-schedule',
+        icon: CalendarIcon,
+    },
 
 ];
 
