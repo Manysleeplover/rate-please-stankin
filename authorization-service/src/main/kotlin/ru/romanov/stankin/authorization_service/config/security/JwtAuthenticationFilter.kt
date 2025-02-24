@@ -23,8 +23,7 @@ class JwtAuthenticationFilter(
     val userService: UserService,
 ) : OncePerRequestFilter() {
 
-    private val BEARER_PREFIX = "Bearer "
-    private val HEADER_NAME = "Authorization"
+
 
     override fun doFilterInternal(
         @NonNull request: HttpServletRequest,
@@ -68,6 +67,8 @@ class JwtAuthenticationFilter(
 
     companion object {
         private val log = getLogger(OncePerRequestFilter::class.java)
+        private val BEARER_PREFIX = "Bearer "
+        private val HEADER_NAME = "Authorization"
     }
 
 }

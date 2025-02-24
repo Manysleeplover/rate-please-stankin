@@ -1,34 +1,46 @@
 package ru.romanov.stankin.authorization_service.domain.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
  * Расписание для конкретного предмета
  */
 @Schema(name = "ScheduleDTO",
-    example =
-        "{\n" +
-        "    stgroup: 'МДМ-21-11',\n" +
-        "    subject: 'Интегрированные CAE системы в машиностроении',\n" +
-        "    audience: '',\n" +
-        "    periods: [ [Object] ],\n" +
-        "    dates: [ '13.11', '20.11' ],\n" +
-        "    start_time: '10:20',\n" +
-        "    end_time: '12:00',\n" +
-        "    group: 'Без подгруппы',\n" +
-        "    teacher: 'Гиловой Л.Я.',\n" +
-        "    type: 'лекции'\n" +
-        "},"
-        )
+    example = """
+{
+    "stgroup": "МДМ-21-11",
+    "subject": "Интегрированные CAE системы в машиностроении",
+    "audience": "",
+    "periods": [
+        {
+            "start_date": "11.09",
+            "end_date": "30.10",
+            "repeat": "к.н."
+        }
+    ],
+    "dates": [
+        "13.11",
+        "20.11"
+    ],
+    "start_time": "10:20",
+    "end_time": "12:00",
+    "group": "Без подгруппы",
+    "teacher": "Гиловой Л.Я.",
+    "type": "лекции"
+}
+    """)
 data class ScheduleDto(
-    val stgroup: String,
-    val subject: String,
+    val stgroup: String?,
+    val subject: String?,
     val audience: String,
-    val period: Any,
-    val dates: List<String>,
-    val startTime: String,
-    val endTime: String,
-    val group: String,
-    val teacher: String,
-    val type: String,
+    val periods: List<PeriodsDTO>?,
+    val dates: List<String>?,
+    @JsonProperty("start_time")
+    val start_time: String?,
+    @JsonProperty("end_time")
+    val end_time: String?,
+    val group: String?,
+    val teacher: String?,
+    val type: String?,
 )

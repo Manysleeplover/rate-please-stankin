@@ -49,7 +49,7 @@ class SecurityConfiguration(
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { obj: AbstractHttpConfigurer<*, *> -> obj.disable() } // Своего рода отключение CORS (разрешение запросов со всех доменов)
             .cors { cors ->
-                cors.configurationSource { request ->
+                cors.configurationSource {
                     val corsConfiguration =
                         CorsConfiguration()
                     corsConfiguration.setAllowedOriginPatterns(listOf("*"))
@@ -67,7 +67,7 @@ class SecurityConfiguration(
             } // Настройка доступа к конечным точкам
             .authorizeHttpRequests { request ->
                 request // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
-                    .requestMatchers("/auth/**", "/schedule/**").permitAll()
+                    .requestMatchers("/schedule/**", "/auth/**", ).permitAll()
                     .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**","/schedule/**").permitAll()
                     .requestMatchers("/endpoint", "/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()

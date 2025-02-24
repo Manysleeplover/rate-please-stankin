@@ -7,8 +7,9 @@ import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDto
 @Service
 class ScheduleService {
 
-    fun processSchedule(fullScheduleDTO: FullScheduleDTO){
-        println(fullScheduleDTO)
+    fun processSchedule(listOfSubjects: FullScheduleDTO){
+        println("говно")
+        println(listOfSubjects)
     }
 
 }
