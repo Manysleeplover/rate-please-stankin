@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.domain.entity.security
+package ru.romanov.stankin.authorization_service.domain.entity.postgres.security
 
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority

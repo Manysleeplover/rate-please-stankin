@@ -1,0 +1,22 @@
+package ru.romanov.stankin.authorization_service.domain.entity.mongo
+
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.Indexed
+import org.springframework.data.mongodb.core.mapping.Document
+import java.time.LocalDate
+
+@Document(collection = "dailySchedule")
+data class DailySchedule(
+    @Id
+    val id: String? = null,
+    @Indexed
+    val date: LocalDate,
+    val stgroup: String?,
+    val subject: String?,
+    val audience: String,
+    val startTime: String?,
+    val endTime: String?,
+    val group: String?,
+    val teacher: String?,
+    val type: String?
+)

@@ -1,23 +1,48 @@
 package ru.romanov.stankin.authorization_service.service
 
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.dto.DailySchedule
-import ru.romanov.stankin.authorization_service.domain.dto.FullScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDto
+import ru.romanov.stankin.authorization_service.domain.entity.mongo.DailySchedule
+import ru.romanov.stankin.authorization_service.repository.mongo.DailyScheduleRepository
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoField
 
 @Service
-class ScheduleService {
+class ScheduleService(
+    private val dailyScheduleRepository: DailyScheduleRepository,
+) {
 
-    fun processSchedule(listOfSubjects: List<ScheduleDto>): List<DailySchedule>{
-       return expandSchedule(listOfSubjects)
+    fun processSchedule(listOfSubjects: List<ScheduleDto>): List<DailyScheduleDTO>{
+        val dailyScheduleDTOList = expandSchedule(listOfSubjects)
+        dailyScheduleDTOList.mapToDailyScheduleDocument().saveDailySchedule()
+        return dailyScheduleDTOList
     }
 
+    fun List<DailySchedule>.saveDailySchedule() =
+        dailyScheduleRepository.saveAll(this)
+
+
+
+    private fun List<DailyScheduleDTO>.mapToDailyScheduleDocument(): List<DailySchedule> =
+        this.stream().map {
+            DailySchedule(
+                date = it.date,
+                stgroup = it.stgroup,
+                subject = it.subject,
+                audience = it.audience,
+                startTime = it.startTime,
+                endTime = it.endTime,
+                group = it.group,
+                teacher = it.teacher,
+                type = it.type,
+            )
+        }.toList()
+
     // Функция для разворачивания расписания
-    fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailySchedule> {
-        val dailySchedules = mutableListOf<DailySchedule>()
+    private fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
+        val dailyScheduleDTOS = mutableListOf<DailyScheduleDTO>()
         val dateFormatter = DateTimeFormatter.ofPattern("dd.MM")
 
         for (schedule in scheduleList) {
@@ -28,8 +53,8 @@ class ScheduleService {
 
                 var currentDate = startDate
                 while (!currentDate.isAfter(endDate)) {
-                    dailySchedules.add(
-                        DailySchedule(
+                    dailyScheduleDTOS.add(
+                        DailyScheduleDTO(
                             date = currentDate,
                             stgroup = schedule.stgroup,
                             subject = schedule.subject,
@@ -48,8 +73,8 @@ class ScheduleService {
             // Обработка отдельных дат
             schedule.dates?.forEach { dateStr ->
                 val date = parseDateWithDefaultYear(dateStr, dateFormatter)
-                dailySchedules.add(
-                    DailySchedule(
+                dailyScheduleDTOS.add(
+                    DailyScheduleDTO(
                         date = date,
                         stgroup = schedule.stgroup,
                         subject = schedule.subject,
@@ -65,10 +90,10 @@ class ScheduleService {
         }
 
         // Сортировка по дате и времени
-        return dailySchedules.sortedWith(compareBy({ it.date }, { it.startTime }))
+        return dailyScheduleDTOS.sortedWith(compareBy({ it.date }, { it.startTime }))
     }
 
-    fun parseDateWithDefaultYear(dateStr: String, formatter: DateTimeFormatter): LocalDate {
+    private fun parseDateWithDefaultYear(dateStr: String, formatter: DateTimeFormatter): LocalDate {
         val temporalAccessor = formatter.parse(dateStr)
         val year = LocalDate.now().year // Используем текущий год
         return LocalDate.of(year, temporalAccessor.get(ChronoField.MONTH_OF_YEAR), temporalAccessor.get(ChronoField.DAY_OF_MONTH))

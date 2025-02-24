@@ -7,8 +7,8 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.entity.security.UserEntity
-import ru.romanov.stankin.authorization_service.repository.security.UserRepository
+import ru.romanov.stankin.authorization_service.domain.entity.postgres.security.UserEntity
+import ru.romanov.stankin.authorization_service.repository.postgre.security.UserRepository
 import java.security.Key
 import java.util.*
 

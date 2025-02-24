@@ -4,9 +4,9 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.entity.security.Role
-import ru.romanov.stankin.authorization_service.domain.entity.security.UserEntity
-import ru.romanov.stankin.authorization_service.repository.security.UserRepository
+import ru.romanov.stankin.authorization_service.domain.entity.postgres.security.Role
+import ru.romanov.stankin.authorization_service.domain.entity.postgres.security.UserEntity
+import ru.romanov.stankin.authorization_service.repository.postgre.security.UserRepository
 
 
 @Service
