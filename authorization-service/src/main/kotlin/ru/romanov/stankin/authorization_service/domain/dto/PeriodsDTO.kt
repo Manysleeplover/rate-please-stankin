@@ -12,8 +12,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 """)
 class PeriodsDTO(
     @JsonProperty("start_date")
-    val startDate: String?,
+    val startDate: String,
     @JsonProperty("end_date")
-    val endDate: String?,
+    val endDate: String,
     val repeat: String?
 )
