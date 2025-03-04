@@ -1,6 +1,7 @@
 package ru.romanov.stankin.authorization_service.domain.entity.mongo
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.IndexDirection
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
@@ -9,7 +10,7 @@ import java.time.LocalDate
 data class DailySchedule(
     @Id
     val id: String? = null,
-    @Indexed
+    @Indexed(direction = IndexDirection.ASCENDING)
     val date: LocalDate,
     val stgroup: String?,
     val subject: String?,

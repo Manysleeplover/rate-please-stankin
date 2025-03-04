@@ -1,0 +1,21 @@
+{
+  "name": "node-schedule-parser",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node src/app.js",
+    "live": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "fs": "^0.0.1-security",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.5-lts.1",
+    "pug": "2.0.0-beta11",
+    "rector-schedule-parser": "^2.1.1"
+  }
+}
