@@ -2,8 +2,8 @@ package ru.romanov.stankin.authorization_service.domain
 
 import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.mongo.DailySchedule
-import ru.romanov.stankin.authorization_service.domain.entity.mongo.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.entity.postgres.DailySchedule
+import ru.romanov.stankin.authorization_service.domain.entity.postgres.SemesterSchedule
 
 fun SemesterSchedule.mapToSemesterScheduleDto(dailyScheduleDTO: List<DailyScheduleDTO>) =
     SemesterScheduleDTO(
@@ -11,7 +11,7 @@ fun SemesterSchedule.mapToSemesterScheduleDto(dailyScheduleDTO: List<DailySchedu
         dailySchedule = dailyScheduleDTO,
         lastClassDate = lastClassDate,
         firstClassDate = firstClassDate,
-        id = this.id
+        id = this.id.toString()
     )
 
 fun List<DailyScheduleDTO>.mapToDailyScheduleEntity(): List<DailySchedule> =
@@ -23,7 +23,7 @@ fun List<DailyScheduleDTO>.mapToDailyScheduleEntity(): List<DailySchedule> =
             audience = it.audience,
             startTime = it.startTime,
             endTime = it.endTime,
-            group = it.group,
+            subgroup = it.group,
             teacher = it.teacher,
             type = it.type,
         )

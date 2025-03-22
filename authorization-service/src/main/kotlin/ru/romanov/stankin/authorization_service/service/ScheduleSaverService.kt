@@ -4,34 +4,37 @@ import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDto
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.mongo.DailySchedule
-import ru.romanov.stankin.authorization_service.domain.entity.mongo.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.entity.postgres.DailySchedule
+import ru.romanov.stankin.authorization_service.domain.entity.postgres.SemesterSchedule
 import ru.romanov.stankin.authorization_service.domain.mapToDailyScheduleEntity
 import ru.romanov.stankin.authorization_service.domain.mapToSemesterScheduleDto
-import ru.romanov.stankin.authorization_service.repository.mongo.DailyScheduleRepository
-import ru.romanov.stankin.authorization_service.repository.mongo.SemesterScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.postgre.PostgreDailyScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.postgre.PostgreSemesterScheduleRepository
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoField
 
 @Service
 class ScheduleSaverService(
-    private val semesterScheduleRepository: SemesterScheduleRepository,
-    private val dailyScheduleRepository: DailyScheduleRepository,
+    private val postgreSemesterScheduleRepository: PostgreSemesterScheduleRepository,
+    private val postgreDailyScheduleRepository: PostgreDailyScheduleRepository,
 ) {
 
     fun processSchedule(listOfSubjects: List<ScheduleDto>): SemesterScheduleDTO {
         val dailyScheduleDTOList = expandSchedule(listOfSubjects)
-        return dailyScheduleDTOList
-            .mapToDailyScheduleEntity()
-            .saveDailySchedule()
+        val dailyScheduleEntityList = dailyScheduleDTOList.mapToDailyScheduleEntity()
+        return dailyScheduleEntityList
             .buildSemesterSchedule()
+            .also {
+                dailyScheduleEntityList.forEach { entity -> entity.semesterSchedule = it}
+                it.dailySchedule = dailyScheduleEntityList
+            }
             .saveSemesterSchedule()
             .mapToSemesterScheduleDto(dailyScheduleDTOList)
     }
 
     fun SemesterSchedule.saveSemesterSchedule() =
-        semesterScheduleRepository.save(this)
+        postgreSemesterScheduleRepository.save(this)
 
     fun List<DailySchedule>.buildSemesterSchedule() =
         SemesterSchedule(
@@ -41,7 +44,7 @@ class ScheduleSaverService(
     )
 
     fun List<DailySchedule>.saveDailySchedule(): List<DailySchedule> =
-        dailyScheduleRepository.saveAll(this)
+        postgreDailyScheduleRepository.saveAll(this)
 
     // Функция для разворачивания расписания
     private fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
@@ -100,6 +103,22 @@ class ScheduleSaverService(
         val temporalAccessor = formatter.parse(dateStr)
         val year = LocalDate.now().year // Используем текущий год
         return LocalDate.of(year, temporalAccessor.get(ChronoField.MONTH_OF_YEAR), temporalAccessor.get(ChronoField.DAY_OF_MONTH))
+    }
+
+    private fun SemesterSchedule.validateIdempotency( ): SemesterSchedule {
+        if ( postgreSemesterScheduleRepository.findByFirstClassDateAndLastClassDateAndStgroupAndVersionDate(
+                firstClassDate =   this.firstClassDate,
+                lastClassDate =  this.lastClassDate,
+                stgroup =  this.stgroup,
+                versionDate =  this.versionDate
+            ).isEmpty()
+        ) {
+            return this
+        } else {
+            throw RuntimeException(
+                "Расписание с таким номером версии ${this.versionDate}, группы: ${this.stgroup}, " +
+                        "с временным диапазоном семестра ${this.firstClassDate} - ${this.lastClassDate} уже существует")
+        }
     }
 }
 
