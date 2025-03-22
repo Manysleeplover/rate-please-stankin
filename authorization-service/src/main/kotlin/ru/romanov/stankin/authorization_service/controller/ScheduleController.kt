@@ -19,7 +19,7 @@ class ScheduleController(
          scheduleSaverService.processSchedule(listOfSubjects)
 
     @GetMapping("/by-date-interval")
-    fun getScheduleByDateInterval(@RequestBody scheduleDateIntervalRequest: ScheduleDateIntervalRequest){
+    fun getScheduleByDateInterval(@RequestBody scheduleDateIntervalRequest: ScheduleDateIntervalRequest) =
         scheduleService.getScheduleByDateInterval(scheduleDateIntervalRequest)
-    }
+
 }

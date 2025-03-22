@@ -1,5 +1,6 @@
 package ru.romanov.stankin.authorization_service.domain.entity.postgres
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.util.*
@@ -18,7 +19,8 @@ data class DailySchedule(
     val subgroup: String?,
     val teacher: String?,
     val type: String?,
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "semester_schedule_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     var semesterSchedule: SemesterSchedule? = null
 )

@@ -28,10 +28,9 @@ CREATE SEQUENCE student_id_seq START 1 INCREMENT 1;
 
 
 
-create schema schedule AUTHORIZATION user_credential_db_user;
-DROP TABLE if EXISTS schedule.semester_schedule CASCADE;
-CREATE TABLE schedule.semester_schedule (
-    id SERIAL PRIMARY KEY,                     -- Уникальный идентификатор
+DROP TABLE if EXISTS semester_schedule CASCADE;
+CREATE TABLE semester_schedule (
+    id UUID PRIMARY KEY,                     -- Уникальный идентификатор
     first_class_date DATE NOT NULL,            -- Дата начала занятий
     last_class_date DATE NOT NULL,             -- Дата окончания занятий
     stgroup TEXT NOT NULL,                     -- Группа
@@ -41,8 +40,8 @@ CREATE TABLE schedule.semester_schedule (
 
 );
 
-CREATE TABLE schedule.daily_schedule (
-    id SERIAL PRIMARY KEY,                     -- Уникальный идентификатор
+CREATE TABLE daily_schedule (
+    id UUID PRIMARY KEY,                     -- Уникальный идентификатор
     date DATE NOT NULL,                        -- Дата
     stgroup TEXT,                              -- Группа (опционально)
     subject TEXT,                              -- Предмет (опционально)
@@ -52,12 +51,12 @@ CREATE TABLE schedule.daily_schedule (
     subgroup TEXT,                           -- Группа (опционально)
     teacher TEXT,                              -- Преподаватель (опционально)
     type TEXT,                                 -- Тип занятия (опционально)
-    semester_schedule_id INT NOT NULL,         -- Ссылка на semester_schedule
+    semester_schedule_id UUID NOT NULL,         -- Ссылка на semester_schedule
     CONSTRAINT fk_semester_schedule            -- Внешний ключ
         FOREIGN KEY (semester_schedule_id)
-            REFERENCES schedule.semester_schedule (id)
+            REFERENCES semester_schedule (id)
             ON DELETE CASCADE
 );
 
 CREATE INDEX idx_daily_schedule_date           -- Индекс по дате
-    ON schedule.daily_schedule (date);
+    ON daily_schedule (date);
