@@ -6,6 +6,7 @@ import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDto
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
 import ru.romanov.stankin.authorization_service.service.ScheduleSaverService
 import ru.romanov.stankin.authorization_service.service.ScheduleService
+import java.time.LocalDate
 
 @RestController
 @RequestMapping("/schedule")
@@ -19,7 +20,10 @@ class ScheduleController(
          scheduleSaverService.processSchedule(listOfSubjects)
 
     @GetMapping("/by-date-interval")
-    fun getScheduleByDateInterval(@RequestBody scheduleDateIntervalRequest: ScheduleDateIntervalRequest) =
-        scheduleService.getScheduleByDateInterval(scheduleDateIntervalRequest)
+    fun getScheduleByDateInterval(
+        @RequestParam("date") date: LocalDate,
+        @RequestParam("stgroup") stgroup: String,
+        ) =
+        scheduleService.getScheduleByDateInterval(date, stgroup)
 
 }

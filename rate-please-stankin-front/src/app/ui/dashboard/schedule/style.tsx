@@ -9,25 +9,29 @@ const enum LesionStyle {
 
 const enum SubGroupStyle {
     A = `bg-orange-300 ${LessionCommonStyle}`,
-    B = `bg-indigo-300 ${LessionCommonStyle}`
+    B = `bg-indigo-300 ${LessionCommonStyle}`,
+    C = `bg-gray-300 ${LessionCommonStyle}`
 }
 
 export function getLesionStyle(lessionType: string){
-    switch(lessionType){
-        case "Лекция": return LesionStyle.Lecture
-        case "Семинар": return LesionStyle.Seminar
-        case "Лабораторная работа": return LesionStyle.Laboratory_Work
+    switch(lessionType.toLowerCase()){
+        case "лекция": return LesionStyle.Lecture
+        case "семинар": return LesionStyle.Seminar
+        case "лабораторная работа": return LesionStyle.Laboratory_Work
     }
 }
 
 export function getSubGroupStyle(subGroup: string){
-    switch(subGroup){
-        case "А": return SubGroupStyle.A
-        case "Б": return SubGroupStyle.B
+    switch(subGroup.toLowerCase()){
+        case "а": return SubGroupStyle.A
+        case "б": return SubGroupStyle.B
+        case "без подгруппы": return SubGroupStyle.C
     }
 }
 
 export function getFormattedDate(dateTime: Date){
     return dateTime.toLocaleTimeString().replace(/(0[0-9]|2[0-9]|2[0-3]):([0-5][0-9])/, "$2")
 }
+
+
 

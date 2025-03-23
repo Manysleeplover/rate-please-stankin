@@ -31,16 +31,16 @@ import io.swagger.v3.oas.annotations.media.Schema
 }
     """)
 data class ScheduleDto(
-    val stgroup: String?,
-    val subject: String?,
+    val stgroup: String,
+    val subject: String,
     val audience: String,
-    val periods: List<PeriodsDTO>?,
-    val dates: List<String>?,
+    val periods: List<PeriodsDTO>,
+    val dates: List<String>,
     @JsonProperty("start_time")
-    val start_time: String?,
+    val start_time: String,
     @JsonProperty("end_time")
-    val end_time: String?,
+    val end_time: String,
     val group: String?,
-    val teacher: String?,
-    val type: String?,
+    val teacher: String,
+    val type: String,
 )

@@ -1,3 +1,5 @@
+import {UUID} from "node:crypto";
+
 export interface ImageSize {
     width: number | `${number}` | undefined;
     height: number | `${number}` | undefined;
@@ -25,4 +27,22 @@ export type SignUpDTO = {
     username: string
     email: string
     password: string
+}
+
+export type ScheduleDateIntervalRequest = {
+    date: string,
+    stgroup: string | "МДБ-23-09"
+}
+
+export type DailyScheduleDTO = {
+    id: UUID,
+    date: Date,
+    stgroup: string,
+    subject: string,
+    audience: string  | null,
+    startTime: string,
+    endTime: string,
+    subgroup: string | null,
+    teacher: string,
+    type: string
 }

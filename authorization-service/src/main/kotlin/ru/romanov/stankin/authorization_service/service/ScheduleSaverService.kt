@@ -6,8 +6,8 @@ import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDto
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.entity.postgres.DailySchedule
 import ru.romanov.stankin.authorization_service.domain.entity.postgres.SemesterSchedule
-import ru.romanov.stankin.authorization_service.domain.mapToDailyScheduleEntity
-import ru.romanov.stankin.authorization_service.domain.mapToSemesterScheduleDto
+import ru.romanov.stankin.authorization_service.util.mapToEntity
+import ru.romanov.stankin.authorization_service.util.mapToDto
 import ru.romanov.stankin.authorization_service.repository.postgre.PostgresDailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.postgre.PostgresSemesterScheduleRepository
 import java.time.LocalDate
@@ -22,7 +22,7 @@ class ScheduleSaverService(
 
     fun processSchedule(listOfSubjects: List<ScheduleDto>): SemesterScheduleDTO {
         val dailyScheduleDTOList = expandSchedule(listOfSubjects)
-        val dailyScheduleEntityList = dailyScheduleDTOList.mapToDailyScheduleEntity()
+        val dailyScheduleEntityList = dailyScheduleDTOList.mapToEntity()
         return dailyScheduleEntityList
             .buildSemesterSchedule()
             .validateIdempotency()
@@ -31,7 +31,7 @@ class ScheduleSaverService(
                 it.dailySchedule = dailyScheduleEntityList
             }
             .saveSemesterSchedule()
-            .mapToSemesterScheduleDto(dailyScheduleDTOList)
+            .mapToDto(dailyScheduleDTOList)
     }
 
     fun SemesterSchedule.saveSemesterSchedule() =
@@ -68,7 +68,7 @@ class ScheduleSaverService(
                             audience = schedule.audience,
                             startTime = schedule.start_time,
                             endTime = schedule.end_time,
-                            group = schedule.group,
+                            subgroup = schedule.group,
                             teacher = schedule.teacher,
                             type = schedule.type
                         )
@@ -88,7 +88,7 @@ class ScheduleSaverService(
                         audience = schedule.audience,
                         startTime = schedule.start_time,
                         endTime = schedule.end_time,
-                        group = schedule.group,
+                        subgroup = schedule.group,
                         teacher = schedule.teacher,
                         type = schedule.type
                     )

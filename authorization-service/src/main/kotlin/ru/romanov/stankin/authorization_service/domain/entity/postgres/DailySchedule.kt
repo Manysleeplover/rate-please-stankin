@@ -11,14 +11,14 @@ data class DailySchedule(
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: UUID? = null,
     val date: LocalDate,
-    val stgroup: String?,
-    val subject: String?,
-    val audience: String,
-    val startTime: String?,
-    val endTime: String?,
+    val stgroup: String,
+    val subject: String,
+    val audience: String? = null,
+    val startTime: String,
+    val endTime: String,
     val subgroup: String?,
-    val teacher: String?,
-    val type: String?,
+    val teacher: String,
+    val type: String,
     @JsonBackReference
     @JoinColumn(name = "semester_schedule_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

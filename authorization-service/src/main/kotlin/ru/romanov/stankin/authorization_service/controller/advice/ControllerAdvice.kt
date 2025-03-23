@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 @ControllerAdvice
 class ControllerAdvice {
 
-    @ExceptionHandler(Exception::class)
+    @ExceptionHandler(Throwable::class)
     fun commonExceptionHandler(exception: Exception, request: WebRequest): ResponseEntity<CommonExceptionDTO> {
         return ResponseEntity(CommonExceptionDTO(
                     message = exception.localizedMessage,
