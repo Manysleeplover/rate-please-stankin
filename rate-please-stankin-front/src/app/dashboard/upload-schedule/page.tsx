@@ -1,9 +1,22 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation'; // Используем useRouter из next/navigation
+import { getToken } from '@/app/lib/security/auth';
 
 const FileUploadComponent = () => {
+    const router = useRouter(); // Инициализируем роутер
+    useEffect(() => {
+        const token = getToken();
+        if (!token) {
+            router.push('/sign-in'); // Перенаправление, если пользователь не авторизован
+        }
+    }, [router]);
+
+
+
+
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState('');
 
