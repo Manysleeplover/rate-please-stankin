@@ -12,25 +12,27 @@
     "@heroicons/react": "^2.1.5",
     "@internationalized/date": "^3.5.5",
     "@nextui-org/calendar": "^2.0.12",
-    "axios": "^1.7.9",
+    "@types/next-auth": "^3.13.0",
+    "axios": "^1.8.4",
     "bcrypt": "^5.1.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "js-cookie": "^3.0.5",
     "next": "15.1.2",
-    "next-auth": "5.0.0-beta.21",
+    "next-auth": "^5.0.0-beta.21",
     "react": "^18.3.1",
     "react-date-range": "^2.0.1",
     "react-dom": "^18",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/node": "^20.17.25",
+    "@types/react": "^18.3.19",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.11",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5.8.2"
   }
 }

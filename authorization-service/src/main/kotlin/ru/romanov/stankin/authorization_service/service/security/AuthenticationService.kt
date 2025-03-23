@@ -43,8 +43,13 @@ class AuthenticationService(
 
         val jwt = jwtService.generateToken(user)
 
+
         log.info("Регистрация пользователя ${request.username} прошла успешна")
-        return JwtAuthenticationResponse(jwt)
+        return JwtAuthenticationResponse(
+            token = jwt,
+            username = user.username,
+            role = user.getRole(),
+        )
     }
 
     /**
@@ -68,9 +73,14 @@ class AuthenticationService(
             .loadUserByUsername(request.username)
 
         val jwt = jwtService.generateToken(user)
+        val currentUser = userService.getByUsername(request.username)
 
         log.info("Аутентификация пользователя ${request.username} прошла успешна")
-        return JwtAuthenticationResponse(jwt)
+        return JwtAuthenticationResponse(
+            token = jwt,
+            username = currentUser.username,
+            role = currentUser.getRole(),
+        )
     }
 
     companion object {

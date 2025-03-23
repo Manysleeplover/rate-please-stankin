@@ -9,10 +9,7 @@ create table users
     username varchar(255) unique,
     role varchar(16)
 );
-
-
-INSERT INTO users (id, email, password, username, role) VALUES (1, 'ilya@java.com', '$2a$12$BXeONFjoaZQfI7WH/1L0JOmrJ5oV2Q2zcVIBrLh1K3ABZG73Z9nZ6', 'admin', 'ROLE_ADMIN');
-INSERT INTO users (id, email, password, username, role) VALUES (2, 'antonio@java.com', '$2a$12$BXeONFjoaZQfI7WH/1L0JOmrJ5oV2Q2zcVIBrLh1K3ABZG73Z9nZ6', 'user', 'ROLE_USER');
+CREATE SEQUENCE user_id_seq START 1 INCREMENT 1;
 
 DROP TABLE if EXISTS students CASCADE;
 CREATE TABLE students
@@ -37,7 +34,6 @@ CREATE TABLE semester_schedule (
     version_date TEXT,                         -- Версия (опционально)
     CONSTRAINT semester_schedule_unique_idx    -- Уникальный индекс
         UNIQUE (first_class_date, last_class_date, stgroup, version_date)
-
 );
 
 CREATE TABLE daily_schedule (

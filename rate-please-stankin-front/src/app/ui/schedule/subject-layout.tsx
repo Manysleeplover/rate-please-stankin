@@ -5,7 +5,7 @@ import {Time} from "@internationalized/date";
 
 
 interface ScheduleProps {
-    subjects: DailyScheduleDTO[];
+    subjects: DailyScheduleDTO[] | undefined;
 }
 
 export const Schedule: FC<ScheduleProps> = ({
