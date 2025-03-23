@@ -5,11 +5,14 @@ import { SetStateAction, useState } from 'react';
 import { AtSymbolIcon, KeyIcon, UserIcon } from "@heroicons/react/16/solid";
 import { singUpAPIRequest } from "@/app/lib/api/login-form-api";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
+import {setCoolie} from "@/app/lib/security/auth";
 
 export default function SignUpForm() {
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const router = useRouter();
 
     const handleUsernameInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setUsername(event.target.value);
@@ -28,7 +31,8 @@ export default function SignUpForm() {
 
         try {
             const response = await singUpAPIRequest({ username, email, password });
-            console.log('Registration successful:', response);
+            setCoolie(response);
+            router.push('/dashboard');
             // Здесь можно добавить редирект или другие действия после успешной регистрации
         } catch (error) {
             console.error('Registration failed:', error);

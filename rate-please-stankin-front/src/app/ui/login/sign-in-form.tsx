@@ -6,10 +6,12 @@ import { KeyIcon, UserIcon } from "@heroicons/react/16/solid";
 import { singInAPIRequest } from "@/app/lib/api/login-form-api";
 import Link from "next/link";
 import { getRole, getToken, getUsername, setCoolie } from "@/app/lib/security/auth";
+import {useRouter} from "next/navigation";
 
 export default function SignInForm() {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const router = useRouter();
 
     const handleEmailInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setUsername(event.target.value);
@@ -25,10 +27,7 @@ export default function SignInForm() {
         try {
             const response = await singInAPIRequest({ username, password });
             setCoolie(response);
-
-            console.log(getToken());
-            console.log(getRole());
-            console.log(getUsername());
+            router.push('/dashboard');
         } catch (ex) {
             console.log(ex);
         }
