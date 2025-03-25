@@ -39,14 +39,14 @@ CREATE TABLE semester_schedule (
 CREATE TABLE daily_schedule (
     id UUID PRIMARY KEY,                     -- Уникальный идентификатор
     date DATE NOT NULL,                        -- Дата
-    stgroup TEXT,                              -- Группа (опционально)
-    subject TEXT,                              -- Предмет (опционально)
-    audience TEXT NOT NULL,                    -- Аудитория
-    start_time TEXT,                           -- Время начала (опционально)
-    end_time TEXT,                             -- Время окончания (опционально)
-    subgroup TEXT,                           -- Группа (опционально)
-    teacher TEXT,                              -- Преподаватель (опционально)
-    type TEXT,                                 -- Тип занятия (опционально)
+    stgroup varchar(32),                              -- Группа (опционально)
+    subject varchar(128),                              -- Предмет (опционально)
+    audience varchar(64),                    -- Аудитория
+    start_time varchar(5) NOT NULL,                           -- Время начала (опционально)
+    end_time varchar(5)NOT NULL,                             -- Время окончания (опционально)
+    subgroup varchar(1),                           -- Группа (опционально)
+    teacher varchar(256),                              -- Преподаватель (опционально)
+    type varchar(32),                                 -- Тип занятия (опционально)
     semester_schedule_id UUID NOT NULL,         -- Ссылка на semester_schedule
     CONSTRAINT fk_semester_schedule            -- Внешний ключ
         FOREIGN KEY (semester_schedule_id)
@@ -56,3 +56,13 @@ CREATE TABLE daily_schedule (
 
 CREATE INDEX idx_daily_schedule_date           -- Индекс по дате
     ON daily_schedule (date);
+
+CREATE TABLE task_for_class (
+    id UUID PRIMARY KEY,
+    task_list jsonb not null,
+    daily_schedule_id UUID NOT NULL,
+    constraint fk_daily_schedule
+        foreign key (daily_schedule_id)
+        references daily_schedule (id)
+        on delete cascade
+)
