@@ -18,8 +18,8 @@ export const Schedule: FC<ScheduleProps> = ({
                     .sort((subject1, subject2) => parseTime(subject1.startTime) > parseTime(subject2.startTime) ? 1 : -1)
                     .map((subject) => {
                             return (
-                                <>
-                                    <div key={subject.id}
+                                <div key={subject.id}>
+                                    <div
                                          className="w-11/12 bg-white ml-auto mr-auto rounded-xl p-2 shadow-sm mt-2 mb-2 border-stankin_blue border-2">
                                         <div className="justify-between flex">
                                             <span className="text-stankin_blue">{subject.subject}</span>
@@ -49,7 +49,7 @@ export const Schedule: FC<ScheduleProps> = ({
                                             <span>{subject.audience}</span>
                                         </div>
                                     </div>
-                                </>
+                                </div>
                             )
                         }
                     ) :
