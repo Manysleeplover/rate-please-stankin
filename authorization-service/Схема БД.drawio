@@ -80,7 +80,7 @@
             <mxRectangle width="50" height="80" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="wPsL_RN02ype4l79hEWy-20" value="semester_schedule_unique_idx (&#xa;first_class_date, &#xa;last_class_date,&#xa;stgroup, &#xa;version_date)" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="wPsL_RN02ype4l79hEWy-18">
+        <mxCell id="wPsL_RN02ype4l79hEWy-20" value="semester_schedule_unique_idx (&#xa;first_class_date, &#xa;last_class_date,&#xa;stgroup, &#xa;version)" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" vertex="1" parent="wPsL_RN02ype4l79hEWy-18">
           <mxGeometry x="50" width="200" height="80" as="geometry">
             <mxRectangle width="200" height="80" as="alternateBounds" />
           </mxGeometry>
