@@ -1,6 +1,6 @@
 'use client';
 
-import {CalendarIcon, HomeIcon,} from '@heroicons/react/24/outline';
+import {CalendarIcon, HomeIcon, PlusCircleIcon} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import clsx from 'clsx';
@@ -23,7 +23,11 @@ const links = [
         href: '/dashboard/upload-schedule',
         icon: CalendarIcon,
     },
-
+    {
+        name: 'Создание заданий',
+        href: '/dashboard/create-test',
+        icon: PlusCircleIcon,
+    },
 ];
 
 export default function NavLinks() {
