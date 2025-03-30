@@ -2,6 +2,7 @@ import {FC} from "react";
 import {getLesionStyle, getSubGroupStyle} from "@/app/ui/dashboard/schedule/style";
 import {DailyScheduleDTO} from "@/app/lib/api/ui-interfaces";
 import {Time} from "@internationalized/date";
+import {BookOpenIcon, StarIcon} from '@heroicons/react/24/solid';
 
 
 interface ScheduleProps {
@@ -26,18 +27,41 @@ export const Schedule: FC<ScheduleProps> = ({
                                             <span className="text-stankin_blue">{subject.startTime  + " - " + subject.endTime}</span>
                                         </div>
                                         <div className="mt-1 mb-1">{subject.stgroup}</div>
-                                        <div className="mb-1">
-                                            <span className={getLesionStyle(subject.type)}>{subject.type}</span>
-                                            {!!(subject.subgroup) && (
-                                                <span
-                                                    className={`${getSubGroupStyle(subject.subgroup)} ml-1`}>{subject.subgroup}</span>
+                                        <div className="mb-1 justify-between flex">
+                                            <div>
+                                                <span className={getLesionStyle(subject.type)}>{subject.type}</span>
+                                                {!!(subject.subgroup) && (
+                                                    <span
+                                                        className={`${getSubGroupStyle(subject.subgroup)} ml-1`}>{subject.subgroup}</span>
                                                 )
-                                            }
+                                                }
+                                            </div>
+
+
+                                            <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2">
+                                                <div className="justify-between flex">
+                                                    <StarIcon
+                                                        height={20}
+                                                        width={20}
+                                                    />
+                                                    Оценить занятие
+                                                </div>
+
+                                            </button>
                                         </div>
-                                        <div className="mb-1">
+                                        <div className="mb-1 justify-between flex">
                                             <span>
                                                 {subject.teacher}
                                             </span>
+                                            <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2">
+                                                <div className="justify-between flex">
+                                                <BookOpenIcon
+                                                    height={20}
+                                                    width={20}
+                                                />
+                                                <span className="ml-1">Пройти задание</span>
+                                                </div>
+                                            </button>
                                         </div>
                                         <div className="justify-between flex">
                                         <span>
