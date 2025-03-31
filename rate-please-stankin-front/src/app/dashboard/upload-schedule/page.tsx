@@ -2,31 +2,28 @@
 
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'; // Используем useRouter из next/navigation
+import { useRouter } from 'next/navigation';
 import { getToken } from '@/app/lib/security/auth';
 
 const FileUploadComponent = () => {
-    const router = useRouter(); // Инициализируем роутер
+    const router = useRouter();
+    const [file, setFile] = useState<File | null>(null);
+    const [message, setMessage] = useState('');
+
     useEffect(() => {
         const token = getToken();
         if (!token) {
-            router.push('/sign-in'); // Перенаправление, если пользователь не авторизован
+            router.push('/sign-in');
         }
     }, [router]);
 
-
-
-
-    const [file, setFile] = useState(null);
-    const [message, setMessage] = useState('');
-
-    // Обработчик выбора файла
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]); // Сохраняем выбранный файл в состоянии
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setFile(e.target.files[0]);
+        }
     };
 
-    // Обработчик отправки формы
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!file) {
@@ -34,19 +31,16 @@ const FileUploadComponent = () => {
             return;
         }
 
-        // Создаем объект FormData
         const formData = new FormData();
-        formData.append('pdfFile', file); // 'pdfFile' — имя поля, которое ожидает сервер
+        formData.append('pdfFile', file);
 
         try {
-            // Отправляем файл на сервер
             const response = await axios.post('http://localhost:3030/upload', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data', // Указываем тип содержимого
+                    'Content-Type': 'multipart/form-data',
                 },
             });
 
-            // Обрабатываем ответ от сервера
             setMessage(response.data.message);
         } catch (error) {
             setMessage('Ошибка при загрузке файла');
@@ -55,13 +49,39 @@ const FileUploadComponent = () => {
     };
 
     return (
-        <div>
-            <h1>Загрузка файла</h1>
-            <form onSubmit={handleSubmit}>
-                <input type="file" accept="application/pdf" onChange={handleFileChange} />
-                <button type="submit">Загрузить</button>
+        <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+            <h1 className="text-xl font-bold mb-4">Загрузка файла</h1>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium mb-1">
+                        Выберите PDF файл:
+                    </label>
+                    <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={handleFileChange}
+                        className="w-full p-2 border border-gray-300 rounded-md"
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                    Загрузить
+                </button>
             </form>
-            {message && <p>{message}</p>}
+
+            {message && (
+                <p className={`mt-4 p-2 rounded-md ${
+                    message.includes('Ошибка')
+                        ? 'bg-red-100 text-red-700'
+                        : 'bg-green-100 text-green-700'
+                }`}>
+                    {message}
+                </p>
+            )}
         </div>
     );
 };

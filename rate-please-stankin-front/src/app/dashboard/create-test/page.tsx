@@ -21,7 +21,7 @@ type TestFormData = {
 
 export default function TestCreatorForm() {
     const [activeQuestion, setActiveQuestion] = useState<number>(0);
-    const { register, control, handleSubmit, watch } = useForm<TestFormData>({
+    const { register, control, handleSubmit, watch, setValue } = useForm<TestFormData>({
         defaultValues: {
             questions: [
                 {
@@ -48,7 +48,6 @@ export default function TestCreatorForm() {
 
     const onSubmit = (data: TestFormData) => {
         console.log("Форма отправлена:", data);
-        // Здесь можно отправить данные на сервер
         alert("Тест успешно создан!");
     };
 
@@ -87,8 +86,8 @@ export default function TestCreatorForm() {
         }));
 
         // Обновляем массив ответов
-        removeAnswer(); // Сначала удаляем все
-        updatedAnswers.forEach((answer) => appendAnswer(answer)); // Затем добавляем обновленные
+        removeAnswer();
+        updatedAnswers.forEach((answer) => appendAnswer(answer));
     };
 
     return (
@@ -118,7 +117,10 @@ export default function TestCreatorForm() {
             </div>
 
             {fields.length > 0 && (
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    key={`question-form-${activeQuestion}`} // Добавляем ключ для принудительного обновления
+                >
                     <div className="mb-6">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-semibold">
@@ -136,7 +138,7 @@ export default function TestCreatorForm() {
                         </div>
 
                         <input
-                            {...register(`questions.${activeQuestion}.title` as const)}
+                            {...register(`questions.${activeQuestion}.title`)}
                             placeholder="Введите вопрос"
                             className="w-full p-3 border border-gray-300 rounded-md mb-4"
                             required
@@ -155,7 +157,7 @@ export default function TestCreatorForm() {
                                     />
                                     <input
                                         {...register(
-                                            `questions.${activeQuestion}.answers.${index}.text` as const
+                                            `questions.${activeQuestion}.answers.${index}.text`
                                         )}
                                         placeholder={`Вариант ${index + 1}`}
                                         className="flex-1 p-2 border border-gray-300 rounded-md"
