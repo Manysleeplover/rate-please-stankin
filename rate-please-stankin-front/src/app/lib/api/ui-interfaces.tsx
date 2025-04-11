@@ -5,18 +5,13 @@ export interface ImageSize {
     height: number | `${number}` | undefined;
 }
 
-
-export interface TimetableSubject {
-    id: number;
-    groups: string[];
-    name: string;
-    type: string;
-    subgroup: string;
-    location: string;
-    dateTime: Date
-    url: string;
+export type SemesterSchedule = {
+    id: UUID
+    firstClassDate: string
+    lastClassDate: string
+    stgroup: string
+    versionDate: Date
 }
-
 
 export type SignInDTO = {
     username: string

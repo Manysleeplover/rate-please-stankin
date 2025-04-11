@@ -1,10 +1,10 @@
 package ru.romanov.stankin.authorization_service.service
 
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestParam
 import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDateIntervalRequest
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.DailySchedule
+import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.entity.postgres.SemesterSchedule
+import ru.romanov.stankin.authorization_service.repository.mongo.SemesterScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.postgre.PostgresDailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.postgre.PostgresSemesterScheduleRepository
 import ru.romanov.stankin.authorization_service.util.mapToDTO
@@ -16,7 +16,8 @@ class ScheduleService(
     private val postgresDailyScheduleRepository: PostgresDailyScheduleRepository
 ) {
     fun getScheduleByDateInterval(date: LocalDate,
-                                  stgroup: String,): List<DailyScheduleDTO> {
+                                  stgroup: String
+    ): List<DailyScheduleDTO> {
         val semesterScheduleProjectionList = postgresSemesterScheduleRepository.findByStgroupAndDate(
             stgroup,
             date
@@ -28,4 +29,19 @@ class ScheduleService(
         return dailySchedule.mapToDTO()
     }
 
+    fun getAllSemesterSchedules() =
+        postgresSemesterScheduleRepository.findAll().mapToDTO()
+
+
+    private fun List<SemesterSchedule>.mapToDTO(): List<SemesterScheduleDTO> =
+        this.stream().map {
+            SemesterScheduleDTO(
+                id = it.id,
+                versionDate = it.versionDate,
+                firstClassDate = it.firstClassDate,
+                lastClassDate = it.lastClassDate,
+                stgroup = it.stgroup,
+                dailySchedule = null
+            )
+        }.toList()
 }

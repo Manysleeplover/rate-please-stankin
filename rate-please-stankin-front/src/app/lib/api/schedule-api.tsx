@@ -1,7 +1,7 @@
-import {DailyScheduleDTO, ScheduleDateIntervalRequest} from "@/app/lib/api/ui-interfaces";
+import {DailyScheduleDTO, ScheduleDateIntervalRequest, SemesterSchedule} from "@/app/lib/api/ui-interfaces";
 import axios from "axios";
 
-export const getScheduleByDateEndStgGroup =  (
+export const getScheduleByDateEndStgGroup = async (
     request: ScheduleDateIntervalRequest
 ): Promise<DailyScheduleDTO[]> => {
     return axios
@@ -22,12 +22,19 @@ export const getScheduleByDateEndStgGroup =  (
         });
 };
 
-// const handleSelect = (date: Date) => {
-//     console.log(date); // Выбранная дата
-//     setDate(date);
-//     getScheduleByDateEndStgGroup(
-//         {
-//             date: date,
-//             stgroup: "МДБ-23-09"
-//         })
-// };
+export const getSemesterSchedule = async (): Promise<SemesterSchedule[]> => {
+    try {
+        let response = await axios
+            .get<SemesterSchedule[]>('http://localhost:8081/schedule/semester/all');
+        console.log('Статус ответа:', response.status);
+        console.log('Текст статуса:', response.statusText);
+        console.log('Заголовки:', response.headers);
+        console.log('Конфигурация запроса:', response.config);
+        console.log('Данные ответа:', response.data); // Логируем данные ответа
+        return response.data; // Возвращаем данные
+    } catch (error) {
+        console.error('Ошибка при выполнении запроса:', error);
+        throw error; // Пробрасываем ошибку для обработки на уровне выше
+    }
+};
+

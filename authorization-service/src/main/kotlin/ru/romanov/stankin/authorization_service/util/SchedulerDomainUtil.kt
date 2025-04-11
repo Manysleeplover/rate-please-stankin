@@ -11,7 +11,7 @@ fun SemesterSchedule.mapToDto(dailyScheduleDTO: List<DailyScheduleDTO>) =
         dailySchedule = dailyScheduleDTO,
         lastClassDate = lastClassDate,
         firstClassDate = firstClassDate,
-        id = this.id.toString()
+        id = this.id
     )
 
 fun List<DailyScheduleDTO>.mapToEntity(): List<DailySchedule> =

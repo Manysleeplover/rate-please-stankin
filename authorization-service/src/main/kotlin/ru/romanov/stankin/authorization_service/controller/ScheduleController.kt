@@ -26,4 +26,9 @@ class ScheduleController(
         ) =
         scheduleService.getScheduleByDateInterval(date, stgroup)
 
+    @GetMapping("/semester/all")
+    fun getSemesterSchedules() =
+        scheduleService.getAllSemesterSchedules()
+
+
 }
