@@ -15,9 +15,10 @@ interface MyCalendarProps {
     targetDate?: Date; // Начальная дата (опционально)
     onChangeDate: (date: Date) => void; // Функция для обработки изменения даты
     onChangeSchedule: (dailyScheduleList: DailyScheduleDTO[]) => void;
+    group: string
 }
 
-const MyCalendar: React.FC<MyCalendarProps> = ({ targetDate, onChangeDate, onChangeSchedule }) => {
+const MyCalendar: React.FC<MyCalendarProps> = ({ targetDate, onChangeDate, onChangeSchedule, group = 'МДБ-23-09' }) => {
     const handleSelect = async (date: Date) => {
         console.log(date); // Выбранная дата
         onChangeDate(date);
@@ -25,7 +26,7 @@ const MyCalendar: React.FC<MyCalendarProps> = ({ targetDate, onChangeDate, onCha
         // Запрос к API для получения расписания
         onChangeSchedule(await getScheduleByDateEndStgGroup({
             date: formatDate(date),
-            stgroup: 'МДБ-23-09',
+            stgroup: group,
         }));
     };
 

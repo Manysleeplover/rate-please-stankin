@@ -1,17 +1,16 @@
 import {FC} from "react";
 import {getLesionStyle, getSubGroupStyle} from "@/app/ui/dashboard/schedule/style";
-import {DailyScheduleDTO} from "@/app/lib/api/ui-interfaces";
+import {DailyScheduleDTO, ScheduleType} from "@/app/lib/api/ui-interfaces";
 import {Time} from "@internationalized/date";
-import {BookOpenIcon, StarIcon} from '@heroicons/react/24/solid';
+import {BookOpenIcon, StarIcon, PencilIcon} from '@heroicons/react/24/solid';
 
 
 interface ScheduleProps {
     subjects: DailyScheduleDTO[] | undefined;
+    type: ScheduleType
 }
 
-export const Schedule: FC<ScheduleProps> = ({
-                                              subjects
-                                          }) => {
+export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
     return (
         <>
             {!!subjects ?
@@ -36,8 +35,19 @@ export const Schedule: FC<ScheduleProps> = ({
                                                 )
                                                 }
                                             </div>
+                                            { (type === ScheduleType.CreateTaskSchedule) &&
+                                                <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2">
+                                                    <div className="justify-between flex">
+                                                        <PencilIcon
+                                                            height={20}
+                                                            width={20}
+                                                        />
+                                                        Создать тест
+                                                    </div>
+                                                </button>
+                                            }
 
-
+                                            { (type === ScheduleType.StudentSchedule) &&
                                             <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2">
                                                 <div className="justify-between flex">
                                                     <StarIcon
@@ -46,22 +56,24 @@ export const Schedule: FC<ScheduleProps> = ({
                                                     />
                                                     Оценить занятие
                                                 </div>
-
                                             </button>
+                                            }
                                         </div>
                                         <div className="mb-1 justify-between flex">
                                             <span>
                                                 {subject.teacher}
                                             </span>
+                                            { (type === ScheduleType.StudentSchedule) &&
                                             <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2">
                                                 <div className="justify-between flex">
-                                                <BookOpenIcon
-                                                    height={20}
-                                                    width={20}
-                                                />
+                                                        <BookOpenIcon
+                                                            height={20}
+                                                            width={20}
+                                                        />
                                                 <span className="ml-1">Пройти задание</span>
                                                 </div>
                                             </button>
+                                            }
                                         </div>
                                         <div className="justify-between flex">
                                         <span>

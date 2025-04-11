@@ -15,16 +15,16 @@ const enum SubGroupStyle {
 
 export function getLesionStyle(lessionType: string){
     switch(lessionType.toLowerCase()){
-        case "лекция": return LesionStyle.Lecture
+        case "лекции": return LesionStyle.Lecture
         case "семинар": return LesionStyle.Seminar
-        case "лабораторная работа": return LesionStyle.Laboratory_Work
+        case "лабораторные занятия": return LesionStyle.Laboratory_Work
     }
 }
 
 export function getSubGroupStyle(subGroup: string){
     switch(subGroup.toLowerCase()){
-        case "а": return SubGroupStyle.A
-        case "б": return SubGroupStyle.B
+        case "(а)": return SubGroupStyle.A
+        case "(б)": return SubGroupStyle.B
         case "без подгруппы": return SubGroupStyle.C
     }
 }

@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getSemesterSchedule } from '@/app/lib/api/schedule-api';
-import { SemesterSchedule } from '@/app/lib/api/ui-interfaces';
+import {useEffect, useState} from 'react';
+import {getSemesterSchedule} from '@/app/lib/api/schedule-api';
+import {ScheduleType, SemesterSchedule} from '@/app/lib/api/ui-interfaces';
 import SchedulePage from '@/app/dashboard/schedule/page';
 
 export default function SelectForm() {
-    const [selectedOption, setSelectedOption] = useState<string>('');
+    let defaultValue: string = "-- Выберите группу --"
+    const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
     const [semesterScheduleItem, setSemesterScheduleItem] = useState<SemesterSchedule[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isLoadSchedule, setIsLoadSchedule] = useState<boolean>(false);
@@ -44,6 +45,8 @@ export default function SelectForm() {
         );
     }
 
+
+
     return (
         <>
             <div className="p-4 max-w-md mx-auto">
@@ -57,13 +60,17 @@ export default function SelectForm() {
                             id="group-select"
                             value={selectedOption}
                             onChange={(e) => {
+                            if( e.target.value === defaultValue){
+                                setIsLoadSchedule(false);
+                            } else {
                                 setSelectedOption(e.target.value);
                                 setIsLoadSchedule(true);
+                            }
                             }}
                             className="w-full p-2 border rounded"
                             required
                         >
-                            <option value="">-- Выберите --</option>
+                            <option value={defaultValue}>{defaultValue}</option>
                             {semesterScheduleItem.map((option) => (
                                 <option key={option.id} value={option.stgroup}>
                                     {option.stgroup} | {formatDate(option.firstClassDate)} - {formatDate(option.lastClassDate)}
@@ -74,7 +81,13 @@ export default function SelectForm() {
                 </form>
             </div>
 
-            {isLoadSchedule && <SchedulePage />}
+            {
+                isLoadSchedule &&
+                <SchedulePage
+                    group={selectedOption}
+                    type={ScheduleType.CreateTaskSchedule}
+                />
+            }
         </>
     );
 }

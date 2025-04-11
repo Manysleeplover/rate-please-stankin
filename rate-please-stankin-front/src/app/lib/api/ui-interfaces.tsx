@@ -47,3 +47,8 @@ export type JwtAuthenticationResponse = {
     username: string,
     role: string
 }
+
+export enum ScheduleType{
+    StudentSchedule,
+    CreateTaskSchedule
+}
