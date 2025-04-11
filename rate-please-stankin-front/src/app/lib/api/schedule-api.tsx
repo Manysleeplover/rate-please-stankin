@@ -9,11 +9,6 @@ export const getScheduleByDateEndStgGroup = async (
             params: request, // Передаем параметры как query string
         })
         .then((response) => {
-            console.log('Статус ответа:', response.status);
-            console.log('Текст статуса:', response.statusText);
-            console.log('Заголовки:', response.headers);
-            console.log('Конфигурация запроса:', response.config);
-            console.log('Данные ответа:', response.data); // Логируем данные ответа
             return response.data; // Возвращаем данные
         })
         .catch((error) => {
@@ -26,11 +21,6 @@ export const getSemesterSchedule = async (): Promise<SemesterSchedule[]> => {
     try {
         let response = await axios
             .get<SemesterSchedule[]>('http://localhost:8081/schedule/semester/all');
-        console.log('Статус ответа:', response.status);
-        console.log('Текст статуса:', response.statusText);
-        console.log('Заголовки:', response.headers);
-        console.log('Конфигурация запроса:', response.config);
-        console.log('Данные ответа:', response.data); // Логируем данные ответа
         return response.data; // Возвращаем данные
     } catch (error) {
         console.error('Ошибка при выполнении запроса:', error);

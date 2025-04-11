@@ -52,3 +52,24 @@ export enum ScheduleType{
     StudentSchedule,
     CreateTaskSchedule
 }
+
+export type SaveTaskForClassRequest = {
+    id: string,
+    questions: TestFormData
+}
+
+export type AnswerOption = {
+    id: string;
+    text: string;
+    isCorrect: boolean;
+};
+
+export type Question = {
+    id: string;
+    title: string;
+    answers: AnswerOption[];
+};
+
+export type TestFormData = {
+    questions: Question[];
+};

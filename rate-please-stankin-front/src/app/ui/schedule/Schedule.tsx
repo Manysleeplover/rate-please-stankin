@@ -3,6 +3,7 @@ import {getLesionStyle, getSubGroupStyle} from "@/app/ui/dashboard/schedule/styl
 import {DailyScheduleDTO, ScheduleType} from "@/app/lib/api/ui-interfaces";
 import {Time} from "@internationalized/date";
 import {BookOpenIcon, PencilIcon, StarIcon} from '@heroicons/react/24/solid';
+import { useRouter } from 'next/navigation';
 
 
 interface ScheduleProps {
@@ -11,6 +12,14 @@ interface ScheduleProps {
 }
 
 export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
+    const router = useRouter(); // Инициализация роутера
+    const handleCreateTest = (subject: DailyScheduleDTO) => {
+        const params = new URLSearchParams({
+            subjectId: subject.id,
+        });
+        router.push(`/dashboard/create-test/${params.toString()}`);
+    };
+
     return (
         <>
             {subjects && subjects.length > 0?
@@ -36,7 +45,9 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                                 }
                                             </div>
                                             { (type === ScheduleType.CreateTaskSchedule) &&
-                                                <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2">
+                                                <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
+                                                        onClick={() => handleCreateTest(subject)}
+                                                >
                                                     <div className="justify-between flex">
                                                         <PencilIcon
                                                             height={20}
