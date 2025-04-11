@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.entity.postgres.SemesterSchedule
-import ru.romanov.stankin.authorization_service.repository.mongo.SemesterScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.postgre.PostgresDailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.postgre.PostgresSemesterScheduleRepository
 import ru.romanov.stankin.authorization_service.util.mapToDTO
@@ -22,6 +21,8 @@ class ScheduleService(
             stgroup,
             date
         )
+
+        if(semesterScheduleProjectionList.isEmpty()) return emptyList()
 
         val dailySchedule = postgresDailyScheduleRepository.findBySemesterScheduleIdAndDate(
             semesterScheduleProjectionList.map { it.getId() }.first(), date

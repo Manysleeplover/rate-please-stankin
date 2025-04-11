@@ -2,7 +2,7 @@ import {FC} from "react";
 import {getLesionStyle, getSubGroupStyle} from "@/app/ui/dashboard/schedule/style";
 import {DailyScheduleDTO, ScheduleType} from "@/app/lib/api/ui-interfaces";
 import {Time} from "@internationalized/date";
-import {BookOpenIcon, StarIcon, PencilIcon} from '@heroicons/react/24/solid';
+import {BookOpenIcon, PencilIcon, StarIcon} from '@heroicons/react/24/solid';
 
 
 interface ScheduleProps {
@@ -13,7 +13,7 @@ interface ScheduleProps {
 export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
     return (
         <>
-            {!!subjects ?
+            {subjects && subjects.length > 0?
                 subjects
                     .sort((subject1, subject2) => parseTime(subject1.startTime) > parseTime(subject2.startTime) ? 1 : -1)
                     .map((subject) => {
