@@ -49,7 +49,7 @@ export default function SelectForm() {
 
     return (
         <>
-            <div className="p-4 max-w-md mx-auto">
+            <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
                 <h1 className="text-xl font-bold mb-4">Выберите группу</h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -60,12 +60,12 @@ export default function SelectForm() {
                             id="group-select"
                             value={selectedOption}
                             onChange={(e) => {
-                            if( e.target.value === defaultValue){
-                                setIsLoadSchedule(false);
-                            } else {
-                                setSelectedOption(e.target.value);
-                                setIsLoadSchedule(true);
-                            }
+                                if (e.target.value === defaultValue) {
+                                    setIsLoadSchedule(false);
+                                } else {
+                                    setSelectedOption(e.target.value);
+                                    setIsLoadSchedule(true);
+                                }
                             }}
                             className="w-full p-2 border rounded"
                             required

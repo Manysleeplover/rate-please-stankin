@@ -77,7 +77,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                         </div>
                                         <div className="justify-between flex">
                                         <span>
-                                            <a href={"subject.url"}
+                                            <a href={"https://edu.stankin.ru/"}
                                                className="bg-sky-100 text-blue-600 rounded-xl pl-2 pr-2">
                                                 Ссылка на ЭОС
                                             </a>
