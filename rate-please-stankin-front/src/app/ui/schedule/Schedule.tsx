@@ -19,6 +19,9 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
     const handlePassTest = (subject: DailyScheduleDTO) => {
         router.push(`/dashboard/pass-test/${subject.testId.toString()}`);
     };
+    const handleDeleteTest = (subject: DailyScheduleDTO) => {
+        router.push(`/dashboard/pass-test/${subject.testId.toString()}`);
+    };
 
     return (
         <>
@@ -44,7 +47,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                                 )
                                                 }
                                             </div>
-                                            { (type === ScheduleType.CreateTaskSchedule) &&
+                                            { subject.testId === "null" && ((type === ScheduleType.CreateTaskSchedule) &&
                                                 <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
                                                         onClick={() => handleCreateTest(subject)}
                                                 >
@@ -56,6 +59,23 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                                         Создать тест
                                                     </div>
                                                 </button>
+                                                )
+                                            }
+
+                                            {
+                                                subject.testId !== "null" &&((type === ScheduleType.CreateTaskSchedule) &&
+                                                    <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
+                                                            onClick={() => handleDeleteTest(subject)}
+                                                    >
+                                                        <div className="justify-between flex">
+                                                            <PencilIcon
+                                                                height={20}
+                                                                width={20}
+                                                            />
+                                                            Удалить тест
+                                                        </div>
+                                                    </button>
+                                                )
                                             }
 
                                             { (type === ScheduleType.StudentSchedule) &&
