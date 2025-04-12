@@ -51,10 +51,10 @@ export default function TestCreatorForm() {
 
     const addNewQuestion = () => {
         append({
-            id: crypto.randomUUID(),
+            id: crypto.randomUUID(), // Генерация нового GUID для вопроса
             title: "",
             answers: [
-                { id: crypto.randomUUID(), text: "", isCorrect: false },
+                { id: crypto.randomUUID(), text: "", isCorrect: false }, // Генерация GUID для ответов
                 { id: crypto.randomUUID(), text: "", isCorrect: false },
             ],
         });
@@ -63,7 +63,7 @@ export default function TestCreatorForm() {
 
     const addNewAnswer = () => {
         appendAnswer({
-            id: crypto.randomUUID(),
+            id: crypto.randomUUID(), // Генерация нового GUID для ответа
             text: "",
             isCorrect: false,
         });
@@ -80,6 +80,7 @@ export default function TestCreatorForm() {
         const currentAnswers = watch(`questions.${activeQuestion}.answers`);
         const updatedAnswers = currentAnswers.map((answer, idx) => ({
             ...answer,
+            id: answer.id || crypto.randomUUID(), // Добавляем генерацию GUID если его нет
             isCorrect: idx === answerIndex,
         }));
 
@@ -117,7 +118,7 @@ export default function TestCreatorForm() {
             {fields.length > 0 && (
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    key={`question-form-${activeQuestion}`} // Добавляем ключ для принудительного обновления
+                    key={`question-form-${activeQuestion}`}
                 >
                     <div className="mb-6">
                         <div className="flex justify-between items-center mb-4">
