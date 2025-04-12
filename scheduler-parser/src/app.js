@@ -57,7 +57,7 @@ function clearUploadsDirectory() {
 }
 
 // Настройка шедулера (например, каждую минуту)
-cron.schedule('0 1 * * *', () => {
+cron.schedule('* * * * *', () => {
     console.log('Запуск задачи очистки директории uploads...');
     clearUploadsDirectory();
 });

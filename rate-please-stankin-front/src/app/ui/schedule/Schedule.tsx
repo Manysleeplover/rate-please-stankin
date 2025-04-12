@@ -16,6 +16,9 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
     const handleCreateTest = (subject: DailyScheduleDTO) => {
         router.push(`/dashboard/create-test/${subject.id.toString()}`);
     };
+    const handlePassTest = (subject: DailyScheduleDTO) => {
+        router.push(`/dashboard/pass-test/${subject.testId.toString()}`);
+    };
 
     return (
         <>
@@ -71,8 +74,11 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                             <span>
                                                 {subject.teacher}
                                             </span>
-                                            { (type === ScheduleType.StudentSchedule) &&
-                                            <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2">
+                                            { (type === ScheduleType.StudentSchedule) && !!subject.testId && subject.testId != "null" &&
+                                            <button
+                                                className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
+                                                onClick={() => handlePassTest(subject)}
+                                            >
                                                 <div className="justify-between flex">
                                                         <BookOpenIcon
                                                             height={20}

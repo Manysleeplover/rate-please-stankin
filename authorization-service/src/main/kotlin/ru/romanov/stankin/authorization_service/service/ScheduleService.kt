@@ -6,13 +6,15 @@ import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
 import ru.romanov.stankin.authorization_service.repository.postgre.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.postgre.SemesterScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.postgre.TaskForClassRepository
 import ru.romanov.stankin.authorization_service.util.mapToDTO
 import java.time.LocalDate
 
 @Service
 class ScheduleService(
     private val semesterScheduleRepository: SemesterScheduleRepository,
-    private val dailyScheduleRepository: DailyScheduleRepository
+    private val dailyScheduleRepository: DailyScheduleRepository,
+    private val taskForClassRepository: TaskForClassRepository,
 ) {
     fun getScheduleByDateInterval(date: LocalDate,
                                   stgroup: String
@@ -27,6 +29,8 @@ class ScheduleService(
         val dailySchedule = dailyScheduleRepository.findBySemesterScheduleIdAndDate(
             semesterScheduleProjectionList.map { it.getId() }.first(), date
         )
+
+
         return dailySchedule.mapToDTO()
     }
 

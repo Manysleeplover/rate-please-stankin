@@ -39,7 +39,8 @@ export type DailyScheduleDTO = {
     endTime: string,
     subgroup: string | null,
     teacher: string,
-    type: string
+    type: string,
+    testId: string
 }
 
 export type JwtAuthenticationResponse = {
@@ -72,4 +73,22 @@ export type Question = {
 
 export type TestFormData = {
     questions: Question[];
+};
+
+export type TaskForClassDTO = {
+    id: string;
+    dailySchedule: DailyScheduleDTO;
+    taskList: QuestionDTO[];
+};
+
+export type QuestionDTO = {
+    id: string;
+    title: string;
+    answers: AnswerOptionsDTO[];
+};
+
+export type AnswerOptionsDTO = {
+    id: string;
+    text: string;
+    isCorrect: boolean;
 };

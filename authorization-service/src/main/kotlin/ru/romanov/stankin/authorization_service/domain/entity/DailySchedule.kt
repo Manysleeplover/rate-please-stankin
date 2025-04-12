@@ -22,5 +22,8 @@ data class DailySchedule(
     @JsonBackReference
     @JoinColumn(name = "semester_schedule_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    var semesterSchedule: SemesterSchedule? = null
+    var semesterSchedule: SemesterSchedule? = null,
+    @OneToOne
+    @JsonBackReference
+    var taskForClass: TaskForClassEntity? = null
 )

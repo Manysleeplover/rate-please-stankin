@@ -47,7 +47,8 @@ CREATE TABLE daily_schedule (
     subgroup varchar(16),                           -- Группа (опционально)
     teacher varchar(256),                              -- Преподаватель (опционально)
     type varchar(32),                                 -- Тип занятия (опционально)
-    semester_schedule_id UUID NOT NULL,         -- Ссылка на semester_schedule
+    semester_schedule_id UUID NOT NULL,       -- Ссылка на semester_schedule
+    task_for_class_id UUID,
     CONSTRAINT fk_semester_schedule            -- Внешний ключ
         FOREIGN KEY (semester_schedule_id)
             REFERENCES semester_schedule (id)

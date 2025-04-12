@@ -42,6 +42,7 @@ fun List<DailySchedule>.mapToDTO(): List<DailyScheduleDTO> =
             subgroup = it.subgroup,
             teacher = it.teacher,
             type = it.type,
+            testId = it.taskForClass?.id.toString()
         )
     }.toList()
 

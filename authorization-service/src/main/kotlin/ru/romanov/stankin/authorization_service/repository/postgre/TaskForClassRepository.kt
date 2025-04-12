@@ -8,4 +8,7 @@ import java.util.UUID
 @Repository
 interface TaskForClassRepository : JpaRepository<TaskForClassEntity, UUID>{
 
+
+    fun findByDailyScheduleId(dailyScheduleId: UUID): TaskForClassEntity?
+
 }

@@ -26,7 +26,7 @@ data class Question(
 )
 
 data class AnswerOptions(
-    val id: String,
+    val id: String?,
     val text: String,
     val isCorrect: Boolean
 )

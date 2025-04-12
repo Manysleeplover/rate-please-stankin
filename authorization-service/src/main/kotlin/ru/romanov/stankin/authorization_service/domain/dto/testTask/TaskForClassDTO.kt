@@ -17,7 +17,7 @@ data class QuestionDTO(
 )
 
 data class AnswerOptionsDTO(
-    val id: String,
+    val id: String?,
     val text: String,
     val isCorrect: Boolean
 )

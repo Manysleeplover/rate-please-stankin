@@ -1,21 +1,22 @@
 package ru.romanov.stankin.authorization_service.controller
 
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import ru.romanov.stankin.authorization_service.domain.dto.testTask.SaveTaskForClassRequest
-import ru.romanov.stankin.authorization_service.service.TestTaskService
+import ru.romanov.stankin.authorization_service.service.TaskForClassService
 
 
 @RestController
 @RequestMapping("/task")
 class TestTaskController(
-    private val testTaskService: TestTaskService
+    private val taskForClassService: TaskForClassService
 ) {
 
-    @PostMapping("/save")
+    @PostMapping
     fun saveTestTask(@RequestBody request: SaveTaskForClassRequest) =
-        testTaskService.saveTaskForClass(request)
+        taskForClassService.saveTaskForClass(request)
+
+    @GetMapping("/{taskid}")
+    fun getTaskForClassById(@PathVariable("taskid") taskId: String) =
+        taskForClassService.getTaskForClassById(taskId)
 
 }
