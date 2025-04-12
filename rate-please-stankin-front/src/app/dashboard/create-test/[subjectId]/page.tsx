@@ -3,7 +3,7 @@
 import {useState} from "react";
 import {useFieldArray, useForm} from "react-hook-form";
 import {useParams} from "next/navigation";
-import {TestFormData} from "@/app/lib/api/ui-interfaces";
+import {SaveTaskForClassRequest, TestFormData} from "@/app/lib/api/ui-interfaces";
 import {saveTaskForClass} from "@/app/lib/api/task-for-class-api";
 
 
@@ -39,7 +39,13 @@ export default function TestCreatorForm() {
     const onSubmit = (data: TestFormData) => {
         console.log("Форма отправлена:", data);
 
-        saveTaskForClass({params, data})
+        const request: SaveTaskForClassRequest = {
+            id: params,
+            questions: data.questions
+        }
+        console.log(request)
+
+        saveTaskForClass(request).then(r => console.log(r))
         alert("Тест успешно создан!");
     };
 

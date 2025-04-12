@@ -7,7 +7,7 @@ import java.time.LocalDate
 import java.util.*
 
 @Repository
-interface PostgresDailyScheduleRepository : JpaRepository<DailySchedule, String> {
+interface DailyScheduleRepository : JpaRepository<DailySchedule, UUID> {
 
     fun findBySemesterScheduleIdAndDate(id: UUID, date: LocalDate): List<DailySchedule>
 

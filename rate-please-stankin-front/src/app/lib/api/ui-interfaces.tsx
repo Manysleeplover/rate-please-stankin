@@ -55,7 +55,7 @@ export enum ScheduleType{
 
 export type SaveTaskForClassRequest = {
     id: string,
-    questions: TestFormData
+    questions: Question[];
 }
 
 export type AnswerOption = {

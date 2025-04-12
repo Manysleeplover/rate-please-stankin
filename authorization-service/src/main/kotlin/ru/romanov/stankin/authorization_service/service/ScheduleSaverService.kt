@@ -8,16 +8,16 @@ import ru.romanov.stankin.authorization_service.domain.entity.postgres.DailySche
 import ru.romanov.stankin.authorization_service.domain.entity.postgres.SemesterSchedule
 import ru.romanov.stankin.authorization_service.util.mapToEntity
 import ru.romanov.stankin.authorization_service.util.mapToDto
-import ru.romanov.stankin.authorization_service.repository.postgre.PostgresDailyScheduleRepository
-import ru.romanov.stankin.authorization_service.repository.postgre.PostgresSemesterScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.postgre.DailyScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.postgre.SemesterScheduleRepository
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoField
 
 @Service
 class ScheduleSaverService(
-    private val postgresSemesterScheduleRepository: PostgresSemesterScheduleRepository,
-    private val postgresDailyScheduleRepository: PostgresDailyScheduleRepository,
+    private val semesterScheduleRepository: SemesterScheduleRepository,
+    private val dailyScheduleRepository: DailyScheduleRepository,
 ) {
 
     fun processSchedule(listOfSubjects: List<ScheduleDto>): SemesterScheduleDTO {
@@ -35,7 +35,7 @@ class ScheduleSaverService(
     }
 
     fun SemesterSchedule.saveSemesterSchedule() =
-        postgresSemesterScheduleRepository.save(this)
+        semesterScheduleRepository.save(this)
 
     fun List<DailySchedule>.buildSemesterSchedule() =
         SemesterSchedule(
@@ -45,7 +45,7 @@ class ScheduleSaverService(
     )
 
     fun List<DailySchedule>.saveDailySchedule(): List<DailySchedule> =
-        postgresDailyScheduleRepository.saveAll(this)
+        dailyScheduleRepository.saveAll(this)
 
     // Функция для разворачивания расписания
     private fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
@@ -107,7 +107,7 @@ class ScheduleSaverService(
     }
 
     private fun SemesterSchedule.validateIdempotency( ): SemesterSchedule =
-        if ( postgresSemesterScheduleRepository.findByFirstClassDateAndLastClassDateAndStgroupAndVersionDate(
+        if ( semesterScheduleRepository.findByFirstClassDateAndLastClassDateAndStgroupAndVersionDate(
                 firstClassDate =   this.firstClassDate,
                 lastClassDate =  this.lastClassDate,
                 stgroup =  this.stgroup,

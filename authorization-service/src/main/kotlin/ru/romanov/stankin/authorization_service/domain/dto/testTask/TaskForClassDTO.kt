@@ -5,19 +5,19 @@ import ru.romanov.stankin.authorization_service.domain.entity.postgres.DailySche
 import java.util.*
 
 data class TaskForClassDTO(
-    val id: UUID? = null,
+    val id: String,
     val dailySchedule: DailySchedule,
     val taskList: List<QuestionDTO>
 );
 
 data class QuestionDTO(
-    private val id: Int,
-    private val title: String,
-    private val answers: List<AnswerOptionsDTO>
+    val id: String,
+    val title: String,
+    val answers: List<AnswerOptionsDTO>
 )
 
 data class AnswerOptionsDTO(
-    private val id: Int,
-    private val text: String,
-    private val isCorrect: Boolean
+    val id: String,
+    val text: String,
+    val isCorrect: Boolean
 )

@@ -14,10 +14,7 @@ interface ScheduleProps {
 export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
     const router = useRouter(); // Инициализация роутера
     const handleCreateTest = (subject: DailyScheduleDTO) => {
-        const params = new URLSearchParams({
-            subjectId: subject.id,
-        });
-        router.push(`/dashboard/create-test/${params.toString()}`);
+        router.push(`/dashboard/create-test/${subject.id.toString()}`);
     };
 
     return (

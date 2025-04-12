@@ -44,7 +44,7 @@ CREATE TABLE daily_schedule (
     audience varchar(64),                    -- Аудитория
     start_time varchar(5) NOT NULL,                           -- Время начала (опционально)
     end_time varchar(5)NOT NULL,                             -- Время окончания (опционально)
-    subgroup varchar(1),                           -- Группа (опционально)
+    subgroup varchar(16),                           -- Группа (опционально)
     teacher varchar(256),                              -- Преподаватель (опционально)
     type varchar(32),                                 -- Тип занятия (опционально)
     semester_schedule_id UUID NOT NULL,         -- Ссылка на semester_schedule

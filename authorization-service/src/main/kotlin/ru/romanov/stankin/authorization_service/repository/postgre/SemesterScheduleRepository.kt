@@ -9,7 +9,7 @@ import ru.romanov.stankin.authorization_service.domain.entity.postgres.projectio
 import java.time.LocalDate
 
 @Repository
-interface PostgresSemesterScheduleRepository : JpaRepository<SemesterSchedule, String> {
+interface SemesterScheduleRepository : JpaRepository<SemesterSchedule, String> {
 
     fun findByFirstClassDateAndLastClassDateAndStgroupAndVersionDate(
         firstClassDate: LocalDate,

@@ -13,20 +13,20 @@ class TaskForClassEntity(
     val id: UUID? = null,
     @OneToOne
     @JsonManagedReference
-    @JoinColumn(name = "daily_schedule_id", referencedColumnName = "id")
+    @JoinColumn(name = "daily_schedule_id")
     val dailySchedule: DailySchedule,
     @JdbcTypeCode(SqlTypes.JSON)
     val taskList: List<Question>
 );
 
 data class Question(
-    private val id: Int,
-    private val title: String,
-    private val answers: List<AnswerOptions>
+    val id: String,
+    val title: String,
+    val answers: List<AnswerOptions>
 )
 
 data class AnswerOptions(
-    private val id: Int,
-    private val text: String,
-    private val isCorrect: Boolean
+    val id: String,
+    val text: String,
+    val isCorrect: Boolean
 )

@@ -67,7 +67,7 @@ class SecurityConfiguration(
             } // Настройка доступа к конечным точкам
             .authorizeHttpRequests { request ->
                 request // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
-                    .requestMatchers("/schedule/**", "/auth/**").permitAll()
+                    .requestMatchers("/schedule/**", "/auth/**", "/task/**").permitAll()
                     .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**","/schedule/**").permitAll()
                     .requestMatchers("/endpoint", "/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
