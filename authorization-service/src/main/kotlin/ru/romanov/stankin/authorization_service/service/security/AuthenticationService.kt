@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.security.JwtAuthenticationResponse
 import ru.romanov.stankin.authorization_service.domain.dto.security.SignInRequestDTO
 import ru.romanov.stankin.authorization_service.domain.dto.security.SignUpRequestDTO
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.security.Role
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.security.UserEntity
+import ru.romanov.stankin.authorization_service.domain.entity.security.Role
+import ru.romanov.stankin.authorization_service.domain.entity.security.UserEntity
 
 
 @Service

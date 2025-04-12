@@ -26,7 +26,7 @@ export type SignUpDTO = {
 
 export type ScheduleDateIntervalRequest = {
     date: string,
-    stgroup: string | "МДБ-23-09"
+    stgroup: string | "ИДМ-23-08"
 }
 
 export type DailyScheduleDTO = {

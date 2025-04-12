@@ -1,7 +1,7 @@
 package ru.romanov.stankin.authorization_service.domain.dto.security
 
 import io.swagger.v3.oas.annotations.media.Schema
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.security.Role
+import ru.romanov.stankin.authorization_service.domain.entity.security.Role
 
 @Schema(description = "Ответ c токеном доступа")
 class JwtAuthenticationResponse(

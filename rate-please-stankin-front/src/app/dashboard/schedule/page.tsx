@@ -13,7 +13,7 @@ interface SchedulePageProps {
 }
 
 export default function SchedulePage({
-                                         group = 'МДБ-23-09',
+                                         group = 'ИДМ-23-08',
                                          type = ScheduleType.StudentSchedule
                                      }: SchedulePageProps) {
     const router = useRouter();

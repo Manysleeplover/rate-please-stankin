@@ -1,7 +1,7 @@
 package ru.romanov.stankin.authorization_service.domain.dto.testTask
 
 
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.DailySchedule
+import ru.romanov.stankin.authorization_service.domain.entity.DailySchedule
 import java.util.*
 
 data class TaskForClassDTO(

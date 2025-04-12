@@ -4,8 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.SemesterSchedule
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.projection.SemesterScheduleIdAndVersionDateProjection
+import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.entity.projection.SemesterScheduleIdAndVersionDateProjection
 import java.time.LocalDate
 
 @Repository

@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.domain.entity.postgres
+package ru.romanov.stankin.authorization_service.domain.entity
 
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*

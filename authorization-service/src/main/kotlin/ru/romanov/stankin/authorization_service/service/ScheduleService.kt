@@ -3,7 +3,7 @@ package ru.romanov.stankin.authorization_service.service
 import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
 import ru.romanov.stankin.authorization_service.repository.postgre.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.postgre.SemesterScheduleRepository
 import ru.romanov.stankin.authorization_service.util.mapToDTO

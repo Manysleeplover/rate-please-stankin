@@ -4,15 +4,17 @@ import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDto
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.DailySchedule
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.entity.DailySchedule
+import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
 import ru.romanov.stankin.authorization_service.util.mapToEntity
 import ru.romanov.stankin.authorization_service.util.mapToDto
 import ru.romanov.stankin.authorization_service.repository.postgre.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.postgre.SemesterScheduleRepository
+import ru.romanov.stankin.authorization_service.util.labTimesMap
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoField
+import java.time.temporal.ChronoUnit
 
 @Service
 class ScheduleSaverService(
@@ -47,63 +49,104 @@ class ScheduleSaverService(
     fun List<DailySchedule>.saveDailySchedule(): List<DailySchedule> =
         dailyScheduleRepository.saveAll(this)
 
-    // Функция для разворачивания расписания
-    private fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
-        val dailyScheduleDTOS = mutableListOf<DailyScheduleDTO>()
+    fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
+        val result = mutableListOf<DailyScheduleDTO>()
         val dateFormatter = DateTimeFormatter.ofPattern("dd.MM")
 
-        for (schedule in scheduleList) {
-            // Обработка периодов
-            schedule.periods?.forEach { period ->
-                val startDate = parseDateWithDefaultYear(period.startDate, dateFormatter)
-                val endDate = parseDateWithDefaultYear(period.endDate, dateFormatter)
+        // Для отслеживания уже добавленных лабораторных работ
+        val addedLabs = mutableSetOf<Pair<String, LocalDate>>() // subject to date
 
-                var currentDate = startDate
-                while (!currentDate.isAfter(endDate)) {
-                    dailyScheduleDTOS.add(
-                        DailyScheduleDTO(
-                            date = currentDate,
-                            stgroup = schedule.stgroup,
-                            subject = schedule.subject,
-                            audience = schedule.audience,
-                            startTime = schedule.start_time,
-                            endTime = schedule.end_time,
-                            subgroup = schedule.group,
-                            teacher = schedule.teacher,
-                            type = schedule.type
-                        )
-                    )
-                    currentDate = currentDate.plusWeeks(1) // Повтор каждую неделю
+        scheduleList.forEach { schedule ->
+            // 1. Обработка периодических занятий
+            schedule.periods.forEach { period ->
+                try {
+                    val startDate = parseDateWithDefaultYear(period.startDate, dateFormatter)
+                    val endDate = parseDateWithDefaultYear(period.endDate, dateFormatter)
+
+                    var currentDateInPeriod = startDate
+                    while (!currentDateInPeriod.isAfter(endDate)) {
+                        val weeksBetween = ChronoUnit.WEEKS.between(startDate, currentDateInPeriod).toInt()
+                        val isWeekEven = weeksBetween % 2 == 0
+
+                        val shouldAdd = when (period.repeat?.lowercase()) {
+                            "к.н." -> true
+                            "ч.н." -> isWeekEven
+                            "н.н." -> !isWeekEven
+                            else -> true
+                        }
+
+                        if (shouldAdd) {
+                            if (schedule.type == "лабораторные занятия") {
+                                val key = schedule.subject to currentDateInPeriod
+                                if (!addedLabs.contains(key)) {
+                                    result.add(createDailySchedule(schedule, currentDateInPeriod, labTimesMap[schedule.start_time]!!))
+                                    addedLabs.add(key)
+                                }
+                            } else {
+                                result.add(createDailySchedule(schedule, currentDateInPeriod))
+                            }
+                        }
+                        currentDateInPeriod = currentDateInPeriod.plusWeeks(1)
+                    }
+                } catch (e: Exception) {
+                    println("Error processing period: ${e.message}")
                 }
             }
 
-            // Обработка отдельных дат
-            schedule.dates?.forEach { dateStr ->
-                val date = parseDateWithDefaultYear(dateStr, dateFormatter)
-                dailyScheduleDTOS.add(
-                    DailyScheduleDTO(
-                        date = date,
-                        stgroup = schedule.stgroup,
-                        subject = schedule.subject,
-                        audience = schedule.audience,
-                        startTime = schedule.start_time,
-                        endTime = schedule.end_time,
-                        subgroup = schedule.group,
-                        teacher = schedule.teacher,
-                        type = schedule.type
-                    )
-                )
+            // 2. Обработка отдельных дат
+            schedule.dates.forEach { dateStr ->
+                try {
+                    val date = parseDateWithDefaultYear(dateStr, dateFormatter)
+                    if (schedule.type == "лабораторные занятия") {
+                        val key = schedule.subject to date
+                        if (!addedLabs.contains(key)) {
+                            result.add(createDailySchedule(schedule, date, labTimesMap[schedule.start_time]!!))
+                            addedLabs.add(key)
+                        }
+                    } else {
+                        result.add(createDailySchedule(schedule, date))
+                    }
+                } catch (e: Exception) {
+                    println("Error processing date $dateStr: ${e.message}")
+                }
             }
         }
 
-        // Сортировка по дате и времени
-        return dailyScheduleDTOS.sortedWith(compareBy({ it.date }, { it.startTime }))
+        // Убрал фильтрацию по текущей дате
+        return result.sortedWith(compareBy({ it.date }, { it.startTime }))
+    }
+
+    private fun createDailySchedule(schedule: ScheduleDto, date: LocalDate): DailyScheduleDTO {
+        return DailyScheduleDTO(
+            date = date,
+            stgroup = schedule.stgroup,
+            subject = schedule.subject,
+            audience = schedule.audience,
+            startTime = schedule.start_time,
+            endTime = schedule.end_time,
+            subgroup = schedule.group,
+            teacher = schedule.teacher,
+            type = schedule.type
+        )
+    }
+
+    private fun createDailySchedule(schedule: ScheduleDto, date: LocalDate, endTime: String): DailyScheduleDTO {
+        return DailyScheduleDTO(
+            date = date,
+            stgroup = schedule.stgroup,
+            subject = schedule.subject,
+            audience = schedule.audience,
+            startTime = schedule.start_time,
+            endTime = endTime,
+            subgroup = schedule.group,
+            teacher = schedule.teacher,
+            type = schedule.type
+        )
     }
 
     private fun parseDateWithDefaultYear(dateStr: String, formatter: DateTimeFormatter): LocalDate {
-        val temporalAccessor = formatter.parse(dateStr)
-        val year = LocalDate.now().year // Используем текущий год
-        return LocalDate.of(year, temporalAccessor.get(ChronoField.MONTH_OF_YEAR), temporalAccessor.get(ChronoField.DAY_OF_MONTH))
+        val currentYear = LocalDate.now().year
+        return LocalDate.parse("$dateStr.$currentYear", DateTimeFormatter.ofPattern("dd.MM.yyyy"))
     }
 
     private fun SemesterSchedule.validateIdempotency( ): SemesterSchedule =

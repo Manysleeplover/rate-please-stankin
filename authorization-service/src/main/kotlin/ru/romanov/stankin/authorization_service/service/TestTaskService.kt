@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.testTask.AnswerOptionsDTO
 import ru.romanov.stankin.authorization_service.domain.dto.testTask.QuestionDTO
 import ru.romanov.stankin.authorization_service.domain.dto.testTask.SaveTaskForClassRequest
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.AnswerOptions
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.Question
-import ru.romanov.stankin.authorization_service.domain.entity.postgres.TaskForClassEntity
+import ru.romanov.stankin.authorization_service.domain.entity.AnswerOptions
+import ru.romanov.stankin.authorization_service.domain.entity.Question
+import ru.romanov.stankin.authorization_service.domain.entity.TaskForClassEntity
 import ru.romanov.stankin.authorization_service.repository.postgre.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.postgre.TaskForClassRepository
 
