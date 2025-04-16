@@ -1,6 +1,6 @@
 'use client';
 
-import {CalendarIcon, HomeIcon, PlusCircleIcon} from '@heroicons/react/24/outline';
+import {CalendarIcon, HomeIcon, PlusCircleIcon, AcademicCapIcon} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import clsx from 'clsx';
@@ -8,6 +8,11 @@ import clsx from 'clsx';
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
+    {
+        name: 'Модульный журнал', href:
+            '/dashboard/mj-oauth'
+        , icon: AcademicCapIcon
+    },
     {
         name: 'Домашняя Страница', href:
             '/dashboard'

@@ -6,7 +6,7 @@ export const saveTaskForClass = async (request: SaveTaskForClassRequest): Promis
     return response.data;
 }
 
-export const getTaskForClassByTaskId = async (request: string): Promise<TaskForClassDTO> => {
+export const getTaskForClassByTaskId = async (request: string | Array<string> | undefined): Promise<TaskForClassDTO> => {
     const response = await axios.get<TaskForClassDTO>(`http://localhost:8081/task/${request}`)
     return response.data
 }
