@@ -17,6 +17,7 @@ export default function TestPage() {
         const fetchData = async () => {
             try {
                 const resp = await getTaskForClassByTaskId(params);
+                console.log(resp)
                 setTaskForClass(resp)
             } catch (error) {
                 console.error('Error fetching schedule:', error);

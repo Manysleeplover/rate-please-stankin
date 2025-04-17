@@ -92,3 +92,23 @@ export type AnswerOptionsDTO = {
     text: string;
     isCorrect: boolean;
 };
+
+export type StudentInfoDTO = {
+    access_token: string,
+    token_type: string,
+    userInfo:  UserInfoDTO
+}
+
+export type UserInfoDTO = {
+    name: string,
+    surname: string,
+    patronym: string,
+    stgroup: string,
+    cardid: string
+}
+
+export type MJStudentDataRequestDTO = {
+    code: string,
+    clientId: string,
+    clientSecret: string
+}

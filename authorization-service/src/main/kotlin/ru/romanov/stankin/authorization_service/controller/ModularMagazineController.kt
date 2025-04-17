@@ -1,20 +1,22 @@
 package ru.romanov.stankin.authorization_service.controller
 
-import jakarta.servlet.http.HttpServletRequest
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import ru.romanov.stankin.authorization_service.domain.dto.mj.MJStudentDataRequestDTO
+import ru.romanov.stankin.authorization_service.service.ModularMagazineService
 
 
 @RestController
 @RequestMapping("/mj")
-class ModularMagazineController {
+class ModularMagazineController(
+    private val modularMagazineService: ModularMagazineService
+) {
 
-    @GetMapping("/oaut/resp")
-    fun getStudentInfo(@RequestParam code: String ,req: HttpServletRequest) {
-        println(code)
-        println(req)
-    }
+    @PostMapping("/oaut/req")
+    fun getStudentInfo(@RequestBody req: MJStudentDataRequestDTO) =
+        modularMagazineService.getStudentInfo(req)
+
 
 }

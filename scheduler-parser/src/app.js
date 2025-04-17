@@ -7,7 +7,7 @@ const axios = require('axios');
 const cron = require('node-cron'); // Подключаем node-cron для шедулера
 
 const app = express();
-const port = 3030;
+const port = 3000;
 
 // Настройка multer для сохранения файлов в папку 'uploads'
 const storage = multer.diskStorage({
