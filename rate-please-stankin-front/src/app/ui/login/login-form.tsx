@@ -8,7 +8,7 @@ import Link from "next/link";
 import {setCoolie} from "@/app/lib/security/auth";
 import {useRouter} from "next/navigation";
 
-export default function SignInForm() {
+export default function LoginForm() {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const router = useRouter();

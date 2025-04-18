@@ -118,7 +118,7 @@ export default function SignUpForm() {
                 </Button>
                 <div className="pt-3 pb-1">
                     <Link
-                        href="/sign-in"
+                        href="/login"
                         className="underline text-stankin_blue"
                     >
                         Войти

@@ -1,11 +1,11 @@
 'use client'
 
-import SignInForm from "@/app/ui/login/sign-in-form";
+import LoginForm from "@/app/ui/login/login-form";
 import LoginBackgroundImage from "@/app/ui/login/login-background-image";
 import StankinLogo from "@/app/ui/common/stankin-logo";
 import { useRouter } from 'next/navigation'; // Используем useRouter из next/navigation
 import { getToken } from '@/app/lib/security/auth';
-import { useEffect } from 'react';
+import {Suspense, useEffect} from 'react';
 
 
 export default function SignInPage() {
@@ -25,7 +25,9 @@ export default function SignInPage() {
             <div>
                 <StankinLogo width={300} height={300} />
                 <div>
-                    <SignInForm/>
+                    <Suspense>
+                        <LoginForm/>
+                    </Suspense>
                 </div>
                 <LoginBackgroundImage/>
             </div>

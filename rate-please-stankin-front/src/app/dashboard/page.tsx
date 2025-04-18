@@ -1,7 +1,7 @@
 'use client' // Убедитесь, что компонент является клиентским
 
 import { useRouter } from 'next/navigation'; // Используем useRouter из next/navigation
-import { getToken } from '@/app/lib/security/auth';
+import {getToken, removeToken} from '@/app/lib/security/auth';
 import { useEffect } from 'react';
 
 export default function Page() {
@@ -10,9 +10,23 @@ export default function Page() {
     useEffect(() => {
         const token = getToken();
         if (!token) {
-            router.push('/sign-in'); // Перенаправление, если пользователь не авторизован
+            router.push('/login'); // Перенаправление, если пользователь не авторизован
         }
-    }, [router]); // Добавляем router в зависимости useEffect
+    }, [])
 
-    return <p>Домашняя страница</p>;
+    function handleClick() {
+        removeToken()
+    }
+
+    return (
+        <>
+            <button
+                onClick={() => handleClick()}
+            >
+                Очистить куки
+            </button>
+            <p>Домашняя страница</p>
+
+        </>
+    );
 }

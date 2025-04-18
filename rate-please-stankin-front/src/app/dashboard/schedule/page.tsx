@@ -21,7 +21,7 @@ export default function SchedulePage({
     useEffect(() => {
         const token = getToken();
         if (!token) {
-            router.push('/sign-in');
+            router.push('/login');
         }
     }, [router]);
 
