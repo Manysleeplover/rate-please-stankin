@@ -1,11 +1,10 @@
 'use client';
 
 import {Schedule} from "@/app/ui/schedule/Schedule";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import MyCalendar from "@/app/ui/schedule/calendar";
 import {DailyScheduleDTO, ScheduleType} from "@/app/lib/api/ui-interfaces";
 import {useRouter} from 'next/navigation';
-import {getToken} from '@/app/lib/security/auth';
 
 interface SchedulePageProps {
     group?: string;
@@ -17,13 +16,6 @@ export default function SchedulePage({
                                          type = ScheduleType.StudentSchedule
                                      }: SchedulePageProps) {
     const router = useRouter();
-
-    useEffect(() => {
-        const token = getToken();
-        if (!token) {
-            router.push('/login');
-        }
-    }, [router]);
 
     const [date, setDate] = useState(new Date());
     const [dailyScheduleList, setDailyScheduleList] = useState<DailyScheduleDTO[]>();

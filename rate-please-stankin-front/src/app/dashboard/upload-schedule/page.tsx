@@ -1,21 +1,14 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { getToken } from '@/app/lib/security/auth';
+import {useRouter} from 'next/navigation';
 
 const FileUploadComponent = () => {
     const router = useRouter();
     const [file, setFile] = useState<File | null>(null);
     const [message, setMessage] = useState('');
 
-    useEffect(() => {
-        const token = getToken();
-        if (!token) {
-            router.push('/login');
-        }
-    }, [router]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
