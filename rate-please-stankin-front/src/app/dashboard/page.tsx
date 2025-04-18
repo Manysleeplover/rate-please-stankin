@@ -7,12 +7,6 @@ import { useEffect } from 'react';
 export default function Page() {
     const router = useRouter(); // Инициализируем роутер
 
-    useEffect(() => {
-        const token = getToken();
-        if (!token) {
-            router.push('/login'); // Перенаправление, если пользователь не авторизован
-        }
-    }, [])
 
     function handleClick() {
         removeToken()
