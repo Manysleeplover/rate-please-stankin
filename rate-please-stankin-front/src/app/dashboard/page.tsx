@@ -14,6 +14,7 @@ export default function Page() {
             <p>Signed in as {session.user.role}</p>
             <p>Signed in as {session.user.name}</p>
             <p>Signed in as {session.user.email}</p>
+            <p>Signed in as {session.user.token}</p>
         </>
     )
 }

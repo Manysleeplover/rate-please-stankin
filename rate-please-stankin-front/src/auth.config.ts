@@ -21,6 +21,7 @@ export const authConfig = {
                 token.id = user.id
                 token.role = user.role
                 token.username = user.username
+                token.token = user.token
             }
             return token
         },
@@ -28,6 +29,7 @@ export const authConfig = {
             session.user.id = token.id
             session.user.role = token.role
             session.user.username = token.username
+            session.user.token = token.token
             return session
         },
     },
