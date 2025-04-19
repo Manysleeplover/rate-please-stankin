@@ -41,6 +41,7 @@ class JwtService(
         if (userDetails is UserEntity) {
             claims["id"] = userDetails.getId()
             claims["email"] = userDetails.getEmail()
+            claims["username"] = userDetails.username
             claims["role"] = userDetails.getRole()
         }
         return generateToken(claims, userDetails)

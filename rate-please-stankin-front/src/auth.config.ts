@@ -16,17 +16,19 @@ export const authConfig = {
             }
             return true;
         },
-        callbacks: {
-            jwt({ token, user }) {
-                if (user) { // User is available during sign-in
-                    token.id = user.id
-                }
-                return token
-            },
-            session({ session, token }) {
-                session.user.id = token.id
-                return session
-            },
+        jwt({ token, user }) {
+            if (user) { // User is available during sign-in
+                token.id = user.id
+                token.role = user.role
+                token.username = user.username
+            }
+            return token
+        },
+        session({ session, token }) {
+            session.user.id = token.id
+            session.user.role = token.role
+            session.user.username = token.username
+            return session
         },
     },
     providers: [], // Add providers with an empty array for now
