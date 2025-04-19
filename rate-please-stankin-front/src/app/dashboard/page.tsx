@@ -1,17 +1,12 @@
 'use client' // Убедитесь, что компонент является клиентским
 
-import { useRouter } from 'next/navigation'; // Используем useRouter из next/navigation
-import {getToken, removeToken} from '@/app/lib/security/auth';
-import { useEffect } from 'react';
+import {removeToken} from '@/app/lib/security/auth';
 
 export default function Page() {
-    const router = useRouter(); // Инициализируем роутер
-
-
+ // Инициализируем роутер
     function handleClick() {
         removeToken()
     }
-
     return (
         <>
             <button

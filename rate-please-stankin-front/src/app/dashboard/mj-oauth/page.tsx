@@ -4,19 +4,23 @@ import {useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {postStudentInfoDTO} from "@/app/lib/api/modular-magazine-api";
 import {StudentInfoDTO} from "@/app/lib/api/ui-interfaces";
-import {setStudentInfoDTOCookie} from "@/app/lib/security/auth";
+import {getStudentInfoDTOCookie, setStudentInfoDTOCookie} from "@/app/lib/security/auth";
 import StudentProfile from "@/app/dashboard/mj-oauth/student-info-form";
 
 export default function OauthForm() {
 
-    const [code, setCode] = useState<string | null>(null);
     const searchParams = useSearchParams();
     const [studentInfoDTO, setStudentInfoDTO] = useState<StudentInfoDTO>()
 
     useEffect(() => {
-
+        const studentInfoDTOCookie = getStudentInfoDTOCookie();
         const codeParam = searchParams.get("code");
-        if( codeParam !== null && codeParam != null){
+        console.log(1)
+        if(studentInfoDTOCookie != null){
+            console.log(2)
+            setStudentInfoDTO(studentInfoDTOCookie)
+
+        } else if ( codeParam !== null && codeParam != null){
             const fetchData = async () => {
                 try {
                     const resp = await postStudentInfoDTO(codeParam);
@@ -29,17 +33,13 @@ export default function OauthForm() {
             };
 
             fetchData()
-            setCode(codeParam);
         }
 
     }, [searchParams]);
 
-
-
-
     return (
         <div className="space-y-4 p-4 flex justify-center">
-            {code && !!studentInfoDTO ? (
+            {!!studentInfoDTO ? (
                     <StudentProfile
                         data={studentInfoDTO}
                     />
@@ -51,8 +51,6 @@ export default function OauthForm() {
                     Войти в модульный журнал
                 </a>
             }
-
-
         </div>
     );
 }
