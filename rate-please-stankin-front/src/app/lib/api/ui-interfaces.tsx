@@ -46,7 +46,7 @@ export type DailyScheduleDTO = {
 export type JwtAuthenticationResponse = {
     id: string,
     role: string
-    username: string,
+    name: string,
     email: string,
     token: string,
 }

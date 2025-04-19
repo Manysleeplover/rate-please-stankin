@@ -49,7 +49,7 @@ class AuthenticationService(
             id = user.getId(),
             email = user.getEmail(),
             token = jwt,
-            username = user.username,
+            name = user.username,
             role = user.getRole(),
         )
     }
@@ -82,7 +82,7 @@ class AuthenticationService(
             id = currentUser.getId(),
             email = currentUser.getEmail(),
             token = jwt,
-            username = currentUser.username,
+            name = currentUser.username,
             role = currentUser.getRole(),
         )
     }
