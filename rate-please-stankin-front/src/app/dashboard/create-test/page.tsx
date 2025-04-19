@@ -6,7 +6,7 @@ import {ScheduleType, SemesterSchedule} from '@/app/lib/api/ui-interfaces';
 import SchedulePage from '@/app/dashboard/schedule/page';
 
 export default function SelectForm() {
-    let defaultValue: string = "-- Выберите группу --"
+    const defaultValue: string = "-- Выберите группу --"
     const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
     const [semesterScheduleItem, setSemesterScheduleItem] = useState<SemesterSchedule[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
