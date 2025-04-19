@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import {StudentInfoDTO} from "@/app/lib/api/ui-interfaces";
+import {JwtAuthenticationResponse, StudentInfoDTO} from "@/app/lib/api/ui-interfaces";
 import {z} from 'zod';
 
 const setStudentInfoDTOCookie = (info: StudentInfoDTO) => {
@@ -8,6 +8,27 @@ const setStudentInfoDTOCookie = (info: StudentInfoDTO) => {
 
 const getStudentInfoDTOCookie = (): StudentInfoDTO | null => {
     return parseStudentInfo(Cookies.get("studentInfo"))
+}
+
+const setJwtAuthenticationResponseCookie = (user: JwtAuthenticationResponse | string) => {
+    try{
+        user as JwtAuthenticationResponse
+    } catch (e) {
+        console.error(e)
+    }
+    Cookies.set("jwtAuthenticationResponse", JSON.stringify(user))
+}
+
+const getJwtAuthenticationResponseCookie = ():JwtAuthenticationResponse | null => {
+    return parseJwtAuthenticationResponse(Cookies.get("jwtAuthenticationResponse"))
+}
+
+export {
+    setStudentInfoDTOCookie,
+    getStudentInfoDTOCookie,
+    setJwtAuthenticationResponseCookie,
+    getJwtAuthenticationResponseCookie,
+    removeToken
 }
 
 const removeToken = () => {
@@ -29,6 +50,22 @@ function parseStudentInfo(jsonString: string): StudentInfoDTO | null {
     }
 }
 
+function parseJwtAuthenticationResponse(jsonString: string): JwtAuthenticationResponse | null {
+    try {
+        const parsed = JSON.parse(jsonString);
+        return JwtAuthenticationResponseSchema.parse(parsed) as JwtAuthenticationResponse;
+    } catch (error) {
+        console.error('Невалидный JSON или структура данных');
+        return null
+    }
+}
+
+const JwtAuthenticationResponseSchema = z.object({
+    token: z.string(),
+    username: z.string(),
+    role: z.string()
+})
+
 // Создаем схему валидации
 const UserInfoSchema = z.object({
     name: z.string(),
@@ -44,4 +81,3 @@ const StudentInfoSchema = z.object({
     userInfo: UserInfoSchema,
 });
 
-export {setStudentInfoDTOCookie, getStudentInfoDTOCookie, removeToken}
