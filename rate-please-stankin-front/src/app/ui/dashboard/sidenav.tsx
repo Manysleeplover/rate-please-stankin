@@ -1,6 +1,6 @@
 import NavLinks from '@/app/ui/dashboard/nav-links';
 import { PowerIcon } from '@heroicons/react/24/outline';
-import {signOut} from "../../../../auth";
+import {signOut} from "@/auth";
 import React from "react";
 import StankinLogo from "@/app/ui/common/stankin-logo";
 import Link from "next/link";
