@@ -3,21 +3,10 @@
 import LoginForm from "@/app/ui/login/login-form";
 import LoginBackgroundImage from "@/app/ui/login/login-background-image";
 import StankinLogo from "@/app/ui/common/stankin-logo";
-import { useRouter } from 'next/navigation'; // Используем useRouter из next/navigation
-import { getToken } from '@/app/lib/security/auth';
-import {Suspense, useEffect} from 'react';
+import {Suspense} from 'react';
 
 
 export default function SignInPage() {
-    const router = useRouter(); // Инициализируем роутер
-
-    useEffect(() => {
-        const token = getToken();
-        if (token) {
-            router.push('/dashboard'); // Перенаправление, если пользователь не авторизован
-        }
-    }, [router]); // Добавляем router в зависимости useEffect
-
 
 
     return (

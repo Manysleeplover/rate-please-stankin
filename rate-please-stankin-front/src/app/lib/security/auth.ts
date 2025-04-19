@@ -1,31 +1,40 @@
 import Cookies from 'js-cookie';
-import {JwtAuthenticationResponse} from "@/app/lib/api/ui-interfaces";
+import {StudentInfoDTO} from "@/app/lib/api/ui-interfaces";
+import {z} from 'zod';
 
-// Сохранение токена в куки
-export const setToken = (token: string) => {
-    Cookies.set('token', token, { expires: 1 }); // Кука на 1 день
-};
 
-// Получение токена из кук
-export const getToken = () => {
-    return Cookies.get('token');
-};
-export const getRole = () => {
-    return Cookies.get('role');
-};
-export const getUsername = () => {
-    return Cookies.get('username');
-};
+// Создаем схему валидации
+const UserInfoSchema = z.object({
+    name: z.string(),
+    surname: z.string(),
+    patronym: z.string(),
+    stgroup: z.string(),
+    cardid: z.string(),
+});
 
-// Удаление токена
-export const removeToken = () => {
-    Cookies.remove('token');
-    Cookies.remove('username');
-    Cookies.remove('role');
-};
+const StudentInfoSchema = z.object({
+    access_token: z.string(),
+    token_type: z.string(),
+    userInfo: UserInfoSchema,
+});
 
-export const setCoolie = (params: JwtAuthenticationResponse) => {
-    Cookies.set("token", params.token, { expires: 1 })
-    Cookies.set("username", params.username, { expires: 1 })
-    Cookies.set("role", params.role, { expires: 1 })
+
+const setStudentInfoDTOCookie = (info: StudentInfoDTO) => {
+    Cookies.set("studentInfo", JSON.stringify(info))
 }
+
+
+const getStudentInfoDTOCookie = (): StudentInfoDTO => {
+    return parseStudentInfo(Cookies.get("studentInfo"))
+}
+
+function parseStudentInfo(jsonString: string): StudentInfoDTO {
+    try {
+        const parsed = JSON.parse(jsonString);
+        return StudentInfoSchema.parse(parsed) as StudentInfoDTO;
+    } catch (error) {
+        throw new Error('Невалидный JSON или структура данных');
+    }
+}
+
+export {setStudentInfoDTOCookie, getStudentInfoDTOCookie}

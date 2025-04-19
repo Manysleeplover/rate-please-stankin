@@ -10,7 +10,15 @@ declare module 'next-auth' {
             role?: string
         },
         student: {
-            id: string
+            access_token: string
+            token_type: string
+            userInfo: {
+                name: string
+                surname: string
+                patronym: string
+                stgroup: string
+                cardid: string
+            }
         }
     }
 }

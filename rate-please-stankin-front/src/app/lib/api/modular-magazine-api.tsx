@@ -12,7 +12,5 @@ export const postStudentInfoDTO = async (code: string): Promise<StudentInfoDTO> 
         "http://localhost:8081/mj/oaut/req",
         requestData
     )
-
-    console.log(response.data)
     return response.data
 }
