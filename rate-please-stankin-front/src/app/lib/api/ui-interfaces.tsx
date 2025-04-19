@@ -44,9 +44,11 @@ export type DailyScheduleDTO = {
 }
 
 export type JwtAuthenticationResponse = {
-    token: string,
-    username: string,
+    id: string,
     role: string
+    username: string,
+    email: string,
+    token: string,
 }
 
 export enum ScheduleType{

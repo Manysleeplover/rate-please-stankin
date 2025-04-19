@@ -46,6 +46,8 @@ class AuthenticationService(
 
         log.info("Регистрация пользователя ${request.username} прошла успешна")
         return JwtAuthenticationResponse(
+            id = user.getId(),
+            email = user.getEmail(),
             token = jwt,
             username = user.username,
             role = user.getRole(),
@@ -77,6 +79,8 @@ class AuthenticationService(
 
         log.info("Аутентификация пользователя ${request.username} прошла успешна")
         return JwtAuthenticationResponse(
+            id = currentUser.getId(),
+            email = currentUser.getEmail(),
             token = jwt,
             username = currentUser.username,
             role = currentUser.getRole(),

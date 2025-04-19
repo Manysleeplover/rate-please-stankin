@@ -6,7 +6,7 @@ import {singInAPIRequest} from "@/app/lib/api/login-form-api";
 import {JwtAuthenticationResponse} from "@/app/lib/api/ui-interfaces";
 
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, handlers } = NextAuth({
     ...authConfig,
     providers: [Credentials({
         async authorize(credentials){
