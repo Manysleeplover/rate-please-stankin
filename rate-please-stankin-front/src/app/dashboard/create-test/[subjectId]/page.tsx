@@ -6,13 +6,12 @@ import {useParams, useRouter} from "next/navigation";
 import {SaveTaskForClassRequest, TestFormData} from "@/app/lib/api/ui-interfaces";
 import {saveTaskForClass} from "@/app/lib/api/task-for-class-api";
 
-
 export default function TestCreatorForm() {
     const params = useParams()["subjectId"]
     const router = useRouter();
 
     const [activeQuestion, setActiveQuestion] = useState<number>(0);
-    const { register, control, handleSubmit, watch} = useForm<TestFormData>({
+    const { register, control, handleSubmit, watch, setValue } = useForm<TestFormData>({
         defaultValues: {
             questions: [
                 {
@@ -27,15 +26,52 @@ export default function TestCreatorForm() {
         },
     });
 
-    const { fields, append, remove } = useFieldArray({
+    const { fields: questions, append: appendQuestion, remove: removeQuestion } = useFieldArray({
         control,
         name: "questions",
     });
 
-    const { fields: answerFields, append: appendAnswer, remove: removeAnswer } = useFieldArray({
-        control,
-        name: `questions.${activeQuestion}.answers`,
-    });
+    const addNewQuestion = () => {
+        appendQuestion({
+            id: crypto.randomUUID(),
+            title: "",
+            answers: [
+                { id: crypto.randomUUID(), text: "", isCorrect: false },
+                { id: crypto.randomUUID(), text: "", isCorrect: false },
+            ],
+        });
+        setActiveQuestion(questions.length);
+    };
+
+    const deleteQuestion = (index: number) => {
+        removeQuestion(index);
+        if (activeQuestion >= index) {
+            setActiveQuestion(Math.max(0, activeQuestion - 1));
+        }
+    };
+
+    const addNewAnswer = (questionIndex: number) => {
+        const currentAnswers = watch(`questions.${questionIndex}.answers`);
+        setValue(`questions.${questionIndex}.answers`, [
+            ...currentAnswers,
+            { id: crypto.randomUUID(), text: "", isCorrect: false }
+        ]);
+    };
+
+    const removeAnswer = (questionIndex: number, answerIndex: number) => {
+        const currentAnswers = watch(`questions.${questionIndex}.answers`);
+        const newAnswers = currentAnswers.filter((_, idx) => idx !== answerIndex);
+        setValue(`questions.${questionIndex}.answers`, newAnswers);
+    };
+
+    const setCorrectAnswer = (questionIndex: number, answerIndex: number) => {
+        const currentAnswers = watch(`questions.${questionIndex}.answers`);
+        const newAnswers = currentAnswers.map((answer, idx) => ({
+            ...answer,
+            isCorrect: idx === answerIndex
+        }));
+        setValue(`questions.${questionIndex}.answers`, newAnswers);
+    };
 
     const onSubmit = (data: TestFormData) => {
         console.log("Форма отправлена:", data);
@@ -51,52 +87,12 @@ export default function TestCreatorForm() {
         router.push(`/dashboard/create-test`)
     };
 
-    const addNewQuestion = () => {
-        append({
-            id: crypto.randomUUID(), // Генерация нового GUID для вопроса
-            title: "",
-            answers: [
-                { id: crypto.randomUUID(), text: "", isCorrect: false }, // Генерация GUID для ответов
-                { id: crypto.randomUUID(), text: "", isCorrect: false },
-            ],
-        });
-        setActiveQuestion(fields.length);
-    };
-
-    const addNewAnswer = () => {
-        appendAnswer({
-            id: crypto.randomUUID(), // Генерация нового GUID для ответа
-            text: "",
-            isCorrect: false,
-        });
-    };
-
-    const removeQuestion = (index: number) => {
-        remove(index);
-        if (activeQuestion >= index) {
-            setActiveQuestion(Math.max(0, activeQuestion - 1));
-        }
-    };
-
-    const setCorrectAnswer = (answerIndex: number) => {
-        const currentAnswers = watch(`questions.${activeQuestion}.answers`);
-        const updatedAnswers = currentAnswers.map((answer, idx) => ({
-            ...answer,
-            id: answer.id || crypto.randomUUID(), // Добавляем генерацию GUID если его нет
-            isCorrect: idx === answerIndex,
-        }));
-
-        // Обновляем массив ответов
-        removeAnswer();
-        updatedAnswers.forEach((answer) => appendAnswer(answer));
-    };
-
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
             <h1 className="text-2xl font-bold mb-6">Создание теста</h1>
 
             <div className="flex mb-4 overflow-x-auto pb-2">
-                {fields.map((question, index) => (
+                {questions.map((question, index) => (
                     <button
                         key={question.id}
                         onClick={() => setActiveQuestion(index)}
@@ -117,20 +113,17 @@ export default function TestCreatorForm() {
                 </button>
             </div>
 
-            {fields.length > 0 && (
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    key={`question-form-${activeQuestion}`}
-                >
+            {questions.length > 0 && (
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-6">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-xl font-semibold">
                                 Вопрос {activeQuestion + 1}
                             </h2>
-                            {fields.length > 1 && (
+                            {questions.length > 1 && (
                                 <button
                                     type="button"
-                                    onClick={() => removeQuestion(activeQuestion)}
+                                    onClick={() => deleteQuestion(activeQuestion)}
                                     className="text-red-500 hover:text-red-700"
                                 >
                                     Удалить вопрос
@@ -147,13 +140,13 @@ export default function TestCreatorForm() {
 
                         <h3 className="font-medium mb-2">Варианты ответов:</h3>
                         <div className="space-y-3 mb-4">
-                            {answerFields.map((answer, index) => (
+                            {watch(`questions.${activeQuestion}.answers`)?.map((answer, index) => (
                                 <div key={answer.id} className="flex items-center">
                                     <input
                                         type="radio"
                                         name={`correctAnswer-${activeQuestion}`}
-                                        checked={watch(`questions.${activeQuestion}.answers.${index}.isCorrect`)}
-                                        onChange={() => setCorrectAnswer(index)}
+                                        checked={answer.isCorrect}
+                                        onChange={() => setCorrectAnswer(activeQuestion, index)}
                                         className="mr-3"
                                     />
                                     <input
@@ -164,10 +157,10 @@ export default function TestCreatorForm() {
                                         className="flex-1 p-2 border border-gray-300 rounded-md"
                                         required
                                     />
-                                    {answerFields.length > 2 && (
+                                    {watch(`questions.${activeQuestion}.answers`).length > 2 && (
                                         <button
                                             type="button"
-                                            onClick={() => removeAnswer(index)}
+                                            onClick={() => removeAnswer(activeQuestion, index)}
                                             className="ml-2 text-red-500 hover:text-red-700"
                                         >
                                             ×
@@ -179,7 +172,7 @@ export default function TestCreatorForm() {
 
                         <button
                             type="button"
-                            onClick={addNewAnswer}
+                            onClick={() => addNewAnswer(activeQuestion)}
                             className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 mb-6"
                         >
                             + Добавить вариант ответа

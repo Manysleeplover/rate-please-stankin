@@ -37,13 +37,15 @@ export default function SelectForm() {
         return date.toLocaleDateString('ru-RU');
     };
 
+
     if (isLoading) {
         return (
-            <div className="p-4 max-w-md mx-auto">
-                Загрузка...
+            <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
             </div>
         );
     }
+
 
 
 
