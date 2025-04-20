@@ -12,7 +12,7 @@ export default function TestCreatorForm() {
     const router = useRouter();
 
     const [activeQuestion, setActiveQuestion] = useState<number>(0);
-    const { register, control, handleSubmit, watch, setValue } = useForm<TestFormData>({
+    const { register, control, handleSubmit, watch} = useForm<TestFormData>({
         defaultValues: {
             questions: [
                 {

@@ -10,3 +10,8 @@ export const getTaskForClassByTaskId = async (request: string | Array<string> | 
     const response = await axios.get<TaskForClassDTO>(`http://localhost:8081/task/${request}`)
     return response.data
 }
+
+export const deleteTaskForClassByTaskId = async (request: string | Array<string> | undefined) => {
+    const response = await axios.delete(`http://localhost:8081/task/${request}`)
+    return response.data
+}

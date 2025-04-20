@@ -29,7 +29,7 @@ const links = [
         icon: CalendarIcon,
     },
     {
-        name: 'Создание заданий',
+        name: 'Управление заданиями',
         href: '/dashboard/create-test',
         icon: PlusCircleIcon,
     },

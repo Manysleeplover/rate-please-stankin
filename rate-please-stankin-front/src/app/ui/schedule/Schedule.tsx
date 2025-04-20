@@ -20,7 +20,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
         router.push(`/dashboard/pass-test/${subject.testId.toString()}`);
     };
     const handleDeleteTest = (subject: DailyScheduleDTO) => {
-        router.push(`/dashboard/pass-test/${subject.testId.toString()}`);
+        router.push(`/dashboard/delete-test/${subject.testId.toString()}`);
     };
 
     return (

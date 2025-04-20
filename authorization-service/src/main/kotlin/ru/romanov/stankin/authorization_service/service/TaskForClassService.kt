@@ -42,6 +42,11 @@ class TaskForClassService(
     }
 
 
+    fun deleteTaskForClassById(taskId: String) =
+        taskForClassRepository.deleteById(UUID.fromString(taskId))
+
+
+
     private fun List<QuestionDTO>.mapQuestionList(): List<Question> =
         this
             .stream()

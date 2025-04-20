@@ -28,8 +28,6 @@ class ModularMagazineService(
         formData.add("code", req.code)
         formData.add("client_id", req.clientId,)
         formData.add("client_secret", req.clientSecret,)
-
-
          return modularMagazineRestClient
             .post()
             .uri(modularMagazineProperties.studentInfoUri)
