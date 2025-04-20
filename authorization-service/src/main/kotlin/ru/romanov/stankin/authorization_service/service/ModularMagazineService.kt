@@ -1,5 +1,6 @@
 package ru.romanov.stankin.authorization_service.service
 
+import jakarta.transaction.Transactional
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -42,16 +43,15 @@ class ModularMagazineService(
     }
 
 
+    @Transactional
     fun secureStudentProfileByUsername(req: UserInfoDTO) {
-        val name = SecurityContextHolder.getContext().authentication.name;
+        val name = SecurityContextHolder.getContext().authentication.name
         val userEntity = userRepository.findByUsername(name)
         userEntity?.also {
             val personEntity = personRepository.save(buildStudentEntity(req, it))
             it.person = personEntity
             userRepository.save(it)
         }
-
-        println(userEntity)
     }
 
 

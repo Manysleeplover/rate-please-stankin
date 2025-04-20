@@ -4,7 +4,7 @@ import LoginBackgroundImage from "@/app/ui/login/login-background-image";
 import StankinLogo from "@/app/ui/common/stankin-logo";
 import SignUpForm from "@/app/ui/login/sign-up-form";
 import { useRouter } from 'next/navigation'; // Используем useRouter из next/navigation
-import { getToken } from '@/app/lib/security/auth';
+import { getToken } from '@/app/lib/cookies/auth';
 import { useEffect } from 'react';
 
 

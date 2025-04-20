@@ -4,7 +4,7 @@ import {useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {postSecureStudentProfile, postStudentInfoDTO} from "@/app/lib/api/modular-magazine-api";
 import {StudentInfoDTO} from "@/app/lib/api/ui-interfaces";
-import {getStudentInfoDTOCookie, setStudentInfoDTOCookie} from "@/app/lib/security/auth";
+import {getStudentInfoDTOCookie, setStudentInfoDTOCookie} from "@/app/lib/cookies/auth";
 import StudentProfile from "@/app/dashboard/mj-oauth/student-info-form";
 import {useSession} from "next-auth/react";
 
@@ -24,7 +24,7 @@ export default function OauthForm() {
         } else if ( codeParam !== null && codeParam != null){
             const fetchData = async () => {
                 try {
-                    const resp = await postStudentInfoDTO(codeParam);
+                    const resp = await postStudentInfoDTO(codeParam, session?.user.token);
                     setStudentInfoDTO(resp)
                     setStudentInfoDTOCookie(resp)
                 } catch (error) {

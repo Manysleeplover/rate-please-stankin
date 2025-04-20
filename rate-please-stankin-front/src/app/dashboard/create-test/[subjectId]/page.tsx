@@ -2,13 +2,14 @@
 
 import {useState} from "react";
 import {useFieldArray, useForm} from "react-hook-form";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {SaveTaskForClassRequest, TestFormData} from "@/app/lib/api/ui-interfaces";
 import {saveTaskForClass} from "@/app/lib/api/task-for-class-api";
 
 
 export default function TestCreatorForm() {
     const params = useParams()["subjectId"]
+    const router = useRouter();
 
     const [activeQuestion, setActiveQuestion] = useState<number>(0);
     const { register, control, handleSubmit, watch, setValue } = useForm<TestFormData>({
@@ -47,6 +48,7 @@ export default function TestCreatorForm() {
 
         saveTaskForClass(request).then(r => console.log(r))
         alert("Тест успешно создан!");
+        router.push(`/dashboard/create-test`)
     };
 
     const addNewQuestion = () => {

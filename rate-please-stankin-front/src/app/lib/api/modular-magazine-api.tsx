@@ -2,7 +2,7 @@ import {MJStudentDataRequestDTO, StudentInfoDTO, UserInfoDTO} from "@/app/lib/ap
 import axios from "axios";
 import {getDefaultHeaders} from "@/app/lib/api/default-headers";
 
-export const postStudentInfoDTO = async (code: string): Promise<StudentInfoDTO> => {
+export const postStudentInfoDTO = async (code: string, token: string): Promise<StudentInfoDTO> => {
     const requestData: MJStudentDataRequestDTO = {
         code: code,
         clientId: "rate-please-stankin",
@@ -11,7 +11,10 @@ export const postStudentInfoDTO = async (code: string): Promise<StudentInfoDTO> 
 
     const response = await axios.post<StudentInfoDTO>(
         "http://localhost:8081/mj/oaut/req",
-        requestData
+        requestData,
+        {
+            headers: getDefaultHeaders(token)
+        }
     )
     return response.data
 }

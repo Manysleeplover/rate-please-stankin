@@ -5,6 +5,7 @@ import React, {useState} from "react";
 import MyCalendar from "@/app/ui/schedule/calendar";
 import {DailyScheduleDTO, ScheduleType} from "@/app/lib/api/ui-interfaces";
 import {useRouter} from 'next/navigation';
+import {getStudentInfoDTOCookie} from "@/app/lib/cookies/auth";
 
 interface SchedulePageProps {
     group?: string;
@@ -12,30 +13,36 @@ interface SchedulePageProps {
 }
 
 export default function SchedulePage({
-                                         group = 'ИДМ-23-08',
+                                         group,
                                          type = ScheduleType.StudentSchedule
                                      }: SchedulePageProps) {
     const router = useRouter();
+    const studentInfoDTOCookie = getStudentInfoDTOCookie()
 
     const [date, setDate] = useState(new Date());
     const [dailyScheduleList, setDailyScheduleList] = useState<DailyScheduleDTO[]>();
 
     return (
         <main className="w-2/3 ml-auto mr-auto">
-            <MyCalendar
-                targetDate={date}
-                onChangeDate={setDate}
-                onChangeSchedule={setDailyScheduleList}
-                group={group}
-            />
-            <div className="rounded-xl bg-gray-50 p-2 shadow-sm border-gray-200">
-                <div>
-                    <Schedule
-                        subjects={dailyScheduleList}
-                        type={type}
+            { !!studentInfoDTOCookie &&
+                <>
+                    <MyCalendar
+                        targetDate={date}
+                        onChangeDate={setDate}
+                        onChangeSchedule={setDailyScheduleList}
+                        group={studentInfoDTOCookie.userInfo.stgroup!}
                     />
-                </div>
-            </div>
+                    <div className="rounded-xl bg-gray-50 p-2 shadow-sm border-gray-200">
+                        <div>
+                            <Schedule
+                                subjects={dailyScheduleList}
+                                type={type}
+                            />
+                        </div>
+                    </div>
+                </>
+            }
+
         </main>
     );
 }

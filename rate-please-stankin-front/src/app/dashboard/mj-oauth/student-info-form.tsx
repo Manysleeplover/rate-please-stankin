@@ -1,12 +1,33 @@
-import {ClipboardDocumentIcon, IdentificationIcon, UserIcon} from "@heroicons/react/16/solid";
+import {ClipboardDocumentIcon, IdentificationIcon, PencilIcon, UserIcon} from "@heroicons/react/16/solid";
 import {AcademicCapIcon} from "@heroicons/react/24/outline";
 import {StudentInfoDTO} from "@/app/lib/api/ui-interfaces";
-
+import {useState} from "react";
 
 export default function StudentProfile({ data }: { data: StudentInfoDTO }) {
+    const [isEditingGroup, setIsEditingGroup] = useState(false);
+    const [groupValue, setGroupValue] = useState(data.userInfo.stgroup);
+
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text);
-        // Можно добавить уведомление об успешном копировании
+    };
+
+    const handleEditGroupClick = () => {
+        setIsEditingGroup(true);
+    };
+
+    const handleGroupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setGroupValue(e.target.value);
+    };
+
+    const handleGroupSave = () => {
+        // Здесь можно добавить логику сохранения группы (например, API запрос)
+        console.log("Новая группа сохранена:", groupValue);
+        setIsEditingGroup(false);
+    };
+
+    const handleGroupCancel = () => {
+        setGroupValue(data.userInfo.stgroup);
+        setIsEditingGroup(false);
     };
 
     return (
@@ -61,8 +82,44 @@ export default function StudentProfile({ data }: { data: StudentInfoDTO }) {
                                 </div>
                                 <div className="space-y-3">
                                     <div>
-                                        <p className="text-sm text-gray-500">Группа</p>
-                                        <p className="text-gray-900 font-medium">{data.userInfo.stgroup}</p>
+                                        <div className="flex justify-between items-center">
+                                            <p className="text-sm text-gray-500">Группа</p>
+                                            {!isEditingGroup && (
+                                                <button
+                                                    onClick={handleEditGroupClick}
+                                                    className="text-stankin_blue hover:text-stankin_blue-dark"
+                                                    title="Изменить группу"
+                                                >
+                                                    <PencilIcon className="h-4 w-4" />
+                                                </button>
+                                            )}
+                                        </div>
+                                        {isEditingGroup ? (
+                                            <div className="flex items-center space-x-2">
+                                                <input
+                                                    type="text"
+                                                    value={groupValue}
+                                                    onChange={handleGroupChange}
+                                                    className="border border-gray-300 rounded px-2 py-1 flex-1"
+                                                />
+                                                <button
+                                                    onClick={handleGroupSave}
+                                                    className="text-green-600 hover:text-green-800"
+                                                    title="Сохранить"
+                                                >
+                                                    ✓
+                                                </button>
+                                                <button
+                                                    onClick={handleGroupCancel}
+                                                    className="text-red-600 hover:text-red-800"
+                                                    title="Отменить"
+                                                >
+                                                    ×
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <p className="text-gray-900 font-medium">{groupValue}</p>
+                                        )}
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500">ID карты</p>
