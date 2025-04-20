@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDto
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.DailySchedule
-import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.entity.DailyScheduleEntity
+import ru.romanov.stankin.authorization_service.domain.entity.SemesterScheduleEntity
 import ru.romanov.stankin.authorization_service.util.mapToEntity
 import ru.romanov.stankin.authorization_service.util.mapToDto
 import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
@@ -13,7 +13,6 @@ import ru.romanov.stankin.authorization_service.repository.SemesterScheduleRepos
 import ru.romanov.stankin.authorization_service.util.labTimesMap
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 
 @Service
@@ -30,23 +29,23 @@ class ScheduleSaverService(
             .validateIdempotency()
             .also {
                 dailyScheduleEntityList.forEach { entity -> entity.semesterSchedule = it}
-                it.dailySchedule = dailyScheduleEntityList
+                it.dailyScheduleEntity = dailyScheduleEntityList
             }
             .saveSemesterSchedule()
             .mapToDto(dailyScheduleDTOList)
     }
 
-    fun SemesterSchedule.saveSemesterSchedule() =
+    fun SemesterScheduleEntity.saveSemesterSchedule() =
         semesterScheduleRepository.save(this)
 
-    fun List<DailySchedule>.buildSemesterSchedule() =
-        SemesterSchedule(
+    fun List<DailyScheduleEntity>.buildSemesterSchedule() =
+        SemesterScheduleEntity(
         stgroup = this.first().stgroup!!,
         firstClassDate =  this.stream().map { it.date }.min(Comparator.comparing { it }).get(),
         lastClassDate =  this.stream().map { it.date }.max(Comparator.comparing { it }).get(),
     )
 
-    fun List<DailySchedule>.saveDailySchedule(): List<DailySchedule> =
+    fun List<DailyScheduleEntity>.saveDailySchedule(): List<DailyScheduleEntity> =
         dailyScheduleRepository.saveAll(this)
 
     fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
@@ -149,7 +148,7 @@ class ScheduleSaverService(
         return LocalDate.parse("$dateStr.$currentYear", DateTimeFormatter.ofPattern("dd.MM.yyyy"))
     }
 
-    private fun SemesterSchedule.validateIdempotency( ): SemesterSchedule =
+    private fun SemesterScheduleEntity.validateIdempotency( ): SemesterScheduleEntity =
         if ( semesterScheduleRepository.findByFirstClassDateAndLastClassDateAndStgroupAndVersionDate(
                 firstClassDate =   this.firstClassDate,
                 lastClassDate =  this.lastClassDate,

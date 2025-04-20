@@ -7,7 +7,7 @@ import java.util.*
 
 
 @Entity(name = "semester_schedule")
-class SemesterSchedule (
+class SemesterScheduleEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: UUID? = null,
@@ -17,7 +17,7 @@ class SemesterSchedule (
     val versionDate: String? = null,
     @JsonManagedReference
     @OneToMany(mappedBy = "semesterSchedule", orphanRemoval = true, fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    var dailySchedule: List<DailySchedule>? = emptyList(),
+    var dailyScheduleEntity: List<DailyScheduleEntity>? = emptyList(),
 )
 
 

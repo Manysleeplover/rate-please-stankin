@@ -23,7 +23,7 @@ class UserEntity(
     var role: Role,
     @OneToOne
     @JsonBackReference
-    var person: Person? = null
+    var person: PersonEntity? = null
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf(SimpleGrantedAuthority(role.name))

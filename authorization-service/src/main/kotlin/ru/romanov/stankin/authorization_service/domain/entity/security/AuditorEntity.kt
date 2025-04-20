@@ -5,7 +5,7 @@ import jakarta.persistence.Entity
 
 @Entity
 @DiscriminatorValue("A")
-open class Auditor(
+open class AuditorEntity(
     override var personnelNumber: Int? = null,
     override var name: String,
     override var surname: String,

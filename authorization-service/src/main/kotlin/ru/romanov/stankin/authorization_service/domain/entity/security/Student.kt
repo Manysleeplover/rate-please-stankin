@@ -15,4 +15,4 @@ open class Student(
     override var surname: String,
     override var patronymic: String? = null,
     override var user: UserEntity,
-) : Person(name = name, surname = surname, patronymic = patronymic, user = user)
+) : PersonEntity(name = name, surname = surname, patronymic = patronymic, user = user)

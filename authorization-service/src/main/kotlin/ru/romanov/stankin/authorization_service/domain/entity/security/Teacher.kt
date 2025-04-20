@@ -13,4 +13,4 @@ open class Teacher(
     override var name: String,
     override var surname: String,
     override var patronymic: String? = null,
-) : Person(name = name, surname = surname, patronymic = patronymic)
+) : PersonEntity(name = name, surname = surname, patronymic = patronymic)

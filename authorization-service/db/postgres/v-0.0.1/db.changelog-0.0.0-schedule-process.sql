@@ -1,4 +1,3 @@
-DROP TABLE if EXISTS semester_schedule CASCADE;
 CREATE TABLE semester_schedule (
                                    id UUID PRIMARY KEY,                     -- Уникальный идентификатор
                                    first_class_date DATE NOT NULL,            -- Дата начала занятий

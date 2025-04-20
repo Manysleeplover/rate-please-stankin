@@ -6,7 +6,7 @@ import java.time.LocalDate
 import java.util.*
 
 @Entity(name = "daily_schedule")
-data class DailySchedule(
+data class DailyScheduleEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: UUID? = null,
@@ -22,7 +22,7 @@ data class DailySchedule(
     @JsonBackReference
     @JoinColumn(name = "semester_schedule_id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    var semesterSchedule: SemesterSchedule? = null,
+    var semesterSchedule: SemesterScheduleEntity? = null,
     @OneToOne
     @JsonBackReference
     var taskForClass: TaskForClassEntity? = null

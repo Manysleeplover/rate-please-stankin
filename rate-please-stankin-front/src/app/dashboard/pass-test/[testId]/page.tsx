@@ -3,16 +3,19 @@
 
 import { useEffect, useState } from 'react';
 import { TaskForClassDTO, QuestionDTO, AnswerOptionsDTO } from "@/app/lib/api/ui-interfaces";
-import { getTaskForClassByTaskId } from "@/app/lib/api/task-for-class-api";
+import {getTaskForClassByTaskId, savePassedTestResult} from "@/app/lib/api/task-for-class-api";
 import { useParams } from "next/navigation";
+import {useSession} from "next-auth/react";
 
 export default function TestsList() {
+    const { data: session } = useSession();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const params = useParams()["testId"];
     const [taskForClass, setTaskForClass] = useState<TaskForClassDTO>();
     const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [score, setScore] = useState<number | null>(null);
+    const [completionPercent, setCompletionPercent] = useState<number>(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,14 +35,18 @@ export default function TestsList() {
     const handleAnswerSelect = (questionId: string, answerId: string) => {
         if (isSubmitted) return;
 
-        setUserAnswers(prev => ({
-            ...prev,
+        const newAnswers = {
+            ...userAnswers,
             [questionId]: answerId
-        }));
+        };
+
+        setUserAnswers(newAnswers);
+        // Обновляем процент завершения при каждом выборе ответа
+        setCompletionPercent(Math.round((Object.keys(newAnswers).length / (taskForClass?.taskList.length || 1) * 100)));
     };
 
-    const handleSubmit = () => {
-        if (!taskForClass) return;
+    const handleSubmit = async () => {
+        if (!taskForClass || !session?.user) return;
 
         let correctCount = 0;
         taskForClass.taskList.forEach(question => {
@@ -52,8 +59,23 @@ export default function TestsList() {
             }
         });
 
-        setScore(correctCount);
+        const calculatedScore = correctCount;
+        const calculatedPercent = Math.round((calculatedScore / taskForClass.taskList.length) * 100);
+
+        setScore(calculatedScore);
+        setCompletionPercent(calculatedPercent);
         setIsSubmitted(true);
+
+        try {
+            await savePassedTestResult(
+                session.user.token,
+                calculatedPercent, // Используем рассчитанный процент
+                params,
+                session.user.id
+            );
+        } catch (error) {
+            console.error('Failed to save test result:', error);
+        }
     };
 
     const resetTest = () => {
@@ -96,7 +118,7 @@ export default function TestsList() {
                 <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h2 className="text-2xl font-bold mb-1">{taskForClass.dailySchedule.subject}</h2>
+                            <h2 className="text-2xl font-bold mb-1">{taskForClass.dailySchedule?.subject}</h2>
                             <p className="text-blue-100">
                                 {new Date(taskForClass.dailySchedule.date).toLocaleDateString('ru-RU', {
                                     weekday: 'long',
@@ -267,12 +289,6 @@ export default function TestsList() {
                                 {score} из {taskForClass.taskList.length} ({Math.round((score! / taskForClass.taskList.length) * 100)}%)
                             </p>
                         </div>
-                        <button
-                            onClick={resetTest}
-                            className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-lg transition-colors"
-                        >
-                            Пройти тест заново
-                        </button>
                     </>
                 ) : (
                     <button

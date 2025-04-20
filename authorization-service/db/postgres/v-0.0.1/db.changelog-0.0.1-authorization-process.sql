@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users
 (
     id       bigserial primary key,
@@ -10,7 +9,6 @@ CREATE TABLE users
 );
 CREATE SEQUENCE user_id_seq START 1 INCREMENT 1;
 
-DROP TABLE IF EXISTS person CASCADE;
 CREATE TABLE person
 (
     id              bigserial primary key,

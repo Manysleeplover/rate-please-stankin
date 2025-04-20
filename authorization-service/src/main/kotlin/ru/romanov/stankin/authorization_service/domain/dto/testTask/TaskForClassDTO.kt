@@ -1,12 +1,11 @@
 package ru.romanov.stankin.authorization_service.domain.dto.testTask
 
 
-import ru.romanov.stankin.authorization_service.domain.entity.DailySchedule
-import java.util.*
+import ru.romanov.stankin.authorization_service.domain.entity.DailyScheduleEntity
 
 data class TaskForClassDTO(
     val id: String,
-    val dailySchedule: DailySchedule,
+    val dailySchedule: DailyScheduleEntity,
     val taskList: List<QuestionDTO>
 );
 

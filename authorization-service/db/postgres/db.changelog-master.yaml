@@ -1,7 +1,10 @@
 databaseChangeLog:
   - include:
-      file: v-0.0.1/db.changelog-0.0.0-testing-process.sql
+      file: v-0.0.1/db.changelog-0.0.0-schedule-process.sql
       relativeToChangelogFile: true
   - include:
       file: v-0.0.1/db.changelog-0.0.1-authorization-process.sql
+      relativeToChangelogFile: true
+  - include:
+      file: v-0.0.1/db.changelog-0.0.2-task_for_class-process.sql
       relativeToChangelogFile: true

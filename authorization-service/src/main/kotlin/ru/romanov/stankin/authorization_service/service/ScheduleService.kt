@@ -3,7 +3,7 @@ package ru.romanov.stankin.authorization_service.service
 import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.entity.SemesterScheduleEntity
 import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.SemesterScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.TaskForClassRepository
@@ -38,7 +38,7 @@ class ScheduleService(
         semesterScheduleRepository.findAll().mapToDTO()
 
 
-    private fun List<SemesterSchedule>.mapToDTO(): List<SemesterScheduleDTO> =
+    private fun List<SemesterScheduleEntity>.mapToDTO(): List<SemesterScheduleDTO> =
         this.stream().map {
             SemesterScheduleDTO(
                 id = it.id,

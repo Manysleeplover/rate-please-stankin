@@ -2,6 +2,7 @@ package ru.romanov.stankin.authorization_service.controller
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import ru.romanov.stankin.authorization_service.domain.dto.PassedTestResult
 import ru.romanov.stankin.authorization_service.domain.dto.testTask.SaveTaskForClassRequest
 import ru.romanov.stankin.authorization_service.service.TaskForClassService
 
@@ -24,5 +25,11 @@ class TestTaskController(
     @ResponseStatus(HttpStatus.OK)
     fun deleteTaskForClassById(@PathVariable("taskid") taskId: String) =
         taskForClassService.deleteTaskForClassById(taskId)
+
+    @PostMapping("/passed")
+    @ResponseStatus(HttpStatus.OK)
+    fun savePassedTestResult(@RequestBody passedTestResult: PassedTestResult){
+        taskForClassService.savePassedTestResult(passedTestResult)
+    }
 
 }

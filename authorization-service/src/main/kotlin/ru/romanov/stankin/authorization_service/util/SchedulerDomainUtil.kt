@@ -2,10 +2,10 @@ package ru.romanov.stankin.authorization_service.util
 
 import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.DailySchedule
-import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.entity.DailyScheduleEntity
+import ru.romanov.stankin.authorization_service.domain.entity.SemesterScheduleEntity
 
-fun SemesterSchedule.mapToDto(dailyScheduleDTO: List<DailyScheduleDTO>) =
+fun SemesterScheduleEntity.mapToDto(dailyScheduleDTO: List<DailyScheduleDTO>) =
     SemesterScheduleDTO(
         stgroup = this.stgroup,
         dailySchedule = dailyScheduleDTO,
@@ -14,9 +14,9 @@ fun SemesterSchedule.mapToDto(dailyScheduleDTO: List<DailyScheduleDTO>) =
         id = this.id
     )
 
-fun List<DailyScheduleDTO>.mapToEntity(): List<DailySchedule> =
+fun List<DailyScheduleDTO>.mapToEntity(): List<DailyScheduleEntity> =
     this.stream().map {
-        DailySchedule(
+        DailyScheduleEntity(
             date = it.date,
             stgroup = it.stgroup,
             subject = it.subject,
@@ -29,7 +29,7 @@ fun List<DailyScheduleDTO>.mapToEntity(): List<DailySchedule> =
         )
     }.toList()
 
-fun List<DailySchedule>.mapToDTO(): List<DailyScheduleDTO> =
+fun List<DailyScheduleEntity>.mapToDTO(): List<DailyScheduleDTO> =
     this.stream().map {
         DailyScheduleDTO(
             id = it.id,

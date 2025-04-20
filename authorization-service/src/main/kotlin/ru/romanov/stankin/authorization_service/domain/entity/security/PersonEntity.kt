@@ -8,7 +8,7 @@ import jakarta.persistence.*
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "member_type", discriminatorType = DiscriminatorType.CHAR)
 @DiscriminatorValue("P")
-open class Person(
+open class PersonEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
