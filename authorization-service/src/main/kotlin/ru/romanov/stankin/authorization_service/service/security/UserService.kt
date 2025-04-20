@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.entity.security.Role
 import ru.romanov.stankin.authorization_service.domain.entity.security.UserEntity
-import ru.romanov.stankin.authorization_service.repository.postgre.security.UserRepository
+import ru.romanov.stankin.authorization_service.repository.security.UserRepository
 
 
 @Service
@@ -31,7 +31,7 @@ class UserService(
             throw RuntimeException("Пользователь с таким именем уже существует")
         }
 
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (userRepository.existsByEmail(user.email)) {
             throw RuntimeException("Пользователь с таким email уже существует")
         }
 
@@ -72,7 +72,7 @@ class UserService(
     @Deprecated("")
     fun setRoleAdminToCurrentUser() {
         val user: UserEntity = getCurrentUser()
-        user.setRole(Role.ROLE_ADMIN)
+        user.role = Role.ROLE_ADMIN
         save(user)
     }
 
@@ -83,7 +83,7 @@ class UserService(
     @Deprecated("")
     fun setRoleUserToCurrentUser() {
         val user: UserEntity = getCurrentUser()
-        user.setRole(Role.ROLE_USER)
+        user.role = Role.ROLE_USER
         save(user)
     }
 }

@@ -8,8 +8,8 @@ import ru.romanov.stankin.authorization_service.domain.dto.testTask.TaskForClass
 import ru.romanov.stankin.authorization_service.domain.entity.AnswerOptions
 import ru.romanov.stankin.authorization_service.domain.entity.Question
 import ru.romanov.stankin.authorization_service.domain.entity.TaskForClassEntity
-import ru.romanov.stankin.authorization_service.repository.postgre.DailyScheduleRepository
-import ru.romanov.stankin.authorization_service.repository.postgre.TaskForClassRepository
+import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.TaskForClassRepository
 import java.util.*
 
 

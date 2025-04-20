@@ -10,15 +10,15 @@ export default function StudentProfile({ data }: { data: StudentInfoDTO }) {
     };
 
     return (
-        <div className="min-h-screen  py-8 px-4 sm:px-6 lg:px-8">
+        <div className=" py-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto">
                 {/* Карточка профиля */}
                 <div className="bg-white overflow-hidden shadow rounded-lg">
                     {/* Шапка с токеном */}
-                    <div className="bg-indigo-700 px-6 py-4 border-b border-indigo-600">
+                    <div className="bg-stankin_blue px-6 py-4 border-b border-stankin_blue">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-bold text-white">Данные авторизации</h2>
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-600 text-indigo-100">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-stankin_blue text-indigo-100">
                 {data.token_type}
               </span>
                         </div>
@@ -41,7 +41,7 @@ export default function StudentProfile({ data }: { data: StudentInfoDTO }) {
                         {/* Заголовок */}
                         <div className="flex items-center space-x-4 mb-8">
                             <div className="flex-shrink-0 h-16 w-16 rounded-full bg-indigo-100 flex items-center justify-center">
-                                <UserIcon className="h-8 w-8 text-indigo-700" />
+                                <UserIcon className="h-8 w-8 text-stankin_blue" />
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-gray-900">
@@ -56,7 +56,7 @@ export default function StudentProfile({ data }: { data: StudentInfoDTO }) {
                             {/* Блок с учебной информацией */}
                             <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
                                 <div className="flex items-center mb-4">
-                                    <AcademicCapIcon className="h-6 w-6 text-indigo-700 mr-2" />
+                                    <AcademicCapIcon className="h-6 w-6 text-stankin_blue mr-2" />
                                     <h3 className="text-lg font-medium text-gray-900">Учебная информация</h3>
                                 </div>
                                 <div className="space-y-3">
@@ -74,7 +74,7 @@ export default function StudentProfile({ data }: { data: StudentInfoDTO }) {
                             {/* Блок с персональной информацией */}
                             <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
                                 <div className="flex items-center mb-4">
-                                    <IdentificationIcon className="h-6 w-6 text-indigo-700 mr-2" />
+                                    <IdentificationIcon className="h-6 w-6 text-stankin_blue mr-2" />
                                     <h3 className="text-lg font-medium text-gray-900">Персональные данные</h3>
                                 </div>
                                 <div className="space-y-3">

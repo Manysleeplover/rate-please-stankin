@@ -1,7 +1,6 @@
 'use client' // Убедитесь, что компонент является клиентским
 
 import {useSession} from "next-auth/react";
-import {signIn} from "@/auth";
 
 export default function Page() {
     const { data: session } = useSession();

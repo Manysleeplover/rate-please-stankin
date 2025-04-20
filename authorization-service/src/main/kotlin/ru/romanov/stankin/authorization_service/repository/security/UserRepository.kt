@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.repository.postgre.security
+package ru.romanov.stankin.authorization_service.repository.security
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

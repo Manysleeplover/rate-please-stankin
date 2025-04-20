@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.romanov.stankin.authorization_service.domain.dto.mj.MJStudentDataRequestDTO
+import ru.romanov.stankin.authorization_service.domain.dto.mj.UserInfoDTO
 import ru.romanov.stankin.authorization_service.service.ModularMagazineService
 
 
@@ -17,6 +18,10 @@ class ModularMagazineController(
     @PostMapping("/oaut/req")
     fun getStudentInfo(@RequestBody req: MJStudentDataRequestDTO) =
         modularMagazineService.getStudentInfo(req)
+
+    @PostMapping("/profile/secure")
+    fun secureStudentProfile(@RequestBody req: UserInfoDTO) =
+        modularMagazineService.secureStudentProfileByUsername(req)
 
 
 }

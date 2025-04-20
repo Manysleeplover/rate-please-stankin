@@ -8,8 +8,8 @@ import ru.romanov.stankin.authorization_service.domain.entity.DailySchedule
 import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
 import ru.romanov.stankin.authorization_service.util.mapToEntity
 import ru.romanov.stankin.authorization_service.util.mapToDto
-import ru.romanov.stankin.authorization_service.repository.postgre.DailyScheduleRepository
-import ru.romanov.stankin.authorization_service.repository.postgre.SemesterScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.SemesterScheduleRepository
 import ru.romanov.stankin.authorization_service.util.labTimesMap
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

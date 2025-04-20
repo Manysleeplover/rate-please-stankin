@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.entity.security.UserEntity
-import ru.romanov.stankin.authorization_service.repository.postgre.security.UserRepository
+import ru.romanov.stankin.authorization_service.repository.security.UserRepository
 import java.security.Key
 import java.util.*
 
@@ -39,10 +39,10 @@ class JwtService(
     fun generateToken(userDetails: UserDetails): String {
         val claims: MutableMap<String, Any?> = HashMap()
         if (userDetails is UserEntity) {
-            claims["id"] = userDetails.getId()
-            claims["email"] = userDetails.getEmail()
+            claims["id"] = userDetails.id
+            claims["email"] = userDetails.email
             claims["username"] = userDetails.username
-            claims["role"] = userDetails.getRole()
+            claims["role"] = userDetails.role
         }
         return generateToken(claims, userDetails)
     }

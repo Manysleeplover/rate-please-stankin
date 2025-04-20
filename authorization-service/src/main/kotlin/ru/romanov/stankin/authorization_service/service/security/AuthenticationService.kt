@@ -36,7 +36,7 @@ class AuthenticationService(
             username = request.username,
             email = request.email,
             password = passwordEncoder.encode(request.password),
-            role = Role.ROLE_USER
+            role = Role.ROLE_USER,
         )
 
         userService.create(user)
@@ -46,11 +46,11 @@ class AuthenticationService(
 
         log.info("Регистрация пользователя ${request.username} прошла успешна")
         return JwtAuthenticationResponse(
-            id = user.getId(),
-            email = user.getEmail(),
+            id = user.id,
+            email = user.email,
             token = jwt,
             name = user.username,
-            role = user.getRole(),
+            role = user.role,
         )
     }
 
@@ -79,11 +79,11 @@ class AuthenticationService(
 
         log.info("Аутентификация пользователя ${request.username} прошла успешна")
         return JwtAuthenticationResponse(
-            id = currentUser.getId(),
-            email = currentUser.getEmail(),
+            id = currentUser.id,
+            email = currentUser.email,
             token = jwt,
             name = currentUser.username,
-            role = currentUser.getRole(),
+            role = currentUser.role,
         )
     }
 
