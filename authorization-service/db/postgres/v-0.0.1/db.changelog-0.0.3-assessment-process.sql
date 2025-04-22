@@ -23,3 +23,11 @@ CREATE TABLE passed_assessment
             references person (id)
             on delete cascade
 );
+
+-- Добавляем столбец и внешний ключ для процесса проведения опросов
+ALTER TABLE daily_schedule
+    ADD COLUMN assessment_id UUID;
+
+ALTER TABLE daily_schedule
+    ADD CONSTRAINT fk_assessment_id
+        FOREIGN KEY (assessment_id) REFERENCES assessment(id);

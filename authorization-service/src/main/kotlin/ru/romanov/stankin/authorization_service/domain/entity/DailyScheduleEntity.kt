@@ -25,5 +25,8 @@ data class DailyScheduleEntity(
     var semesterSchedule: SemesterScheduleEntity? = null,
     @OneToOne
     @JsonBackReference
-    var taskForClass: TaskForClassEntity? = null
+    var taskForClass: TaskForClassEntity? = null,
+    @OneToOne
+    @JsonBackReference
+    var assessment: AssessmentEntity? = null
 )
