@@ -13,6 +13,7 @@ interface ScheduleProps {
 
 export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
     const router = useRouter(); // Инициализация роутера
+
     const handleCreateTest = (subject: DailyScheduleDTO) => {
         router.push(`/dashboard/test/create/${subject.id.toString()}`);
     };
@@ -22,6 +23,18 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
     const handleDeleteTest = (subject: DailyScheduleDTO) => {
         router.push(`/dashboard/test/delete/${subject.testId.toString()}`);
     };
+
+    const handleCreateAssessment = (subject: DailyScheduleDTO) => {
+        router.push(`/dashboard/assessment/create/${subject.id.toString()}`);
+    };
+    const handlePassAssessment = (subject: DailyScheduleDTO) => {
+        router.push(`/dashboard/assessment/pass/${subject.assessmentId.toString()}`);
+    };
+    const handleDeleteAssessment = (subject: DailyScheduleDTO) => {
+        router.push(`/dashboard/assessment/delete/${subject.assessmentId.toString()}`);
+    };
+
+
 
     return (
         <>
@@ -78,16 +91,19 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                                 )
                                             }
 
-                                            { (type === ScheduleType.StudentSchedule) &&
-                                            <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2">
-                                                <div className="justify-between flex">
-                                                    <StarIcon
-                                                        height={20}
-                                                        width={20}
-                                                    />
-                                                    Оценить занятие
-                                                </div>
-                                            </button>
+                                            { (type === ScheduleType.StudentSchedule) && !!subject.assessmentId && subject.assessmentId != "null" &&
+                                                <button
+                                                    className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
+                                                    onClick={() => handlePassAssessment(subject)}
+                                                >
+                                                    <div className="justify-between flex">
+                                                        <StarIcon
+                                                            height={20}
+                                                            width={20}
+                                                        />
+                                                        <span className="ml-1">Пройти задание</span>
+                                                    </div>
+                                                </button>
                                             }
                                         </div>
                                         <div className="mb-1 justify-between flex">
@@ -110,7 +126,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                             }
                                             { subject.testId === "null" && ((type === ScheduleType.CreateTaskSchedule) &&
                                                 <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
-                                                        onClick={() => handleCreateTest(subject)}
+                                                        onClick={() => handleCreateAssessment(subject)}
                                                 >
                                                     <div className="justify-between flex">
                                                         <StarIcon
@@ -126,7 +142,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                             {
                                                 subject.testId !== "null" &&((type === ScheduleType.CreateTaskSchedule) &&
                                                     <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
-                                                            onClick={() => handleDeleteTest(subject)}
+                                                            onClick={() => handleDeleteAssessment(subject)}
                                                     >
                                                         <div className="justify-between flex">
                                                             <StarIcon
