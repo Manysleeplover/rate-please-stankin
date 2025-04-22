@@ -30,7 +30,7 @@ export default function SchedulePage({
                         targetDate={date}
                         onChangeDate={setDate}
                         onChangeSchedule={setDailyScheduleList}
-                        group={studentInfoDTOCookie.userInfo.stgroup!}
+                        group={studentInfoDTOCookie.userInfo.stgroup }
                     />
                     <div className="rounded-xl bg-gray-50 p-2 shadow-sm border-gray-200">
                         <div>

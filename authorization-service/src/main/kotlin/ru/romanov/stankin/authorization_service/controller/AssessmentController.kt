@@ -1,13 +1,15 @@
 package ru.romanov.stankin.authorization_service.controller
 
 import org.springframework.web.bind.annotation.*
-import ru.romanov.stankin.authorization_service.domain.entity.AssessmentEntity
-import ru.romanov.stankin.authorization_service.domain.entity.AssessmentQuestions
-import java.util.UUID
+import ru.romanov.stankin.authorization_service.domain.entity.Assessment
+import ru.romanov.stankin.authorization_service.service.AssessmentService
+import java.util.*
 
 @RestController
-@RequestMapping("/assessments")
-class AssessmentController() {
+@RequestMapping("/assessment")
+class AssessmentController(
+    private val assessmentService: AssessmentService
+) {
 
     @PostMapping("/all")
     fun saveAssessmentForAllClassesBySemesterId(){
@@ -17,8 +19,8 @@ class AssessmentController() {
     @PostMapping("/{dailyScheduleId}")
     fun saveAssessmentForAllClassesByDailyScheduleId(
         @PathVariable("dailyScheduleId") dailyScheduleId: UUID,
-        @RequestBody assessmentQuestions: AssessmentQuestions
+        @RequestBody assessment: Assessment
     ){
-
+        assessmentService.saveAssessmentByDailyScheduleId(dailyScheduleId, assessment)
     }
 }

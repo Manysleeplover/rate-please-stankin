@@ -2,7 +2,7 @@ import {MJStudentDataRequestDTO, StudentInfoDTO, UserInfoDTO} from "@/app/lib/ap
 import axios from "axios";
 import {getDefaultHeaders} from "@/app/lib/api/default-headers";
 
-export const postStudentInfoDTO = async (code: string, token: string): Promise<StudentInfoDTO> => {
+export const postGetStudentInfoDTO = async (code: string, token: string): Promise<StudentInfoDTO> => {
     const requestData: MJStudentDataRequestDTO = {
         code: code,
         clientId: "rate-please-stankin",

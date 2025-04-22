@@ -2,7 +2,7 @@
 
 import {useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
-import {postSecureStudentProfile, postStudentInfoDTO} from "@/app/lib/api/modular-magazine-api";
+import {postSecureStudentProfile, postGetStudentInfoDTO} from "@/app/lib/api/modular-magazine-api";
 import {StudentInfoDTO} from "@/app/lib/api/ui-interfaces";
 import {getStudentInfoDTOCookie, setStudentInfoDTOCookie} from "@/app/lib/cookies/cookies";
 import StudentProfile from "@/app/dashboard/mj-oauth/student-info-form";
@@ -12,31 +12,37 @@ export default function OauthForm() {
     const { data: session } = useSession();
     const searchParams = useSearchParams();
     const [studentInfoDTO, setStudentInfoDTO] = useState<StudentInfoDTO>()
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const studentInfoDTOCookie = getStudentInfoDTOCookie();
         const codeParam = searchParams.get("code");
-        console.log(1)
-        if(studentInfoDTOCookie != null){
-            console.log(2)
-            setStudentInfoDTO(studentInfoDTOCookie)
 
-        } else if ( codeParam !== null && codeParam != null){
-            const fetchData = async () => {
-                try {
-                    const resp = await postStudentInfoDTO(codeParam, session.user.token);
-                    setStudentInfoDTO(resp)
-                    setStudentInfoDTOCookie(resp)
-                } catch (error) {
-                    console.error('Error fetching schedule:', error);
-                }
-
-            };
-
-            fetchData()
+        // Если есть данные в куках, устанавливаем их сразу
+        if (studentInfoDTOCookie) {
+            setStudentInfoDTO(studentInfoDTOCookie);
         }
 
-    }, [searchParams]);
+        const fetchData = async () => {
+            if (!codeParam || !session?.user?.token) {
+                setIsLoading(false);
+                return;
+            }
+
+            try {
+                setIsLoading(true);
+                const resp = await postGetStudentInfoDTO(codeParam, session.user.token);
+                setStudentInfoDTO(resp);
+                setStudentInfoDTOCookie(resp);
+            } catch (error) {
+                console.error('Error fetching student info:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [searchParams, session?.user?.token]);
 
     const handleSecureAction = () => {
         postSecureStudentProfile(session?.user.token ,studentInfoDTO!.userInfo);

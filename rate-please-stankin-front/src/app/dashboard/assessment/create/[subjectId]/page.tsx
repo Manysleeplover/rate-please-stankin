@@ -1,194 +1,177 @@
-"use client";
+'use client'
 
-import {useState} from "react";
-import {useFieldArray, useForm} from "react-hook-form";
+import {useState} from 'react';
+import {v4 as uuidv4} from 'uuid';
+import {AssessmentDTO, AssessmentQuestion, SaveAssessmentRequestDTO} from "@/app/lib/api/ui-interfaces";
 import {useParams, useRouter} from "next/navigation";
-import {SaveTaskForClassRequest, TestFormData} from "@/app/lib/api/ui-interfaces";
-import {saveTaskForClass} from "@/app/lib/api/task-for-class-api";
+import {postSaveAssessment} from "@/app/lib/api/assessment-api";
+import {useSession} from "next-auth/react";
 
-export default function TestCreatorForm() {
+
+export default function AssessmentCreator() {
     const params = useParams()["subjectId"]
     const router = useRouter();
-
-    const [activeQuestion, setActiveQuestion] = useState<number>(0);
-    const { register, control, handleSubmit, watch, setValue } = useForm<TestFormData>({
-        defaultValues: {
-            questions: [
-                {
-                    id: crypto.randomUUID(),
-                    title: "",
-                    answers: [
-                        { id: crypto.randomUUID(), text: "", isCorrect: false },
-                        { id: crypto.randomUUID(), text: "", isCorrect: false },
-                    ],
-                },
-            ],
-        },
+    const { data: session } = useSession();
+    const [assessment, setAssessment] = useState<AssessmentDTO>({
+        id: uuidv4(),
+        questions: []
     });
 
-    const { fields: questions, append: appendQuestion, remove: removeQuestion } = useFieldArray({
-        control,
-        name: "questions",
-    });
+    const [newQuestion, setNewQuestion] = useState('');
 
-    const addNewQuestion = () => {
-        appendQuestion({
-            id: crypto.randomUUID(),
-            title: "",
-            answers: [
-                { id: crypto.randomUUID(), text: "", isCorrect: false },
-                { id: crypto.randomUUID(), text: "", isCorrect: false },
-            ],
-        });
-        setActiveQuestion(questions.length);
-    };
+    const addQuestion = () => {
+        if (newQuestion.trim()) {
+            const newQuestionItem: AssessmentQuestion = {
+                id: uuidv4(),
+                question: newQuestion.trim()
+            };
 
-    const deleteQuestion = (index: number) => {
-        removeQuestion(index);
-        if (activeQuestion >= index) {
-            setActiveQuestion(Math.max(0, activeQuestion - 1));
+            setAssessment(prev => ({
+                ...prev,
+                questions: [...prev.questions, newQuestionItem]
+            }));
+            setNewQuestion('');
         }
     };
 
-    const addNewAnswer = (questionIndex: number) => {
-        const currentAnswers = watch(`questions.${questionIndex}.answers`);
-        setValue(`questions.${questionIndex}.answers`, [
-            ...currentAnswers,
-            { id: crypto.randomUUID(), text: "", isCorrect: false }
-        ]);
-    };
-
-    const removeAnswer = (questionIndex: number, answerIndex: number) => {
-        const currentAnswers = watch(`questions.${questionIndex}.answers`);
-        const newAnswers = currentAnswers.filter((_, idx) => idx !== answerIndex);
-        setValue(`questions.${questionIndex}.answers`, newAnswers);
-    };
-
-    const setCorrectAnswer = (questionIndex: number, answerIndex: number) => {
-        const currentAnswers = watch(`questions.${questionIndex}.answers`);
-        const newAnswers = currentAnswers.map((answer, idx) => ({
-            ...answer,
-            isCorrect: idx === answerIndex
+    const removeQuestion = (id: string) => {
+        setAssessment(prev => ({
+            ...prev,
+            questions: prev.questions.filter(q => q.id !== id)
         }));
-        setValue(`questions.${questionIndex}.answers`, newAnswers);
     };
 
-    const onSubmit = (data: TestFormData) => {
-        console.log("Форма отправлена:", data);
+    const updateQuestion = (id: string, newText: string) => {
+        setAssessment(prev => ({
+            ...prev,
+            questions: prev.questions.map(q =>
+                q.id === id ? { ...q, question: newText } : q
+            )
+        }));
+    };
 
-        const request: SaveTaskForClassRequest = {
-            id: params,
-            questions: data.questions
-        }
-        console.log(request)
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
 
-        saveTaskForClass(request).then(r => console.log(r))
-        alert("Тест успешно создан!");
+        postSaveAssessment(
+            session.user.token,
+            params,
+            assessment
+        ).then(r => console.log(r))
+        alert("Опрос успешно создан!");
         router.push(`/dashboard/test/create`)
+        console.log('Создан опрос:', assessment);
+        // Здесь можно добавить API вызов для сохранения
+    };
+
+    const generateNewId = () => {
+        setAssessment(prev => ({
+            ...prev,
+            id: uuidv4()
+        }));
     };
 
     return (
-        <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-6">Создание теста</h1>
+        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+                <div className="text-center mb-10">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Конструктор опросов</h1>
+                    <p className="text-lg text-gray-600">Создайте новый опрос с уникальными вопросами</p>
+                </div>
 
-            <div className="flex mb-4 overflow-x-auto pb-2">
-                {questions.map((question, index) => (
-                    <button
-                        key={question.id}
-                        onClick={() => setActiveQuestion(index)}
-                        className={`px-4 py-2 mr-2 rounded-md ${
-                            activeQuestion === index
-                                ? "bg-stankin_blue text-white"
-                                : "bg-gray-200 hover:bg-gray-300"
-                        }`}
-                    >
-                        Вопрос {index + 1}
-                    </button>
-                ))}
-                <button
-                    onClick={addNewQuestion}
-                    className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                >
-                    +
-                </button>
-            </div>
-
-            {questions.length > 0 && (
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg overflow-hidden p-6">
                     <div className="mb-6">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-semibold">
-                                Вопрос {activeQuestion + 1}
-                            </h2>
-                            {questions.length > 1 && (
-                                <button
-                                    type="button"
-                                    onClick={() => deleteQuestion(activeQuestion)}
-                                    className="text-red-500 hover:text-red-700"
-                                >
-                                    Удалить вопрос
-                                </button>
-                            )}
+                        <div className="flex items-center justify-between mb-2">
+                            <label htmlFor="assessment-id" className="block text-sm font-medium text-gray-700">
+                                ID опроса
+                            </label>
+                            <button
+                                type="button"
+                                onClick={generateNewId}
+                                className="text-xs text-indigo-600 hover:text-indigo-800"
+                            >
+                                Сгенерировать новый ID
+                            </button>
                         </div>
-
                         <input
-                            {...register(`questions.${activeQuestion}.title`)}
-                            placeholder="Введите вопрос"
-                            className="w-full p-3 border border-gray-300 rounded-md mb-4"
-                            required
+                            type="text"
+                            id="assessment-id"
+                            value={assessment.id}
+                            readOnly
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 text-sm"
                         />
-
-                        <h3 className="font-medium mb-2">Варианты ответов:</h3>
-                        <div className="space-y-3 mb-4">
-                            {watch(`questions.${activeQuestion}.answers`)?.map((answer, index) => (
-                                <div key={answer.id} className="flex items-center">
-                                    <input
-                                        type="radio"
-                                        name={`correctAnswer-${activeQuestion}`}
-                                        checked={answer.isCorrect}
-                                        onChange={() => setCorrectAnswer(activeQuestion, index)}
-                                        className="mr-3"
-                                    />
-                                    <input
-                                        {...register(
-                                            `questions.${activeQuestion}.answers.${index}.text`
-                                        )}
-                                        placeholder={`Вариант ${index + 1}`}
-                                        className="flex-1 p-2 border border-gray-300 rounded-md"
-                                        required
-                                    />
-                                    {watch(`questions.${activeQuestion}.answers`).length > 2 && (
-                                        <button
-                                            type="button"
-                                            onClick={() => removeAnswer(activeQuestion, index)}
-                                            className="ml-2 text-red-500 hover:text-red-700"
-                                        >
-                                            ×
-                                        </button>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-
-                        <button
-                            type="button"
-                            onClick={() => addNewAnswer(activeQuestion)}
-                            className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 mb-6"
-                        >
-                            + Добавить вариант ответа
-                        </button>
                     </div>
 
-                    <div className="flex justify-between">
+                    <div className="mb-6">
+                        <div className="flex items-center mb-4">
+                            <input
+                                type="text"
+                                value={newQuestion}
+                                onChange={(e) => setNewQuestion(e.target.value)}
+                                placeholder="Введите текст вопроса"
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                onKeyDown={(e) => e.key === 'Enter' && addQuestion()}
+                            />
+                            <button
+                                type="button"
+                                onClick={addQuestion}
+                                disabled={!newQuestion.trim()}
+                                className={`ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white ${newQuestion.trim() ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-indigo-300 cursor-not-allowed'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                            >
+                                Добавить вопрос
+                            </button>
+                        </div>
+
+                        {assessment.questions.length > 0 ? (
+                            <ul className="space-y-3">
+                                {assessment.questions.map((q, index) => (
+                                    <li key={q.id} className="group flex items-start p-3 bg-gray-50 rounded-md hover:bg-gray-100">
+                                        <span className="mr-3 text-gray-500 mt-1">{index + 1}.</span>
+                                        <input
+                                            type="text"
+                                            value={q.question}
+                                            onChange={(e) => updateQuestion(q.id, e.target.value)}
+                                            className="flex-1 bg-transparent border-b border-transparent focus:border-gray-300 focus:outline-none"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeQuestion(q.id)}
+                                            className="ml-3 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <div className="text-center py-6 bg-gray-50 rounded-lg">
+                                <p className="text-gray-500">Нет добавленных вопросов</p>
+                                <p className="text-sm text-gray-400 mt-1">Начните добавлять вопросы выше</p>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3">
+                        <button
+                            type="button"
+                            onClick={() => setAssessment({ id: uuidv4(), questions: [] })}
+                            disabled={assessment.questions.length === 0}
+                            className={`px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium ${assessment.questions.length > 0 ? 'text-gray-700 bg-white hover:bg-gray-50' : 'text-gray-400 bg-gray-100 cursor-not-allowed'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                        >
+                            Очистить все
+                        </button>
                         <button
                             type="submit"
-                            className="px-6 py-2 bg-stankin_blue text-white rounded-md hover:bg-blue-700"
+                            disabled={assessment.questions.length === 0}
+                            className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${assessment.questions.length > 0 ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-indigo-300 cursor-not-allowed'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
                         >
-                            Сохранить тест
+                            Сохранить опрос
                         </button>
                     </div>
                 </form>
-            )}
+            </div>
         </div>
     );
 }

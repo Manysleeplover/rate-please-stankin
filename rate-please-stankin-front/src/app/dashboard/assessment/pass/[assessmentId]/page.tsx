@@ -1,326 +1,108 @@
-// components/TestsList.tsx
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import { TaskForClassDTO, QuestionDTO, AnswerOptionsDTO } from "@/app/lib/api/ui-interfaces";
-import {getTaskForClassByTaskId, savePassedTestResult} from "@/app/lib/api/task-for-class-api";
-import { useParams } from "next/navigation";
-import {useSession} from "next-auth/react";
+import { useState } from 'react';
+import {AssessmentDTO} from "@/app/lib/api/ui-interfaces";
+const defaultQuestions: AssessmentDTO = {
+    questions: [
+        "Насколько чётко и понятно были сформулированы цели занятия?",
+        "Насколько материал занятия соответствовал заявленной теме?",
+        "Оцените уровень подготовки преподавателя (знание предмета, умение объяснять)?",
+        "Насколько интересно и вовлекающе было проведено занятие?",
+        "Были ли полезны использованные материалы (презентации, раздатки, примеры)?",
+        "Насколько эффективно преподаватель отвечал на вопросы?",
+        "Оцените баланс теории и практики на занятии.",
+        "Насколько комфортной была атмосфера во время занятия?",
+        "Считаете ли вы, что полученные знания можно применить на практике?",
+        "Как бы вы оценили общую организацию занятия (тайминг, логичность изложения)?",
+        "Были ли учтены индивидуальные особенности обучающихся?",
+        "Хотели бы вы рекомендовать подобные занятия другим?"
+    ]
+};
 
-export default function TestsList() {
-    const { data: session } = useSession();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const params = useParams()["testId"];
-    const [taskForClass, setTaskForClass] = useState<TaskForClassDTO>();
-    const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
-    const [isSubmitted, setIsSubmitted] = useState(false);
-    const [score, setScore] = useState<number | null>(null);
-    const [completionPercent, setCompletionPercent] = useState<number>(0);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const resp = await getTaskForClassByTaskId(params);
-                setTaskForClass(resp);
-            } catch (error) {
-                console.error('Error fetching schedule:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [params]);
-
-    const handleAnswerSelect = (questionId: string, answerId: string) => {
-        if (isSubmitted) return;
-
-        const newAnswers = {
-            ...userAnswers,
-            [questionId]: answerId
-        };
-
-        setUserAnswers(newAnswers);
-        // Обновляем процент завершения при каждом выборе ответа
-        setCompletionPercent(Math.round((Object.keys(newAnswers).length / (taskForClass?.taskList.length || 1) * 100)));
-    };
-
-    const handleSubmit = async () => {
-        if (!taskForClass || !session?.user) return;
-
-        let correctCount = 0;
-        taskForClass.taskList.forEach(question => {
-            const selectedAnswerId = userAnswers[question.id];
-            if (!selectedAnswerId) return;
-
-            const selectedAnswer = question.answers.find(a => a.id === selectedAnswerId);
-            if (selectedAnswer?.isCorrect) {
-                correctCount++;
-            }
-        });
-
-        const calculatedScore = correctCount;
-        const calculatedPercent = Math.round((calculatedScore / taskForClass.taskList.length) * 100);
-
-        setScore(calculatedScore);
-        setCompletionPercent(calculatedPercent);
-        setIsSubmitted(true);
-
-        try {
-            await savePassedTestResult(
-                session.user.token,
-                calculatedPercent, // Используем рассчитанный процент
-                params,
-                session.user.id
-            );
-        } catch (error) {
-            console.error('Failed to save test result:', error);
-        }
-    };
-
-    const resetTest = () => {
-        setUserAnswers({});
-        setIsSubmitted(false);
-        setScore(null);
-    };
-
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-            </div>
-        );
-    }
-
-    if (!taskForClass) {
-        return (
-            <div className="text-center py-10">
-                <p className="text-gray-500 text-lg">Тест не найден</p>
-            </div>
-        );
-    }
-
-    const formatTime = (timeString: string) => {
-        const [hours, minutes] = timeString.split(':');
-        return `${hours}:${minutes}`;
-    };
-
-    const calculateProgress = () => {
-        const answeredCount = Object.keys(userAnswers).length;
-        return (answeredCount / taskForClass.taskList.length) * 100;
-    };
-
+export default function AssessmentForm({ questionList = defaultQuestions.questions }: { questionList?: string[] }) {
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8">
-            {/* Карточка с информацией о предмете */}
-            <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8 transition-all hover:shadow-lg">
-                {/* Шапка карточки */}
-                <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <h2 className="text-2xl font-bold mb-1">{taskForClass.dailySchedule?.subject}</h2>
-                            <p className="text-blue-100">
-                                {new Date(taskForClass.dailySchedule.date).toLocaleDateString('ru-RU', {
-                                    weekday: 'long',
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })}
-                            </p>
-                        </div>
-                        <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">
-                            {taskForClass.dailySchedule.type}
-                        </span>
-                    </div>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto">
+                <div className="text-center mb-10">
+                    <h1 className="text-3xl font-bold text-indigo-800 mb-2">Оценка вопросов</h1>
+                    <p className="text-lg text-indigo-600">Пожалуйста, оцените каждый вопрос по 10-балльной шкале</p>
                 </div>
 
-                {/* Тело карточки */}
-                <div className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Первая колонка */}
-                        <div className="space-y-4">
-                            <DetailCard
-                                icon={
-                                    <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
-                                }
-                                title="Группа"
-                                value={taskForClass.dailySchedule.stgroup}
-                                subtitle={taskForClass.dailySchedule.subgroup ? `Подгруппа: ${taskForClass.dailySchedule.subgroup}` : 'Без подгруппы'}
-                            />
+                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                    {questionList.map((question, index) => (
+                        <QuestionRating
+                            key={index}
+                            question={question}
+                            index={index}
+                            isLast={index === questionList.length - 1}
+                        />
+                    ))}
 
-                            <DetailCard
-                                icon={
-                                    <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                }
-                                title="Преподаватель"
-                                value={taskForClass.dailySchedule.teacher}
-                            />
-                        </div>
-
-                        {/* Вторая колонка */}
-                        <div className="space-y-4">
-                            <DetailCard
-                                icon={
-                                    <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                                    </svg>
-                                }
-                                title="Аудитория"
-                                value={taskForClass.dailySchedule.audience || 'Не указана'}
-                            />
-
-                            <DetailCard
-                                icon={
-                                    <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                }
-                                title="Время"
-                                value={`${formatTime(taskForClass.dailySchedule.startTime)} - ${formatTime(taskForClass.dailySchedule.endTime)}`}
-                            />
-                        </div>
+                    <div className="px-6 py-5 bg-gray-50 text-right">
+                        <button
+                            type="submit"
+                            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                        >
+                            Отправить оценки
+                        </button>
                     </div>
                 </div>
-            </div>
-
-            {/* Прогресс бар */}
-            <div className="mb-6">
-                <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-medium text-gray-700">
-                        Прогресс: {Object.keys(userAnswers).length} из {taskForClass.taskList.length}
-                    </span>
-                    <span className="text-sm font-medium text-blue-600">
-                        {Math.round(calculateProgress())}%
-                    </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div
-                        className="bg-blue-600 h-2.5 rounded-full"
-                        style={{ width: `${calculateProgress()}%` }}
-                    ></div>
-                </div>
-            </div>
-
-            {/* Список вопросов */}
-            <div className="bg-white rounded-xl shadow-md overflow-hidden p-6 transition-all hover:shadow-lg mb-6">
-                <h3 className="text-xl font-semibold text-gray-800 border-b pb-3 mb-6 flex items-center gap-2">
-                    <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                    </svg>
-                    Вопросы теста ({taskForClass.taskList.length})
-                </h3>
-
-                {taskForClass.taskList.length === 0 ? (
-                    <div className="text-center py-6 bg-gray-50 rounded-lg">
-                        <p className="text-gray-400">Нет вопросов в этом тесте</p>
-                    </div>
-                ) : (
-                    <div className="space-y-4">
-                        {taskForClass.taskList.map((question, index) => (
-                            <div key={question.id} className="bg-gray-50 rounded-lg p-5 shadow-sm border border-gray-200">
-                                <div className="flex items-start gap-4">
-                                    <div className="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
-                                        {index + 1}
-                                    </div>
-                                    <div className="flex-1">
-                                        <h3 className="text-lg font-medium text-gray-800 mb-3">{question.title}</h3>
-                                        <ul className="space-y-3">
-                                            {question.answers.map((answer) => {
-                                                const isSelected = userAnswers[question.id] === answer.id;
-                                                let answerStyle = "border-gray-300 hover:border-blue-300";
-
-                                                if (isSubmitted) {
-                                                    answerStyle = answer.isCorrect
-                                                        ? "border-green-500 bg-green-50"
-                                                        : isSelected
-                                                            ? "border-red-500 bg-red-50"
-                                                            : "border-gray-300";
-                                                } else if (isSelected) {
-                                                    answerStyle = "border-blue-500 bg-blue-50";
-                                                }
-
-                                                return (
-                                                    <li
-                                                        key={answer.id}
-                                                        className={`pl-4 py-2 border-l-4 cursor-pointer transition-colors ${answerStyle}`}
-                                                        onClick={() => handleAnswerSelect(question.id, answer.id)}
-                                                    >
-                                                        <div className="flex items-center gap-2">
-                                                            <div className={`w-4 h-4 rounded-full border flex-shrink-0 ${
-                                                                isSelected ? "border-blue-500 bg-blue-500" : "border-gray-400"
-                                                            }`}></div>
-                                                            <span className={isSubmitted && answer.isCorrect ? 'text-green-700 font-medium' : 'text-gray-700'}>
-                                                                {answer.text}
-                                                            </span>
-                                                            {isSubmitted && answer.isCorrect && isSelected && (
-                                                                <span className="ml-2 text-green-600">
-                                                                    ✓ Верно
-                                                                </span>
-                                                            )}
-                                                            {isSubmitted && !answer.isCorrect && isSelected && (
-                                                                <span className="ml-2 text-red-600">
-                                                                    ✗ Неверно
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                    </li>
-                                                );
-                                            })}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-
-            {/* Панель действий */}
-            <div className="flex flex-col sm:flex-row justify-between gap-4">
-                {isSubmitted ? (
-                    <>
-                        <div className="bg-white p-4 rounded-lg shadow-md flex-1 text-center">
-                            <h4 className="text-lg font-semibold mb-2">Результат теста</h4>
-                            <p className="text-2xl font-bold text-blue-600">
-                                {score} из {taskForClass.taskList.length} ({Math.round((score! / taskForClass.taskList.length) * 100)}%)
-                            </p>
-                        </div>
-                    </>
-                ) : (
-                    <button
-                        onClick={handleSubmit}
-                        disabled={Object.keys(userAnswers).length !== taskForClass.taskList.length}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
-                    >
-                        Завершить тест
-                    </button>
-                )}
             </div>
         </div>
     );
 }
 
-// Компонент карточки детали
-function DetailCard({ icon, title, value, subtitle }: {
-    icon: React.ReactNode;
-    title: string;
-    value: string;
-    subtitle?: string;
-}) {
+function QuestionRating({ question, index, isLast }: { question: string; index: number; isLast: boolean }) {
+    const [rating, setRating] = useState<number | null>(null);
+    const [hoverRating, setHoverRating] = useState<number | null>(null);
+
     return (
-        <div className="flex items-start gap-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-            <div className="bg-blue-100 p-2 rounded-lg">
-                {icon}
-            </div>
-            <div>
-                <h4 className="text-sm font-medium text-gray-500">{title}</h4>
-                <p className="text-lg font-semibold text-gray-800">{value}</p>
-                {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
+        <div className={`px-6 py-5 ${!isLast ? 'border-b border-gray-200' : ''}`}>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-lg font-medium text-gray-800 mb-2 sm:mb-0">
+                    {index + 1}. {question}
+                </p>
+                <div className="flex items-center">
+                    <div className="flex">
+                        {[...Array(10)].map((_, i) => {
+                            const ratingValue = i + 1;
+                            return (
+                                <button
+                                    key={i}
+                                    type="button"
+                                    className="focus:outline-none"
+                                    onClick={() => setRating(ratingValue)}
+                                    onMouseEnter={() => setHoverRating(ratingValue)}
+                                    onMouseLeave={() => setHoverRating(null)}
+                                >
+                                    <StarIcon
+                                        filled={
+                                            (hoverRating !== null && ratingValue <= hoverRating) ||
+                                            (hoverRating === null && rating !== null && ratingValue <= rating)
+                                        }
+                                    />
+                                </button>
+                            );
+                        })}
+                    </div>
+                    <span className="ml-3 text-sm font-medium text-gray-500">
+            {rating !== null ? `${rating}/10` : "0/10"}
+          </span>
+                </div>
             </div>
         </div>
+    );
+}
+
+function StarIcon({ filled }: { filled: boolean }) {
+    return (
+        <svg
+            className={`w-8 h-8 ${filled ? 'text-yellow-400' : 'text-gray-300'}`}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
     );
 }

@@ -26,7 +26,7 @@ export type SignUpDTO = {
 
 export type ScheduleDateIntervalRequest = {
     date: string,
-    stgroup: string | "ИДМ-23-08"
+    stgroup: string
 }
 
 export type DailyScheduleDTO = {
@@ -114,4 +114,19 @@ export type MJStudentDataRequestDTO = {
     code: string,
     clientId: string,
     clientSecret: string
+}
+
+export type AssessmentDTO = {
+    id: string
+    questions: AssessmentQuestion[]
+}
+
+export type AssessmentQuestion= {
+    id: string
+    question: string
+}
+
+export type SaveAssessmentRequestDTO = {
+    id: string,
+    questions: AssessmentDTO;
 }
