@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.domain.dto.testTask
+package ru.romanov.stankin.authorization_service.domain.dto.taskForClass
 
 
 import ru.romanov.stankin.authorization_service.domain.entity.DailyScheduleEntity

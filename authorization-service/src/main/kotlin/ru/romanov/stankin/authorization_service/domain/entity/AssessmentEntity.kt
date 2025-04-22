@@ -17,5 +17,10 @@ class AssessmentEntity (
     val dailySchedule: DailyScheduleEntity,
 
     @JdbcTypeCode(SqlTypes.JSON)
-    val assessmentList: List<Question>
+    val assessmentList: AssessmentQuestions
 )
+
+class AssessmentQuestions (
+    val questions: List<String>
+)
+

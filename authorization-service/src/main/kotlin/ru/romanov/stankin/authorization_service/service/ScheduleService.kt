@@ -1,8 +1,8 @@
 package ru.romanov.stankin.authorization_service.service
 
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.DailyScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.SemesterScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.entity.SemesterScheduleEntity
 import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.SemesterScheduleRepository

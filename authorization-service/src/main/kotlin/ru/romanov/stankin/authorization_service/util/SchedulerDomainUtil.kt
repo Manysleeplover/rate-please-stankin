@@ -1,7 +1,7 @@
 package ru.romanov.stankin.authorization_service.util
 
-import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.DailyScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.SemesterScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.entity.DailyScheduleEntity
 import ru.romanov.stankin.authorization_service.domain.entity.SemesterScheduleEntity
 

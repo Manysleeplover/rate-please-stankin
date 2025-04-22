@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.domain.dto
+package ru.romanov.stankin.authorization_service.domain.dto.schedule
 
 import java.time.LocalDate
 import java.util.*

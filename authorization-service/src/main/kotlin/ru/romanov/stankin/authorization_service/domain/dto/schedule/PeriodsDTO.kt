@@ -1,4 +1,4 @@
-package ru.romanov.stankin.authorization_service.domain.dto
+package ru.romanov.stankin.authorization_service.domain.dto.schedule
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.swagger.v3.oas.annotations.media.Schema

@@ -78,6 +78,37 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                                 )
                                             }
 
+                                            { subject.testId === "null" && ((type === ScheduleType.CreateTaskSchedule) &&
+                                                <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
+                                                        onClick={() => handleCreateTest(subject)}
+                                                >
+                                                    <div className="justify-between flex">
+                                                        <StarIcon
+                                                            height={20}
+                                                            width={20}
+                                                        />
+                                                        Создать опрос
+                                                    </div>
+                                                </button>
+                                            )
+                                            }
+
+                                            {
+                                                subject.testId !== "null" &&((type === ScheduleType.CreateTaskSchedule) &&
+                                                    <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
+                                                            onClick={() => handleDeleteTest(subject)}
+                                                    >
+                                                        <div className="justify-between flex">
+                                                            <StarIcon
+                                                                height={20}
+                                                                width={20}
+                                                            />
+                                                            Удалить опрос
+                                                        </div>
+                                                    </button>
+                                                )
+                                            }
+
                                             { (type === ScheduleType.StudentSchedule) &&
                                             <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2">
                                                 <div className="justify-between flex">

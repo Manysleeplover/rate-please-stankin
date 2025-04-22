@@ -13,7 +13,7 @@ CREATE TABLE passed_assessment
     id UUID primary key,
     assessment_id UUID NOT NULL,
     person_id bigserial NOT NULL,
-    completion_percent int4 NOT NULL,
+    estimates jsonb NOT NULL,
     constraint fk_assessment
         foreign key (assessment_id)
             references assessment (id)

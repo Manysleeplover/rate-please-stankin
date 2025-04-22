@@ -1,9 +1,8 @@
 package ru.romanov.stankin.authorization_service.controller
 
 import org.springframework.web.bind.annotation.*
-import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDateIntervalRequest
-import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDto
-import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.ScheduleDto
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.SemesterScheduleDTO
 import ru.romanov.stankin.authorization_service.service.ScheduleSaverService
 import ru.romanov.stankin.authorization_service.service.ScheduleService
 import java.time.LocalDate

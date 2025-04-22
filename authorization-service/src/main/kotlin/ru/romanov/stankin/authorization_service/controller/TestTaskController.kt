@@ -2,8 +2,8 @@ package ru.romanov.stankin.authorization_service.controller
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import ru.romanov.stankin.authorization_service.domain.dto.PassedTestResult
-import ru.romanov.stankin.authorization_service.domain.dto.testTask.SaveTaskForClassRequest
+import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.PassedTestResult
+import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.SaveTaskForClassRequest
 import ru.romanov.stankin.authorization_service.service.TaskForClassService
 
 

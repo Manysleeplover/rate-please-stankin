@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import MyCalendar from "@/app/ui/schedule/calendar";
 import {DailyScheduleDTO, ScheduleType} from "@/app/lib/api/ui-interfaces";
 import {useRouter} from 'next/navigation';
-import {getStudentInfoDTOCookie} from "@/app/lib/cookies/auth";
+import {getStudentInfoDTOCookie} from "@/app/lib/cookies/cookies";
 
 interface SchedulePageProps {
     group?: string;

@@ -1,20 +1,17 @@
 package ru.romanov.stankin.authorization_service.service
 
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.dto.PassedTestResult
-import ru.romanov.stankin.authorization_service.domain.dto.testTask.AnswerOptionsDTO
-import ru.romanov.stankin.authorization_service.domain.dto.testTask.QuestionDTO
-import ru.romanov.stankin.authorization_service.domain.dto.testTask.SaveTaskForClassRequest
-import ru.romanov.stankin.authorization_service.domain.dto.testTask.TaskForClassDTO
+import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.PassedTestResult
+import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.AnswerOptionsDTO
+import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.QuestionDTO
+import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.SaveTaskForClassRequest
+import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.TaskForClassDTO
 import ru.romanov.stankin.authorization_service.domain.entity.AnswerOptions
 import ru.romanov.stankin.authorization_service.domain.entity.PassedTestEntity
 import ru.romanov.stankin.authorization_service.domain.entity.Question
 import ru.romanov.stankin.authorization_service.domain.entity.TaskForClassEntity
 import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.PassedTestRepository
-import ru.romanov.stankin.authorization_service.repository.PersonRepository
 import ru.romanov.stankin.authorization_service.repository.TaskForClassRepository
 import ru.romanov.stankin.authorization_service.repository.security.UserRepository
 import java.util.*
