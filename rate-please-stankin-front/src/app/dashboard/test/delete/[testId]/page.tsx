@@ -35,7 +35,7 @@ export default function TestsList() {
             setIsDeleting(true);
             await deleteTaskForClassByTaskId(params)
             alert("Тест удалён успешно создан!");
-            router.push(`/dashboard/create-test`)
+            router.push(`/dashboard/test/create`)
         } catch (error) {
             console.error('Ошибка при удалении теста:', error);
             alert('Не удалось удалить тест');

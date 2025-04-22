@@ -30,7 +30,7 @@ const links = [
     },
     {
         name: 'Управление заданиями',
-        href: '/dashboard/create-test',
+        href: '/dashboard/test/create',
         icon: PlusCircleIcon,
     },
 ];

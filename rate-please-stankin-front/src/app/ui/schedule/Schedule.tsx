@@ -14,13 +14,13 @@ interface ScheduleProps {
 export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
     const router = useRouter(); // Инициализация роутера
     const handleCreateTest = (subject: DailyScheduleDTO) => {
-        router.push(`/dashboard/create-test/${subject.id.toString()}`);
+        router.push(`/dashboard/test/create/${subject.id.toString()}`);
     };
     const handlePassTest = (subject: DailyScheduleDTO) => {
-        router.push(`/dashboard/pass-test/${subject.testId.toString()}`);
+        router.push(`/dashboard/test/pass/${subject.testId.toString()}`);
     };
     const handleDeleteTest = (subject: DailyScheduleDTO) => {
-        router.push(`/dashboard/delete-test/${subject.testId.toString()}`);
+        router.push(`/dashboard/test/delete/${subject.testId.toString()}`);
     };
 
     return (
