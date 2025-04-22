@@ -41,6 +41,7 @@ export type DailyScheduleDTO = {
     teacher: string,
     type: string,
     testId: string
+    assessmentId: string
 }
 
 export type JwtAuthenticationResponse = {

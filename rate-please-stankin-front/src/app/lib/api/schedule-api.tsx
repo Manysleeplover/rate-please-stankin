@@ -5,7 +5,7 @@ export const getScheduleByDateEndStgGroup = async (
     request: ScheduleDateIntervalRequest
 ): Promise<DailyScheduleDTO[]> => {
     return axios
-        .get<DailyScheduleDTO[]>('http://localhost:8081/schedule/by-date-interval', {
+        .get<DailyScheduleDTO[]>('http://localhost:8081/schedule/by-date', {
             params: request, // Передаем параметры как query string
         })
         .then((response) => {

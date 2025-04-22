@@ -18,7 +18,7 @@ class ScheduleController(
     fun processSchedule(@RequestBody listOfSubjects: List<ScheduleDto>): SemesterScheduleDTO =
          scheduleSaverService.processSchedule(listOfSubjects)
 
-    @GetMapping("/by-date-interval")
+    @GetMapping("/by-date")
     fun getScheduleByDateInterval(
         @RequestParam("date") date: LocalDate,
         @RequestParam("stgroup") stgroup: String,

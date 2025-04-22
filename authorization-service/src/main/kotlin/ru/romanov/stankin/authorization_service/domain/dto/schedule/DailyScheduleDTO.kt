@@ -14,5 +14,6 @@ data class DailyScheduleDTO(
     val subgroup: String?,
     val teacher: String,
     val type: String,
-    val testId: String? = null
+    val testId: String? = null,
+    val assessmentId: String? = null,
 )
