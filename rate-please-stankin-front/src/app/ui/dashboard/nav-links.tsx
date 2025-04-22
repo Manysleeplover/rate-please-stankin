@@ -25,7 +25,7 @@ const links = [
     },
     {
         name: 'Загрузка расписания',
-        href: '/dashboard/upload-schedule',
+        href: '/dashboard/schedule/upload',
         icon: CalendarIcon,
     },
     {
