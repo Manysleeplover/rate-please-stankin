@@ -36,14 +36,14 @@ class PassedAssessmentEntity (
     val estimates: AssessmentEstimates
 )
 
-class AssessmentEstimates(
+data class AssessmentEstimates(
     //Лист вопросов и рейтингов по 10-бальной шкале от студентов
     val answers: List<AssessmentAnswers>,
     //Список тем, которые студенты ожидали
     val tokens: List<String>? = null
 )
 
-class AssessmentAnswers (
+data class AssessmentAnswers (
     val question: String,
     val rate: Int
 )

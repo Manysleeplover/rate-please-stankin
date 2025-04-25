@@ -25,6 +25,15 @@ export const getGetAssessmentById = async (token: string, assessmentId: string):
     return response.data
 }
 
+export const deleteAssessmentById = async (token: string, assessmentId: string) => {
+    const response = await axios.delete(`${BACKEND_API_URL}/assessment/${assessmentId}`,
+        {
+            headers: getDefaultHeaders(token)
+        }
+    )
+    return response.data
+}
+
 export async function postSubmitAssessmentRatings(
     token: string, assessmentId: string, data: PassedAssessmentRequestDTO[], id: string
 ) {

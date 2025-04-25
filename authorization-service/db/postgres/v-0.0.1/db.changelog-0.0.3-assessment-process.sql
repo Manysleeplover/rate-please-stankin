@@ -30,4 +30,5 @@ ALTER TABLE daily_schedule
 
 ALTER TABLE daily_schedule
     ADD CONSTRAINT fk_assessment_id
-        FOREIGN KEY (assessment_id) REFERENCES assessment(id);
+        FOREIGN KEY (assessment_id) REFERENCES assessment(id)
+            ON DELETE SET NULL;

@@ -37,6 +37,9 @@ class AssessmentService(
             .orElseThrow()
             .mapAssessmentToDTO()
 
+    fun deleteAssessmentById(assessmentId: UUID) =
+        assessmentRepository.deleteById(assessmentId)
+
     fun savePassedAssessmentResults(assessmentId: UUID, assessmentsResult: AssessmentResultsDTO) {
         val person = userRepository
             .findById(assessmentsResult.userId.toInt())
@@ -63,7 +66,6 @@ class AssessmentService(
         println(assessmentsResult)
         println(assessmentId)
     }
-
 
     private fun AssessmentEntity.mapAssessmentToDTO(): AssessmentDTO =
         AssessmentDTO(

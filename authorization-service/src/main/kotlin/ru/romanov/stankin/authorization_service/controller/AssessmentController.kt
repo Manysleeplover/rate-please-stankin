@@ -37,4 +37,9 @@ class AssessmentController(
     ) {
         assessmentService.savePassedAssessmentResults(assessmentId, ratingsList)
     }
+
+    @DeleteMapping("/{assessmentId}")
+    fun deleteAssessmentById(@PathVariable("assessmentId") assessmentId: UUID) {
+        assessmentService.deleteAssessmentById(assessmentId)
+    }
 }
