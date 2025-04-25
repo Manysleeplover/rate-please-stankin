@@ -1,7 +1,7 @@
 package ru.romanov.stankin.authorization_service.controller
 
 import org.springframework.web.bind.annotation.*
-import ru.romanov.stankin.authorization_service.domain.dto.PassedAssessmentRequestDTO
+import ru.romanov.stankin.authorization_service.domain.dto.AssessmentResultsDTO
 import ru.romanov.stankin.authorization_service.domain.dto.assessment.AssessmentDTO
 import ru.romanov.stankin.authorization_service.service.AssessmentService
 import java.util.*
@@ -33,8 +33,8 @@ class AssessmentController(
     @PostMapping("/{assessmentId}/ratings")
     fun saveAssessmentRatings(
         @PathVariable("assessmentId") assessmentId: UUID,
-        @RequestBody ratingsList: List<PassedAssessmentRequestDTO>
-    ){
-        println(ratingsList)
+        @RequestBody ratingsList: AssessmentResultsDTO
+    ) {
+        assessmentService.savePassedAssessmentResults(assessmentId, ratingsList)
     }
 }

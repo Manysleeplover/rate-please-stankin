@@ -33,14 +33,14 @@ class PassedAssessmentEntity (
 
     @Column(name = "estimates", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
-    val estimates: List<AssessmentEstimates>
+    val estimates: AssessmentEstimates
 )
 
 class AssessmentEstimates(
     //Лист вопросов и рейтингов по 10-бальной шкале от студентов
     val answers: List<AssessmentAnswers>,
     //Список тем, которые студенты ожидали
-    val tokens: List<String>
+    val tokens: List<String>? = null
 )
 
 class AssessmentAnswers (

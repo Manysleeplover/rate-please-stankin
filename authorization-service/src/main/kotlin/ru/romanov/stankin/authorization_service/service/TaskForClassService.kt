@@ -69,8 +69,6 @@ class TaskForClassService(
                 completionPercent = passedTestResult.percentage.toInt()
             )
         )
-
-
     }
 
     private fun List<QuestionDTO>.mapQuestionList(): List<Question> =

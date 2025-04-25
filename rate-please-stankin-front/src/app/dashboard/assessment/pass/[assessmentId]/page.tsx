@@ -84,7 +84,8 @@ export default function AssessmentForm() {
             await postSubmitAssessmentRatings(
                 session.user.token,
                 assessmentId,
-                ratings
+                ratings,
+                session.user.id
             );
 
             // Перенаправляем после успешной отправки

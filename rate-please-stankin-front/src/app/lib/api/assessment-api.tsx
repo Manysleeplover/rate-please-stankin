@@ -1,4 +1,9 @@
-import {AssessmentDTO, PassedAssessmentRequestDTO, SaveAssessmentRequestDTO} from "@/app/lib/api/ui-interfaces";
+import {
+    AssessmentDTO,
+    AssessmentSaveResultRequest,
+    PassedAssessmentRequestDTO,
+    SaveAssessmentRequestDTO
+} from "@/app/lib/api/ui-interfaces";
 import axios from "axios";
 import {BACKEND_API_URL, getDefaultHeaders} from "@/app/lib/api/default-api-signature";
 
@@ -21,15 +26,17 @@ export const getGetAssessmentById = async (token: string, assessmentId: string):
 }
 
 export async function postSubmitAssessmentRatings(
-    token: string,
-    assessmentId: string,
-    data: PassedAssessmentRequestDTO[]
-
+    token: string, assessmentId: string, data: PassedAssessmentRequestDTO[], id: string
 ) {
+    const req: AssessmentSaveResultRequest = {
+        userId: id,
+        results: data
+    }
+
     try {
         const response = await axios.post(
             `${BACKEND_API_URL}/assessment/${assessmentId}/ratings`,
-            data,
+            req,
             {
                 headers: getDefaultHeaders(token)
             }

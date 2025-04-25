@@ -131,6 +131,11 @@ export type SaveAssessmentRequestDTO = {
     questions: AssessmentDTO;
 }
 
+export type AssessmentSaveResultRequest = {
+    userId: string
+    results: PassedAssessmentRequestDTO[]
+}
+
 export type PassedAssessmentRequestDTO = {
     id: string
     question: string,

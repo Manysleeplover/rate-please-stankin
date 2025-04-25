@@ -1,14 +1,14 @@
 package ru.romanov.stankin.authorization_service.service
 
 import org.springframework.stereotype.Service
+import ru.romanov.stankin.authorization_service.domain.dto.AssessmentResultsDTO
 import ru.romanov.stankin.authorization_service.domain.dto.assessment.AssessmentDTO
 import ru.romanov.stankin.authorization_service.domain.dto.assessment.AssessmentQuestionDTO
-import ru.romanov.stankin.authorization_service.domain.entity.Assessment
-import ru.romanov.stankin.authorization_service.domain.entity.AssessmentEntity
-import ru.romanov.stankin.authorization_service.domain.entity.AssessmentQuestion
+import ru.romanov.stankin.authorization_service.domain.entity.*
 import ru.romanov.stankin.authorization_service.repository.AssessmentRepository
 import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.PassedAssessmentRepository
+import ru.romanov.stankin.authorization_service.repository.security.UserRepository
 import java.util.*
 
 
@@ -16,7 +16,8 @@ import java.util.*
 class AssessmentService(
     private val dailyScheduleRepository: DailyScheduleRepository,
     private val assessmentRepository: AssessmentRepository,
-    private val passedAssessmentRepository: PassedAssessmentRepository
+    private val passedAssessmentRepository: PassedAssessmentRepository,
+    private val userRepository: UserRepository
 ) {
     fun saveAssessmentByDailyScheduleId(dailyScheduleId: UUID, assessment: AssessmentDTO) {
         val dailySchedule = dailyScheduleRepository.findById(dailyScheduleId).orElseThrow()
@@ -36,12 +37,39 @@ class AssessmentService(
             .orElseThrow()
             .mapAssessmentToDTO()
 
+    fun savePassedAssessmentResults(assessmentId: UUID, assessmentsResult: AssessmentResultsDTO) {
+        val person = userRepository
+            .findById(assessmentsResult.userId.toInt())
+            .orElseThrow()
+            .person!!
+        val assessment = assessmentRepository
+            .findById(assessmentId)
+            .orElseThrow()
+        passedAssessmentRepository
+            .save(
+                PassedAssessmentEntity(
+                    person = person,
+                    assessment = assessment,
+                    estimates = AssessmentEstimates(
+                        answers = assessmentsResult.results.map {
+                            AssessmentAnswers(
+                                rate = it.rate,
+                                question = it.question,
+                            )
+                        },
+                    ),
+                )
+            )
+        println(assessmentsResult)
+        println(assessmentId)
+    }
+
+
     private fun AssessmentEntity.mapAssessmentToDTO(): AssessmentDTO =
         AssessmentDTO(
             id = this.id,
             questions = this.assessmentList.questions.mapAssessmentListToDTO()
         )
-
 
     private fun List<AssessmentQuestion>.mapAssessmentListToDTO(): List<AssessmentQuestionDTO> =
         this.stream().map {
