@@ -1,5 +1,6 @@
 package ru.romanov.stankin.authorization_service.service
 
+import org.slf4j.LoggerFactory.getLogger
 import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.schedule.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.schedule.ScheduleDto
@@ -10,7 +11,7 @@ import ru.romanov.stankin.authorization_service.util.mapToEntity
 import ru.romanov.stankin.authorization_service.util.mapToDto
 import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.SemesterScheduleRepository
-import ru.romanov.stankin.authorization_service.util.labTimesMap
+import ru.romanov.stankin.authorization_service.util.LAB_TIMES_MAP
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -26,21 +27,30 @@ class ScheduleSaverService(
         val dailyScheduleEntityList = dailyScheduleDTOList.mapToEntity()
         return dailyScheduleEntityList
             .buildSemesterSchedule()
+            .also {
+                log.info("Расписание для группы ${it.stgroup} за ${it.firstClassDate}-${it.lastClassDate} успешно собрано")
+            }
             .validateIdempotency()
+            .also {
+                log.info("Расписание для группы ${it.stgroup} за ${it.firstClassDate}-${it.lastClassDate} прошло проверку на идемпотентность")
+            }
             .also {
                 dailyScheduleEntityList.forEach { entity -> entity.semesterSchedule = it}
                 it.dailyScheduleEntity = dailyScheduleEntityList
             }
             .saveSemesterSchedule()
+            .also {
+                log.info("Расписание для группы ${it.stgroup} за ${it.firstClassDate}-${it.lastClassDate} сохранено в БД")
+            }
             .mapToDto(dailyScheduleDTOList)
     }
 
-    fun SemesterScheduleEntity.saveSemesterSchedule() =
+    private fun SemesterScheduleEntity.saveSemesterSchedule() =
         semesterScheduleRepository.save(this)
 
-    fun List<DailyScheduleEntity>.buildSemesterSchedule() =
+    private fun List<DailyScheduleEntity>.buildSemesterSchedule() =
         SemesterScheduleEntity(
-        stgroup = this.first().stgroup!!,
+        stgroup = this.first().stgroup,
         firstClassDate =  this.stream().map { it.date }.min(Comparator.comparing { it }).get(),
         lastClassDate =  this.stream().map { it.date }.max(Comparator.comparing { it }).get(),
     )
@@ -48,7 +58,7 @@ class ScheduleSaverService(
     fun List<DailyScheduleEntity>.saveDailySchedule(): List<DailyScheduleEntity> =
         dailyScheduleRepository.saveAll(this)
 
-    fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
+    private fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
         val result = mutableListOf<DailyScheduleDTO>()
         val dateFormatter = DateTimeFormatter.ofPattern("dd.MM")
 
@@ -78,7 +88,7 @@ class ScheduleSaverService(
                             if (schedule.type == "лабораторные занятия") {
                                 val key = schedule.subject to currentDateInPeriod
                                 if (!addedLabs.contains(key)) {
-                                    result.add(createDailySchedule(schedule, currentDateInPeriod, labTimesMap[schedule.start_time]!!))
+                                    result.add(createDailySchedule(schedule, currentDateInPeriod, LAB_TIMES_MAP[schedule.start_time]!!))
                                     addedLabs.add(key)
                                 }
                             } else {
@@ -99,7 +109,7 @@ class ScheduleSaverService(
                     if (schedule.type == "лабораторные занятия") {
                         val key = schedule.subject to date
                         if (!addedLabs.contains(key)) {
-                            result.add(createDailySchedule(schedule, date, labTimesMap[schedule.start_time]!!))
+                            result.add(createDailySchedule(schedule, date, LAB_TIMES_MAP[schedule.start_time]!!))
                             addedLabs.add(key)
                         }
                     } else {
@@ -162,5 +172,9 @@ class ScheduleSaverService(
                 "Расписание с таким номером версии ${this.versionDate}, группы: ${this.stgroup}, " +
                         "с временным диапазоном семестра ${this.firstClassDate} - ${this.lastClassDate} уже существует")
         }
+
+    companion object {
+        private val log = getLogger(ScheduleSaverService::class.java)
+    }
 }
 

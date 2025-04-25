@@ -1,11 +1,8 @@
 package ru.romanov.stankin.authorization_service.service
 
+import org.slf4j.LoggerFactory.getLogger
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.PassedTestResult
-import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.AnswerOptionsDTO
-import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.QuestionDTO
-import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.SaveTaskForClassRequest
-import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.TaskForClassDTO
+import ru.romanov.stankin.authorization_service.domain.dto.taskForClass.*
 import ru.romanov.stankin.authorization_service.domain.entity.AnswerOptions
 import ru.romanov.stankin.authorization_service.domain.entity.PassedTestEntity
 import ru.romanov.stankin.authorization_service.domain.entity.Question
@@ -49,7 +46,11 @@ class TaskForClassService(
 
 
     fun deleteTaskForClassById(taskId: String) =
-        taskForClassRepository.deleteById(UUID.fromString(taskId))
+        taskForClassRepository
+            .deleteById(UUID.fromString(taskId))
+            .also {
+                log.info("Объект тестирования $taskId успешно удалён из БД")
+            }
 
 
 
@@ -129,6 +130,11 @@ class TaskForClassService(
                 )
             }
         .toList()
+
+
+    companion object {
+        private val log = getLogger(TaskForClassService::class.java)
+    }
 }
 
 

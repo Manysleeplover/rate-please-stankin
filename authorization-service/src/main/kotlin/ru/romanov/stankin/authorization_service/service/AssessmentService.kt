@@ -1,5 +1,6 @@
 package ru.romanov.stankin.authorization_service.service
 
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.AssessmentResultsDTO
 import ru.romanov.stankin.authorization_service.domain.dto.assessment.AssessmentDTO
@@ -19,6 +20,8 @@ class AssessmentService(
     private val passedAssessmentRepository: PassedAssessmentRepository,
     private val userRepository: UserRepository
 ) {
+    private val log = LoggerFactory.getLogger(javaClass)
+
     fun saveAssessmentByDailyScheduleId(dailyScheduleId: UUID, assessment: AssessmentDTO) {
         val dailySchedule = dailyScheduleRepository.findById(dailyScheduleId).orElseThrow()
         val assessmentEntity = AssessmentEntity(
@@ -28,6 +31,7 @@ class AssessmentService(
         assessmentRepository.save(assessmentEntity)
         dailySchedule.assessment = assessmentEntity
         dailyScheduleRepository.save(dailySchedule)
+        log.info("Объект оценивания для занятия $dailyScheduleId успешно сохранён")
     }
 
 
@@ -36,6 +40,9 @@ class AssessmentService(
             .findById(assessmentId)
             .orElseThrow()
             .mapAssessmentToDTO()
+            .also {
+                log.info("Объект оценивания $assessmentId успешно агрегирован")
+            }
 
     fun deleteAssessmentById(assessmentId: UUID) =
         assessmentRepository.deleteById(assessmentId)
@@ -63,8 +70,7 @@ class AssessmentService(
                     ),
                 )
             )
-        println(assessmentsResult)
-        println(assessmentId)
+        log.info("Результаты оценивания для объекта $assessmentId успешно сохранены  ")
     }
 
     private fun AssessmentEntity.mapAssessmentToDTO(): AssessmentDTO =
@@ -94,8 +100,6 @@ class AssessmentService(
                 question = it.question
             )
         }.toList()
-
-
 }
 
 

@@ -13,3 +13,5 @@ CREATE TABLE passed_test
           references person (id)
           on delete cascade
 );
+
+ALTER TABLE passed_test REPLICA IDENTITY FULL;

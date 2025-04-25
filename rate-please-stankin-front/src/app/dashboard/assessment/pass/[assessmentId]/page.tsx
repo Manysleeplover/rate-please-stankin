@@ -48,7 +48,7 @@ export default function AssessmentForm() {
         };
 
         fetchData();
-    }, [assessmentId, session?.user?.token, status]);
+    }, [session?.user?.token, status]);
 
     const handleRatingChange = (questionId: string, rate: number | null) => {
         if (ratingsRef.current[questionId]) {

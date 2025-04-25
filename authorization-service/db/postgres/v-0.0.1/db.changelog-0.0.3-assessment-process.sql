@@ -32,3 +32,5 @@ ALTER TABLE daily_schedule
     ADD CONSTRAINT fk_assessment_id
         FOREIGN KEY (assessment_id) REFERENCES assessment(id)
             ON DELETE SET NULL;
+
+ALTER TABLE passed_assessment REPLICA IDENTITY FULL;

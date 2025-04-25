@@ -1,5 +1,6 @@
 package ru.romanov.stankin.authorization_service.service
 
+import org.slf4j.LoggerFactory.getLogger
 import org.springframework.stereotype.Service
 import ru.romanov.stankin.authorization_service.domain.dto.schedule.DailyScheduleDTO
 import ru.romanov.stankin.authorization_service.domain.dto.schedule.SemesterScheduleDTO
@@ -23,19 +24,19 @@ class ScheduleService(
             stgroup,
             date
         )
-
-        if(semesterScheduleProjectionList.isEmpty()) return emptyList()
-
+        if(semesterScheduleProjectionList.isEmpty()) return emptyList<DailyScheduleDTO>().also {
+            log.warn("Расписание для $stgroup за дату $date не существует")
+        }
         val dailySchedule = dailyScheduleRepository.findBySemesterScheduleIdAndDate(
             semesterScheduleProjectionList.map { it.getId() }.first(), date
         )
-
-
         return dailySchedule.mapToDTO()
     }
 
     fun getAllSemesterSchedules() =
-        semesterScheduleRepository.findAll().mapToDTO()
+        semesterScheduleRepository
+            .findAll()
+            .mapToDTO()
 
 
     private fun List<SemesterScheduleEntity>.mapToDTO(): List<SemesterScheduleDTO> =
@@ -49,4 +50,8 @@ class ScheduleService(
                 dailySchedule = null
             )
         }.toList()
+
+    companion object {
+        private val log = getLogger(ScheduleService::class.java)
+    }
 }

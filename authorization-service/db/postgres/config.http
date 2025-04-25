@@ -1,0 +1,18 @@
+POST http://localhost:8083/connectors
+Content-Type: application/json
+
+{
+  "name": "inventory-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.hostname": "user_credential_pg",
+    "database.port": "5432",
+    "database.user": "user_credential_db_user",
+    "database.password": "master",
+    "database.dbname": "user_credential_db",
+    "topic.prefix": "public",
+    "database.server.name": "user_credential_db",
+    "table.include.list": "public.passed_assessment, public.passed_test",
+    "plugin.name": "pgoutput"
+  }
+}

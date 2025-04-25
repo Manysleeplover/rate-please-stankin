@@ -1,6 +1,7 @@
 package ru.romanov.stankin.authorization_service.service
 
 import jakarta.transaction.Transactional
+import org.slf4j.LoggerFactory.getLogger
 import org.springframework.http.MediaType
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -23,6 +24,7 @@ class ModularMagazineService(
     private val userRepository: UserRepository,
     private val personRepository: PersonRepository
 ) {
+
     fun getStudentInfo(req: MJStudentDataRequestDTO): StudentInfoDTO {
         val formData: MultiValueMap<String, String> = LinkedMultiValueMap()
         formData.add("code", req.code)
@@ -38,6 +40,7 @@ class ModularMagazineService(
             .retrieve()
             .toEntity(StudentInfoDTO::class.java)
             .body!!
+             .also { log.info("Данные по студенту ${it.userInfo.cardid} успешно получены") }
     }
 
 
@@ -50,8 +53,11 @@ class ModularMagazineService(
             it.person = personEntity
             userRepository.save(it)
         }
+        log.info("Студент ${req.cardid} успешно прикреплён к пользователю ${userEntity?.username}")
     }
 
-
+    companion object {
+        private val log = getLogger(ModularMagazineService::class.java)
+    }
 
 }

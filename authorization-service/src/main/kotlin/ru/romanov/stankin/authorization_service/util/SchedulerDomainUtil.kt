@@ -47,7 +47,7 @@ fun List<DailyScheduleEntity>.mapToDTO(): List<DailyScheduleDTO> =
         )
     }.toList()
 
-val labTimesMap: Map<String, String> =
+val LAB_TIMES_MAP: Map<String, String> =
     mapOf(
        "8:30" to "12:00",
         "10:20" to "14:00",
