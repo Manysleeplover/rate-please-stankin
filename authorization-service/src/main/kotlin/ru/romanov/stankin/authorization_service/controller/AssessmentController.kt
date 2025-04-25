@@ -1,7 +1,8 @@
 package ru.romanov.stankin.authorization_service.controller
 
 import org.springframework.web.bind.annotation.*
-import ru.romanov.stankin.authorization_service.domain.entity.Assessment
+import ru.romanov.stankin.authorization_service.domain.dto.PassedAssessmentRequestDTO
+import ru.romanov.stankin.authorization_service.domain.dto.assessment.AssessmentDTO
 import ru.romanov.stankin.authorization_service.service.AssessmentService
 import java.util.*
 
@@ -12,15 +13,28 @@ class AssessmentController(
 ) {
 
     @PostMapping("/all")
-    fun saveAssessmentForAllClassesBySemesterId(){
+    fun saveAssessmentForAllClassesBySemesterId() {
 
     }
 
     @PostMapping("/{dailyScheduleId}")
     fun saveAssessmentForAllClassesByDailyScheduleId(
         @PathVariable("dailyScheduleId") dailyScheduleId: UUID,
-        @RequestBody assessment: Assessment
-    ){
+        @RequestBody assessment: AssessmentDTO
+    ) {
         assessmentService.saveAssessmentByDailyScheduleId(dailyScheduleId, assessment)
+    }
+
+    @GetMapping("/{assessmentId}")
+    fun getAssessmentById(@PathVariable("assessmentId") assessmentId: UUID): AssessmentDTO {
+        return assessmentService.getAssessmentById(assessmentId).also { println(it) }
+    }
+
+    @PostMapping("/{assessmentId}/ratings")
+    fun saveAssessmentRatings(
+        @PathVariable("assessmentId") assessmentId: UUID,
+        @RequestBody ratingsList: List<PassedAssessmentRequestDTO>
+    ){
+        println(ratingsList)
     }
 }

@@ -1,4 +1,4 @@
-import {AxiosHeaders, AxiosHeaderValue} from "axios";
+import {AxiosHeaders} from "axios";
 
 /**
  * Генерирует хедеры по умолчанию
@@ -13,4 +13,6 @@ export function getDefaultHeaders(token: string): AxiosHeaders {
     headers.set('Authorization', `Bearer ${token}`);
     return headers;
 }
+
+export const BACKEND_API_URL = process.env.API_BASE_URL || "http://localhost:8081"
 

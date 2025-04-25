@@ -101,7 +101,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                                             height={20}
                                                             width={20}
                                                         />
-                                                        <span className="ml-1">Пройти задание</span>
+                                                        <span className="ml-1">Пройти опрос</span>
                                                     </div>
                                                 </button>
                                             }
@@ -124,7 +124,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                                 </div>
                                             </button>
                                             }
-                                            { subject.testId === "null" && ((type === ScheduleType.CreateTaskSchedule) &&
+                                            { subject.assessmentId === "null" && ((type === ScheduleType.CreateTaskSchedule) &&
                                                 <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
                                                         onClick={() => handleCreateAssessment(subject)}
                                                 >
@@ -140,7 +140,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                             }
 
                                             {
-                                                subject.testId !== "null" &&((type === ScheduleType.CreateTaskSchedule) &&
+                                                subject.assessmentId !== "null" &&((type === ScheduleType.CreateTaskSchedule) &&
                                                     <button className="bg-stankin_blue text-white rounded-xl pl-2 pr-2"
                                                             onClick={() => handleDeleteAssessment(subject)}
                                                     >

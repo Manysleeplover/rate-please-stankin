@@ -130,3 +130,9 @@ export type SaveAssessmentRequestDTO = {
     id: string,
     questions: AssessmentDTO;
 }
+
+export type PassedAssessmentRequestDTO = {
+    id: string
+    question: string,
+    rate: number
+}

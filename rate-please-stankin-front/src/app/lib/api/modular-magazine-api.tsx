@@ -1,6 +1,6 @@
 import {MJStudentDataRequestDTO, StudentInfoDTO, UserInfoDTO} from "@/app/lib/api/ui-interfaces";
 import axios from "axios";
-import {getDefaultHeaders} from "@/app/lib/api/default-headers";
+import {BACKEND_API_URL, getDefaultHeaders} from "@/app/lib/api/default-api-signature";
 
 export const postGetStudentInfoDTO = async (code: string, token: string): Promise<StudentInfoDTO> => {
     const requestData: MJStudentDataRequestDTO = {
@@ -10,7 +10,7 @@ export const postGetStudentInfoDTO = async (code: string, token: string): Promis
     };
 
     const response = await axios.post<StudentInfoDTO>(
-        "http://localhost:8081/mj/oaut/req",
+        `${BACKEND_API_URL}/mj/oaut/req`,
         requestData,
         {
             headers: getDefaultHeaders(token)
@@ -21,7 +21,7 @@ export const postGetStudentInfoDTO = async (code: string, token: string): Promis
 
 export const postSecureStudentProfile = async (token: string, req: UserInfoDTO) => {
     axios
-        .post("http://localhost:8081/mj/profile/secure", req, {
+        .post(`${BACKEND_API_URL}/mj/profile/secure`, req, {
             headers: getDefaultHeaders(token)
         })
         .then( (resp) => {
