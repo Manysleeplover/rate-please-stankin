@@ -45,3 +45,22 @@ Content-Type: application/json
   }
 }
 ```
+
+Добить - 
+
+{
+"name": "custom-query-connector",
+"config": {
+"connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+"database.hostname": "postgres",
+"database.port": "5432",
+"database.user": "debezium",
+"database.password": "dbz_pass",
+"database.dbname": "school_db",
+"query.mode": "custom",
+"custom.query.tables": "public.passed_assessment,public.passed_test",
+"custom.query.passed_assessment": "SELECT id, assessment_id, (estimates->>'score')::int as score FROM passed_assessment WHERE deleted_at IS NULL",
+"custom.query.passed_test": "SELECT id, task_for_class_id, completion_percent as score FROM passed_test WHERE is_active = true",
+"topic.prefix": "school_custom"
+}
+}

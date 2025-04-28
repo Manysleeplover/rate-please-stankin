@@ -29,7 +29,7 @@ fun List<DailyScheduleDTO>.mapToEntity(): List<DailyScheduleEntity> =
         )
     }.toList()
 
-fun List<DailyScheduleEntity>.mapToDTO(): List<DailyScheduleDTO> =
+fun List<DailyScheduleEntity>.mapListToDTO(): List<DailyScheduleDTO> =
     this.stream().map {
         DailyScheduleDTO(
             id = it.id,
@@ -46,6 +46,24 @@ fun List<DailyScheduleEntity>.mapToDTO(): List<DailyScheduleDTO> =
             assessmentId = it.assessment?.id.toString(),
         )
     }.toList()
+
+fun DailyScheduleEntity.mapToDTO(): DailyScheduleDTO =
+    DailyScheduleDTO(
+        id = this.id,
+        date = this.date,
+        stgroup = this.stgroup,
+        subject = this.subject,
+        audience = this.audience,
+        startTime = this.startTime,
+        endTime = this.endTime,
+        subgroup = this.subgroup,
+        teacher = this.teacher,
+        type = this.type,
+        testId = this.taskForClass?.id.toString(),
+        assessmentId = this.assessment?.id.toString(),
+    )
+
+
 
 val LAB_TIMES_MAP: Map<String, String> =
     mapOf(

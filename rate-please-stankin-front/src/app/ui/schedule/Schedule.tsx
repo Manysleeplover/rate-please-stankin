@@ -69,7 +69,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                                             height={20}
                                                             width={20}
                                                         />
-                                                        Создать тест
+                                                        Создать задание
                                                     </div>
                                                 </button>
                                                 )
@@ -85,7 +85,7 @@ export const Schedule: FC<ScheduleProps> = ({subjects, type }) => {
                                                                 height={20}
                                                                 width={20}
                                                             />
-                                                            Удалить тест
+                                                            Удалить задание
                                                         </div>
                                                     </button>
                                                 )

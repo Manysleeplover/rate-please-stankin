@@ -96,7 +96,8 @@ export default function AssessmentCreator() {
             <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-10">
                     <h1 className="text-3xl font-bold text-indigo-800 mb-2">Конструктор опросов</h1>
-                    <p className="text-lg text-indigo-600">Создайте новый опрос с уникальными вопросами</p>
+                    <p className="text-lg text-indigo-600">Создайте новый опрос</p>
+                    <p className="text-lg text-indigo-600">Ответом на каждый вопрос должна быть численная оценка!</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg overflow-hidden p-6">

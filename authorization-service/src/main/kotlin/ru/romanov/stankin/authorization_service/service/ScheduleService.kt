@@ -8,7 +8,7 @@ import ru.romanov.stankin.authorization_service.domain.entity.SemesterScheduleEn
 import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.SemesterScheduleRepository
 import ru.romanov.stankin.authorization_service.repository.TaskForClassRepository
-import ru.romanov.stankin.authorization_service.util.mapToDTO
+import ru.romanov.stankin.authorization_service.util.mapListToDTO
 import java.time.LocalDate
 
 @Service
@@ -30,7 +30,7 @@ class ScheduleService(
         val dailySchedule = dailyScheduleRepository.findBySemesterScheduleIdAndDate(
             semesterScheduleProjectionList.map { it.getId() }.first(), date
         )
-        return dailySchedule.mapToDTO()
+        return dailySchedule.mapListToDTO()
     }
 
     fun getAllSemesterSchedules() =

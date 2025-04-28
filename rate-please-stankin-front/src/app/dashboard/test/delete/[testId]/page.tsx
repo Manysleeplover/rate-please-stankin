@@ -38,7 +38,7 @@ export default function TestsList() {
             router.push(`/dashboard/test/create`)
         } catch (error) {
             console.error('Ошибка при удалении теста:', error);
-            alert('Не удалось удалить тест');
+            alert('Не удалось удалить задание');
         } finally {
             setIsDeleting(false);
         }
@@ -99,7 +99,7 @@ export default function TestsList() {
                                     Удаление...
                                 </>
                             ) : (
-                                'Удалить тест'
+                                'Удалить задание'
                             )}
                         </button>
                     </div>
