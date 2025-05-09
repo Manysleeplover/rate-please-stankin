@@ -6,7 +6,7 @@ import { AtSymbolIcon, KeyIcon, UserIcon } from "@heroicons/react/16/solid";
 import { singUpAPIRequest } from "@/app/lib/api/login-form-api";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
-import {setCoolie} from "@/app/lib/security/auth";
+import {setCoolie} from "@/app/lib/cookies/cookies";
 
 export default function SignUpForm() {
     const [username, setUsername] = useState<string>("");
@@ -118,7 +118,7 @@ export default function SignUpForm() {
                 </Button>
                 <div className="pt-3 pb-1">
                     <Link
-                        href="/sign-in"
+                        href="/login"
                         className="underline text-stankin_blue"
                     >
                         Войти

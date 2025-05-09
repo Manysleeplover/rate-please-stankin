@@ -1,11 +1,11 @@
 package ru.romanov.stankin.authorization_service.util
 
-import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.DailySchedule
-import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.DailyScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.SemesterScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.entity.DailyScheduleEntity
+import ru.romanov.stankin.authorization_service.domain.entity.SemesterScheduleEntity
 
-fun SemesterSchedule.mapToDto(dailyScheduleDTO: List<DailyScheduleDTO>) =
+fun SemesterScheduleEntity.mapToDto(dailyScheduleDTO: List<DailyScheduleDTO>) =
     SemesterScheduleDTO(
         stgroup = this.stgroup,
         dailySchedule = dailyScheduleDTO,
@@ -14,9 +14,9 @@ fun SemesterSchedule.mapToDto(dailyScheduleDTO: List<DailyScheduleDTO>) =
         id = this.id
     )
 
-fun List<DailyScheduleDTO>.mapToEntity(): List<DailySchedule> =
+fun List<DailyScheduleDTO>.mapToEntity(): List<DailyScheduleEntity> =
     this.stream().map {
-        DailySchedule(
+        DailyScheduleEntity(
             date = it.date,
             stgroup = it.stgroup,
             subject = it.subject,
@@ -29,7 +29,7 @@ fun List<DailyScheduleDTO>.mapToEntity(): List<DailySchedule> =
         )
     }.toList()
 
-fun List<DailySchedule>.mapToDTO(): List<DailyScheduleDTO> =
+fun List<DailyScheduleEntity>.mapListToDTO(): List<DailyScheduleDTO> =
     this.stream().map {
         DailyScheduleDTO(
             id = it.id,
@@ -42,11 +42,30 @@ fun List<DailySchedule>.mapToDTO(): List<DailyScheduleDTO> =
             subgroup = it.subgroup,
             teacher = it.teacher,
             type = it.type,
-            testId = it.taskForClass?.id.toString()
+            testId = it.taskForClass?.id.toString(),
+            assessmentId = it.assessment?.id.toString(),
         )
     }.toList()
 
-val labTimesMap: Map<String, String> =
+fun DailyScheduleEntity.mapToDTO(): DailyScheduleDTO =
+    DailyScheduleDTO(
+        id = this.id,
+        date = this.date,
+        stgroup = this.stgroup,
+        subject = this.subject,
+        audience = this.audience,
+        startTime = this.startTime,
+        endTime = this.endTime,
+        subgroup = this.subgroup,
+        teacher = this.teacher,
+        type = this.type,
+        testId = this.taskForClass?.id.toString(),
+        assessmentId = this.assessment?.id.toString(),
+    )
+
+
+
+val LAB_TIMES_MAP: Map<String, String> =
     mapOf(
        "8:30" to "12:00",
         "10:20" to "14:00",

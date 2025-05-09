@@ -14,7 +14,7 @@ class TaskForClassEntity(
     @OneToOne
     @JsonManagedReference
     @JoinColumn(name = "daily_schedule_id")
-    val dailySchedule: DailySchedule,
+    val dailySchedule: DailyScheduleEntity,
     @JdbcTypeCode(SqlTypes.JSON)
     val taskList: List<Question>
 );

@@ -1,13 +1,14 @@
 package ru.romanov.stankin.authorization_service.service
 
+import org.slf4j.LoggerFactory.getLogger
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
-import ru.romanov.stankin.authorization_service.repository.postgre.DailyScheduleRepository
-import ru.romanov.stankin.authorization_service.repository.postgre.SemesterScheduleRepository
-import ru.romanov.stankin.authorization_service.repository.postgre.TaskForClassRepository
-import ru.romanov.stankin.authorization_service.util.mapToDTO
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.DailyScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.SemesterScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.entity.SemesterScheduleEntity
+import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.SemesterScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.TaskForClassRepository
+import ru.romanov.stankin.authorization_service.util.mapListToDTO
 import java.time.LocalDate
 
 @Service
@@ -23,22 +24,22 @@ class ScheduleService(
             stgroup,
             date
         )
-
-        if(semesterScheduleProjectionList.isEmpty()) return emptyList()
-
+        if(semesterScheduleProjectionList.isEmpty()) return emptyList<DailyScheduleDTO>().also {
+            log.warn("Расписание для $stgroup за дату $date не существует")
+        }
         val dailySchedule = dailyScheduleRepository.findBySemesterScheduleIdAndDate(
             semesterScheduleProjectionList.map { it.getId() }.first(), date
         )
-
-
-        return dailySchedule.mapToDTO()
+        return dailySchedule.mapListToDTO()
     }
 
     fun getAllSemesterSchedules() =
-        semesterScheduleRepository.findAll().mapToDTO()
+        semesterScheduleRepository
+            .findAll()
+            .mapToDTO()
 
 
-    private fun List<SemesterSchedule>.mapToDTO(): List<SemesterScheduleDTO> =
+    private fun List<SemesterScheduleEntity>.mapToDTO(): List<SemesterScheduleDTO> =
         this.stream().map {
             SemesterScheduleDTO(
                 id = it.id,
@@ -49,4 +50,8 @@ class ScheduleService(
                 dailySchedule = null
             )
         }.toList()
+
+    companion object {
+        private val log = getLogger(ScheduleService::class.java)
+    }
 }

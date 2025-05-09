@@ -26,7 +26,7 @@ export type SignUpDTO = {
 
 export type ScheduleDateIntervalRequest = {
     date: string,
-    stgroup: string | "ИДМ-23-08"
+    stgroup: string
 }
 
 export type DailyScheduleDTO = {
@@ -41,12 +41,15 @@ export type DailyScheduleDTO = {
     teacher: string,
     type: string,
     testId: string
+    assessmentId: string
 }
 
 export type JwtAuthenticationResponse = {
-    token: string,
-    username: string,
+    id: string,
     role: string
+    name: string,
+    email: string,
+    token: string,
 }
 
 export enum ScheduleType{
@@ -92,3 +95,49 @@ export type AnswerOptionsDTO = {
     text: string;
     isCorrect: boolean;
 };
+
+export type StudentInfoDTO = {
+    access_token: string,
+    token_type: string,
+    userInfo:  UserInfoDTO
+}
+
+export type UserInfoDTO = {
+    name: string,
+    surname: string,
+    patronym: string,
+    stgroup: string,
+    cardid: string
+}
+
+export type MJStudentDataRequestDTO = {
+    code: string,
+    clientId: string,
+    clientSecret: string
+}
+
+export type AssessmentDTO = {
+    id: string
+    questions: AssessmentQuestion[]
+}
+
+export type AssessmentQuestion= {
+    id: string
+    question: string
+}
+
+export type SaveAssessmentRequestDTO = {
+    id: string,
+    questions: AssessmentDTO;
+}
+
+export type AssessmentSaveResultRequest = {
+    userId: string
+    results: PassedAssessmentRequestDTO[]
+}
+
+export type PassedAssessmentRequestDTO = {
+    id: string
+    question: string,
+    rate: number
+}

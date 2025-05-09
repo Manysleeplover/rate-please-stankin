@@ -1,19 +1,19 @@
 package ru.romanov.stankin.authorization_service.service
 
+import org.slf4j.LoggerFactory.getLogger
 import org.springframework.stereotype.Service
-import ru.romanov.stankin.authorization_service.domain.dto.DailyScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.dto.ScheduleDto
-import ru.romanov.stankin.authorization_service.domain.dto.SemesterScheduleDTO
-import ru.romanov.stankin.authorization_service.domain.entity.DailySchedule
-import ru.romanov.stankin.authorization_service.domain.entity.SemesterSchedule
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.DailyScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.ScheduleDto
+import ru.romanov.stankin.authorization_service.domain.dto.schedule.SemesterScheduleDTO
+import ru.romanov.stankin.authorization_service.domain.entity.DailyScheduleEntity
+import ru.romanov.stankin.authorization_service.domain.entity.SemesterScheduleEntity
 import ru.romanov.stankin.authorization_service.util.mapToEntity
 import ru.romanov.stankin.authorization_service.util.mapToDto
-import ru.romanov.stankin.authorization_service.repository.postgre.DailyScheduleRepository
-import ru.romanov.stankin.authorization_service.repository.postgre.SemesterScheduleRepository
-import ru.romanov.stankin.authorization_service.util.labTimesMap
+import ru.romanov.stankin.authorization_service.repository.DailyScheduleRepository
+import ru.romanov.stankin.authorization_service.repository.SemesterScheduleRepository
+import ru.romanov.stankin.authorization_service.util.LAB_TIMES_MAP
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 
 @Service
@@ -27,29 +27,38 @@ class ScheduleSaverService(
         val dailyScheduleEntityList = dailyScheduleDTOList.mapToEntity()
         return dailyScheduleEntityList
             .buildSemesterSchedule()
+            .also {
+                log.info("Расписание для группы ${it.stgroup} за ${it.firstClassDate}-${it.lastClassDate} успешно собрано")
+            }
             .validateIdempotency()
             .also {
+                log.info("Расписание для группы ${it.stgroup} за ${it.firstClassDate}-${it.lastClassDate} прошло проверку на идемпотентность")
+            }
+            .also {
                 dailyScheduleEntityList.forEach { entity -> entity.semesterSchedule = it}
-                it.dailySchedule = dailyScheduleEntityList
+                it.dailyScheduleEntity = dailyScheduleEntityList
             }
             .saveSemesterSchedule()
+            .also {
+                log.info("Расписание для группы ${it.stgroup} за ${it.firstClassDate}-${it.lastClassDate} сохранено в БД")
+            }
             .mapToDto(dailyScheduleDTOList)
     }
 
-    fun SemesterSchedule.saveSemesterSchedule() =
+    private fun SemesterScheduleEntity.saveSemesterSchedule() =
         semesterScheduleRepository.save(this)
 
-    fun List<DailySchedule>.buildSemesterSchedule() =
-        SemesterSchedule(
-        stgroup = this.first().stgroup!!,
+    private fun List<DailyScheduleEntity>.buildSemesterSchedule() =
+        SemesterScheduleEntity(
+        stgroup = this.first().stgroup,
         firstClassDate =  this.stream().map { it.date }.min(Comparator.comparing { it }).get(),
         lastClassDate =  this.stream().map { it.date }.max(Comparator.comparing { it }).get(),
     )
 
-    fun List<DailySchedule>.saveDailySchedule(): List<DailySchedule> =
+    fun List<DailyScheduleEntity>.saveDailySchedule(): List<DailyScheduleEntity> =
         dailyScheduleRepository.saveAll(this)
 
-    fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
+    private fun expandSchedule(scheduleList: List<ScheduleDto>): List<DailyScheduleDTO> {
         val result = mutableListOf<DailyScheduleDTO>()
         val dateFormatter = DateTimeFormatter.ofPattern("dd.MM")
 
@@ -79,7 +88,7 @@ class ScheduleSaverService(
                             if (schedule.type == "лабораторные занятия") {
                                 val key = schedule.subject to currentDateInPeriod
                                 if (!addedLabs.contains(key)) {
-                                    result.add(createDailySchedule(schedule, currentDateInPeriod, labTimesMap[schedule.start_time]!!))
+                                    result.add(createDailySchedule(schedule, currentDateInPeriod, LAB_TIMES_MAP[schedule.start_time]!!))
                                     addedLabs.add(key)
                                 }
                             } else {
@@ -100,7 +109,7 @@ class ScheduleSaverService(
                     if (schedule.type == "лабораторные занятия") {
                         val key = schedule.subject to date
                         if (!addedLabs.contains(key)) {
-                            result.add(createDailySchedule(schedule, date, labTimesMap[schedule.start_time]!!))
+                            result.add(createDailySchedule(schedule, date, LAB_TIMES_MAP[schedule.start_time]!!))
                             addedLabs.add(key)
                         }
                     } else {
@@ -149,7 +158,7 @@ class ScheduleSaverService(
         return LocalDate.parse("$dateStr.$currentYear", DateTimeFormatter.ofPattern("dd.MM.yyyy"))
     }
 
-    private fun SemesterSchedule.validateIdempotency( ): SemesterSchedule =
+    private fun SemesterScheduleEntity.validateIdempotency( ): SemesterScheduleEntity =
         if ( semesterScheduleRepository.findByFirstClassDateAndLastClassDateAndStgroupAndVersionDate(
                 firstClassDate =   this.firstClassDate,
                 lastClassDate =  this.lastClassDate,
@@ -163,5 +172,9 @@ class ScheduleSaverService(
                 "Расписание с таким номером версии ${this.versionDate}, группы: ${this.stgroup}, " +
                         "с временным диапазоном семестра ${this.firstClassDate} - ${this.lastClassDate} уже существует")
         }
+
+    companion object {
+        private val log = getLogger(ScheduleSaverService::class.java)
+    }
 }
 

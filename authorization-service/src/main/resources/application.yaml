@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: authorization-service
+  data:
+    mongodb:
+      port: '27017'
+      host: localhost
+      username: admin
+      database: schedule
+      password: pass
+      uri: mongodb://admin:pass@localhost:27017/schedule?authSource=admin
+  datasource:
+    password: master
+    username: user_credential_db_user
+    url: jdbc:postgresql://localhost:5432/user_credential_db
+  jpa:
+    show-sql: 'false'
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: 'true'
+
+integrations:
+  modular-magazine:
+    base-url: https://lk.stankin.ru
+    student-info-uri: /webapi/oauth/token
+
+jwt:
+  signing:
+    key: iuLTU8rq83ssfe4gfege5ge5hryjtyumjt7mt7mh6iu
+  key:
+    expiration: '604800000'
+    validExpiration: '60000'
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
+        web.filter.CommonsRequestLoggingFilter: INFO
+    root: INFO
+
+auth:
+  inMemory:
+    enabled: 'false'
+server:
+  port: '8081'
