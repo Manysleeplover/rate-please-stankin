@@ -1,0 +1,50 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" version="26.2.14">
+  <diagram name="Страница — 1" id="3k-et3VgY58l7WNsQpXR">
+    <mxGraphModel dx="2431" dy="2467" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-1" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="280.8" y="-12.4" width="1379.2" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-2" value="Клиент" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="290.79999999999995" y="-2.4" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-3" value="Браузер" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330.8" y="32.6" width="1269.2" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-4" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="240" width="1600" height="720" as="geometry" />
+        </mxCell>
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-5" value="СОКПЗ" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="220" y="260" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-6" value="AuthController" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="310" width="1600" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-9" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.076;entryY=0.075;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="zDoKrVjuPMrEhkjUpRzR-1" target="zDoKrVjuPMrEhkjUpRzR-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250.79999999999995" y="427.6" as="sourcePoint" />
+            <mxPoint x="279.9999999999998" y="307.7199999999999" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-10" value="Логин и пароль пользователя" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="zDoKrVjuPMrEhkjUpRzR-9">
+          <mxGeometry x="-0.0287" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-16" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.563;exitY=0.04;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.145;entryY=0.996;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="zDoKrVjuPMrEhkjUpRzR-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="481.60000000000014" y="310.0000000000001" as="sourcePoint" />
+            <mxPoint x="1660" y="128" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zDoKrVjuPMrEhkjUpRzR-17" value="Bearer JWT токен" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="zDoKrVjuPMrEhkjUpRzR-16">
+          <mxGeometry x="0.1776" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
