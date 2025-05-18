@@ -1,0 +1,37 @@
+select ds.date, ds.teacher, ds.stgroup, ps.estimates, ds.subgroup, ds.semester_schedule_id, ds.type
+from passed_assessment as ps
+join assessment as a on ps.assessment_id = a.id
+join daily_schedule as ds on a.daily_schedule_id = ds.id;
+
+select * from passed_assessment;
+
+INSERT INTO passed_assessment (id, assessment_id, person_id, estimates)
+SELECT
+    uuid_generate_v4(),
+    '166a3e65-3651-4f4d-806c-b00ca0f1d05f',
+    1,
+    jsonb_build_object(
+            'tokens', null,
+            'answers', jsonb_build_array(
+                    jsonb_build_object('rate', (1 + floor(random() * 10))::integer, 'question', 'Насколько содержимое лекции соответствует заявленной теме?'),
+                    jsonb_build_object('rate', (1 + floor(random() * 10))::integer, 'question', 'Насколько содержимое лекции соответствует вашим ожиданиям?')
+                       )
+    )
+FROM generate_series(1, 100);
+
+
+WITH extracted_rates AS (
+    SELECT
+        jsonb_array_elements(estimates->'answers')->>'question' AS question,
+        (jsonb_array_elements(estimates->'answers')->>'rate')::integer AS rate
+    FROM passed_assessment
+    WHERE assessment_id = '166a3e65-3651-4f4d-806c-b00ca0f1d05f'
+)
+SELECT
+    question,
+    rate,
+    COUNT(*) AS count,
+    ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (PARTITION BY question), 2) AS percentage
+FROM extracted_rates
+GROUP BY question, rate
+ORDER BY question, rate;
